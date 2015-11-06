@@ -71,6 +71,6 @@
   :test-paths ["spec"]
 
   :uberjar-exclusions [#".*"]                               ;; Kludge to make top-level "lein sub uberjar" faster
-  :auto-clean false
+  :profiles {:uberjar {:auto-clean false}}
 
   :aliases {"buildfront" ^{:doc "Build frontend code with npm"} ["shell" "npm" "install"]})
