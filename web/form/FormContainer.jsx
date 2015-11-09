@@ -10,14 +10,15 @@ export default class FormContainer extends React.Component {
     const configuration = state.configuration
     const preview = configuration.preview
     const headerElements = _.get(this.props, "headerElements", "")
+    const containerId = _.get(this.props, "containerId", "container")
     const formElementProps = {
       controller: this.props.controller,
       state: state,
-      infoElementValues: this.props.infoElementValues
+      infoElementValues: this.props.infoElementValues,
     }
 
     return (
-      <section id="container">
+      <section id={containerId}>
         {headerElements}
         {this.formElement(preview, formElementProps)}
       </section>
