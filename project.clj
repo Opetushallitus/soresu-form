@@ -58,7 +58,6 @@
 
   :prep-tasks [
        "buildfront"
-       "javac"
        "compile"
   ]
 
