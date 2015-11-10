@@ -11,6 +11,7 @@
   (s/defschema InfoElement {:fieldClass (s/eq "infoElement")
                             :id s/Str
                             :fieldType (s/enum :h1
+                                               :h3
                                                :p
                                                :bulletList
                                                :dateRange

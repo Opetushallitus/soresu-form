@@ -10,6 +10,7 @@ class EditComponent extends React.Component {
   static fieldTypeInFI(fieldType){
     const translations = {
       "h1": "Otsikko",
+      "h3": "Väliotsikko",
       "p": "Ohjeteksti",
       "dateRange": "Päivämääräväli",
       "bulletList": "Lista",
@@ -174,7 +175,7 @@ export class InfoElementEditWrapper extends EditComponent {
     const htmlId = this.props.htmlId
     const textEdit = super.renderTranslationTable(htmlId + "-text", "Teksti", x => x.text, "larger-textarea")
     return super.renderEditable(
-      <div>
+      <div className="soresu-edit-wrapped-view">
         {textEdit}
         {this.props.wrappedElement}
       </div>
@@ -189,7 +190,7 @@ export class AppendableEditWrapper extends EditComponent {
 
   render() {
     return super.renderEditable(
-      <div>
+      <div className="soresu-edit-wrapped-view">
        {this.props.wrappedElement}
       </div>
     )

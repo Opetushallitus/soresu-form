@@ -12,8 +12,8 @@ export default class FormEditorController {
       "radioButton": "formField",
       "checkboxButton": "formField",
       "namedAttachment": "formField",
-      "p": "infoElement"
-
+      "p": "infoElement",
+      "h3": "infoElement"
     }
   }
 
@@ -116,6 +116,7 @@ export default class FormEditorController {
           ]
           break
         case "p":
+        case "h3":
           newField.text = {"fi": "", "sv": ""}
           break
         default:

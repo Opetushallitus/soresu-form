@@ -50,6 +50,13 @@ export class H1InfoElement extends TextInfoComponent {
   }
 }
 
+export class H3InfoElement extends TextInfoComponent {
+  render() {
+    const text = this.textValue()
+    return <h3>{text}</h3>
+  }
+}
+
 export class ParagraphInfoElement extends TextInfoComponent {
   render() {
     const text = this.textValue()
@@ -139,6 +146,7 @@ export default class InfoElement extends React.Component {
     super(props)
     const fieldTypeMapping = {
       "h1": H1InfoElement,
+      "h3": H3InfoElement,
       "p": ParagraphInfoElement,
       "bulletList": AccordionInfoElement,
       "dateRange": DateRangeInfoElement,
@@ -146,6 +154,7 @@ export default class InfoElement extends React.Component {
     }
     const fieldPropertyMapping = {
       "h1": InfoElementPropertyMapper,
+      "h3": InfoElementPropertyMapper,
       "p": InfoElementPropertyMapper,
       "bulletList": AccordionElementPropertyMapper,
       "dateRange": InfoElementPropertyMapper,
