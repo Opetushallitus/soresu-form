@@ -177,7 +177,6 @@ export class InfoElementEditWrapper extends EditComponent {
     return super.renderEditable(
       <div className="soresu-edit-wrapped-view">
         {textEdit}
-        {this.props.wrappedElement}
       </div>
     )
   }
