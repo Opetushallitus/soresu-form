@@ -20,51 +20,40 @@ export class BasicInfoComponent extends React.Component {
     return BasicInfoComponent.asDateString(date) + " " + timeLimiter + " " + BasicInfoComponent.asTimeString(date)
   }
 
-  labelSourceObject() {
+  translatedValue(valueId) {
+    const lang = this.props.lang
+    const translations = this.props.translations
     const values = this.props.values
     const value = values[this.props.htmlId]
-
-    if (this.props.translations.label != undefined) {
-      return this.props.translations
+    if (translations && translations[valueId]) {
+      return new Translator(translations).translate(valueId, lang)
+    } else if (value[valueId]) {
+      return new Translator(value).translate(valueId, lang)
     } else {
-      return value
+      return new Translator(values).translate(this.props.htmlId, lang)
     }
   }
 }
 
-class TextInfoComponent extends React.Component {
-  textValue() {
-    const lang = this.props.lang
-    if (this.props.translations && this.props.translations.text != undefined) {
-      return new Translator(this.props.translations).translate('text', lang)
-    } else {
-      return new Translator(this.props.values).translate(this.props.htmlId, lang)
-    }
-  }
-}
-
-export class H1InfoElement extends TextInfoComponent {
+export class H1InfoElement extends BasicInfoComponent {
   render() {
-    const text = this.textValue()
-    return <h1>{text}</h1>
+    return <h1>{this.translatedValue('text')}</h1>
   }
 }
 
-export class H3InfoElement extends TextInfoComponent {
+export class H3InfoElement extends BasicInfoComponent {
   render() {
-    const text = this.textValue()
-    return <h3>{text}</h3>
+    return <h3>{this.translatedValue('text')}</h3>
   }
 }
 
-export class ParagraphInfoElement extends TextInfoComponent {
+export class ParagraphInfoElement extends BasicInfoComponent {
   render() {
-    const text = this.textValue()
-    return <p className="soresu-info-element">{text}</p>
+    return <p className="soresu-info-element">{this.translatedValue('text')}</p>
   }
 }
 
-export class AccordionInfoElement extends React.Component {
+export class AccordionInfoElement extends BasicInfoComponent {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
@@ -88,13 +77,13 @@ export class AccordionInfoElement extends React.Component {
     const items = []
     var infoObject = values[this.props.htmlId]
     for (var i=0; i < infoObject.items.length; i++) {
-      const textContent = infoObject.items[i][this.props.lang]
+      const textContent = infoObject.items[i][lang]
       items.push((<li key={key + "." + i}>{textContent}</li>))
     }
     const accordionStateClassName = AccordionInfoElement.determineCssClass(this.state.open)
     return (
         <div>
-          <LocalizedString onClick={this.handleClick} className={"accordion-title opener-handle " + accordionStateClassName} translations={infoObject} translationKey="label" lang={lang}/>
+          <span onClick={this.handleClick} className={"accordion-title opener-handle " + accordionStateClassName}>{super.translatedValue('label')}</span>
           <div className={"accordion " + accordionStateClassName}>
             <ul id={key}>
                 {items}
@@ -107,18 +96,15 @@ export class AccordionInfoElement extends React.Component {
 export class DateRangeInfoElement extends BasicInfoComponent {
   render() {
     const values = this.props.values
-    const lang = this.props.lang
     const value = values[this.props.htmlId]
     const start = new Date(value.start)
     const startDateTime = this.asDateTimeString(start)
     const end = new Date(value.end)
     const endDateTime = this.asDateTimeString(end)
-    const labelSource = this.labelSourceObject()
 
     return (
       <div>
-        <LocalizedString translations={labelSource} translationKey="label" lang={lang} />&nbsp;
-        <span>{startDateTime} — {endDateTime}</span>
+        {this.translatedValue('label')} {startDateTime} — {endDateTime}
       </div>
     )
   }
@@ -127,14 +113,12 @@ export class DateRangeInfoElement extends BasicInfoComponent {
 export class EndOfDateRangeInfoElement extends BasicInfoComponent {
   render() {
     const values = this.props.values
-    const lang = this.props.lang
     const value = values[this.props.htmlId]
     const end = new Date(value.end)
     const endDateTime = this.asDateTimeString(end)
-    const labelSource = this.labelSourceObject()
     return (
       <div>
-        <label><LocalizedString translations={labelSource} translationKey="label" lang={lang}/></label>
+        <label>{this.translatedValue('label')}</label>
         <span>{endDateTime}</span>
       </div>
     )
