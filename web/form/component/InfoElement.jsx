@@ -27,7 +27,7 @@ export class BasicInfoComponent extends React.Component {
     const value = values[this.props.htmlId]
     if (translations && translations[valueId]) {
       return new Translator(translations).translate(valueId, lang)
-    } else if (value[valueId]) {
+    } else if (value && value[valueId]) {
       return new Translator(value).translate(valueId, lang)
     } else {
       return new Translator(values).translate(this.props.htmlId, lang)
