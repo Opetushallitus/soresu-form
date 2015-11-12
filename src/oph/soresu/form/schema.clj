@@ -12,6 +12,7 @@
                             :id s/Str
                             :fieldType (s/enum :h1
                                                :h3
+                                               :link
                                                :p
                                                :bulletList
                                                :dateRange

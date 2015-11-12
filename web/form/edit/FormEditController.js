@@ -13,7 +13,8 @@ export default class FormEditorController {
       "checkboxButton": "formField",
       "namedAttachment": "formField",
       "p": "infoElement",
-      "h3": "infoElement"
+      "h3": "infoElement",
+      "link": "infoElement"
     }
   }
 
@@ -115,6 +116,8 @@ export default class FormEditorController {
             FormEditorController.createEmptyOption()
           ]
           break
+        case "link":
+          newField.params.href = {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
         case "p":
         case "h3":
           newField.text = {"fi": "", "sv": ""}

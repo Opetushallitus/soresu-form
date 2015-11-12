@@ -13,26 +13,25 @@ import FormPreview from '../FormPreview.jsx'
 export default class FormEdit extends React.Component {
 
   static createFormEditComponent(controller, formEditorController, state, field, fieldProperties, renderingParameters) {
-    if(FormEditComponent.fieldTypeMapping()[field.fieldType]) {
-      const translations = state.configuration.translations
-      const customProperties = controller.getCustomComponentProperties(state)
-      return <FormEditComponent {...fieldProperties}
-          renderingParameters={renderingParameters}
-          translations={translations}
-          controller={controller}
-          formEditorController={formEditorController}
-          customProps={customProperties}
-          attachment={state.saveStatus.attachments[field.id]}
-          attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field) }/>
-    }
-    return <BasicFieldEdit formEditorController={formEditorController} htmlId={fieldProperties.htmlId} key={fieldProperties.htmlId} field={field}/>
+    const translations = state.configuration.translations
+    const customProperties = controller.getCustomComponentProperties(state)
+    return <FormEditComponent {...fieldProperties}
+        renderingParameters={renderingParameters}
+        translations={translations}
+        controller={controller}
+        formEditorController={formEditorController}
+        customProps={customProperties}
+        attachment={state.saveStatus.attachments[field.id]}
+        attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field) }/>
   }
 
   static renderField(controller, formEditorController, state, infoElementValues, field, renderingParameters) {
     const fields = state.form.content
     const htmlId = controller.constructHtmlId(fields, field.id)
     const fieldProperties = { fieldType: field.fieldType, lang: state.configuration.lang, key: htmlId, htmlId: htmlId, field: field }
-    if (field.fieldClass == "infoElement") {
+    if(FormEditComponent.fieldTypeMapping()[field.fieldType]) {
+      return FormEdit.createFormEditComponent(controller, formEditorController, state, field, fieldProperties, renderingParameters)
+    } else if (field.fieldClass == "infoElement") {
       const previewInfoElement =  FormPreview.createInfoComponent(state, infoElementValues, field, fieldProperties, false)
       return <InfoElementEditWrapper formEditorController={formEditorController} wrappedElement={previewInfoElement} htmlId={htmlId} key={htmlId} field={field}/>
     } else if (field.fieldClass == "wrapperElement") {
@@ -45,7 +44,7 @@ export default class FormEdit extends React.Component {
         return <AppendableEditWrapper formEditorController={formEditorController} wrappedElement={editableWrapperElement} htmlId={htmlId} key={htmlId} field={field}/>
       }
     }
-    return FormEdit.createFormEditComponent(controller, formEditorController, state, field, fieldProperties, renderingParameters)
+    return <BasicFieldEdit formEditorController={formEditorController} htmlId={fieldProperties.htmlId} key={fieldProperties.htmlId} field={field}/>
   }
 
   render() {

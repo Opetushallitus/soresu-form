@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 import ComponentFactory from '../ComponentFactory.js'
 import LocalizedString from './LocalizedString.jsx'
 import Translator from './../Translator.js'
-import {InfoElementPropertyMapper, AccordionElementPropertyMapper} from './PropertyMapper.js'
+import {InfoElementPropertyMapper, AccordionElementPropertyMapper, LinkPropertyMapper} from './PropertyMapper.js'
 
 export class BasicInfoComponent extends React.Component {
   static asDateString(date) {
@@ -25,7 +25,9 @@ export class BasicInfoComponent extends React.Component {
     const translations = this.props.translations
     const values = this.props.values
     const value = values[this.props.htmlId]
-    if (translations && translations[valueId]) {
+    if (this.props[valueId]) {
+      return new Translator(this.props).translate(valueId, lang)
+    } else if (translations && translations[valueId]) {
       return new Translator(translations).translate(valueId, lang)
     } else if (value && value[valueId]) {
       return new Translator(value).translate(valueId, lang)
@@ -44,6 +46,15 @@ export class H1InfoElement extends BasicInfoComponent {
 export class H3InfoElement extends BasicInfoComponent {
   render() {
     return <h3>{this.translatedValue('text')}</h3>
+  }
+}
+
+export class LinkInfoElement extends BasicInfoComponent {
+  render() {
+    const translatedText = this.translatedValue('text')
+    const translatedHref = this.translatedValue('href')
+    const text = translatedText ? translatedText : translatedHref
+    return <a hidden={!translatedHref} target="_blank" href={translatedHref}>{text}</a>
   }
 }
 
@@ -131,6 +142,7 @@ export default class InfoElement extends React.Component {
     const fieldTypeMapping = {
       "h1": H1InfoElement,
       "h3": H3InfoElement,
+      "link": LinkInfoElement,
       "p": ParagraphInfoElement,
       "bulletList": AccordionInfoElement,
       "dateRange": DateRangeInfoElement,
@@ -139,6 +151,7 @@ export default class InfoElement extends React.Component {
     const fieldPropertyMapping = {
       "h1": InfoElementPropertyMapper,
       "h3": InfoElementPropertyMapper,
+      "link": LinkPropertyMapper,
       "p": InfoElementPropertyMapper,
       "bulletList": AccordionElementPropertyMapper,
       "dateRange": InfoElementPropertyMapper,

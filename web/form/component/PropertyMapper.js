@@ -149,6 +149,16 @@ export class InfoElementPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
+export class LinkPropertyMapper extends InfoElementPropertyMapper {
+  static map(props) {
+    const field = props.field
+    const commonProps = InfoElementPropertyMapper.map(props)
+    return _.extend(commonProps, {
+      href: DefaultPropertyMapper.param(field, "href")
+    })
+  }
+}
+
 export class AccordionElementPropertyMapper extends DefaultPropertyMapper {
   static map(props) {
     const commonProps = InfoElementPropertyMapper.map(props)

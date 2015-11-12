@@ -1,7 +1,7 @@
 import React from 'react'
 import ComponentFactory from '../ComponentFactory.js'
-import {TextFieldEdit,TextAreaEdit,MultipleChoiceEdit} from './EditComponent.jsx'
-import {TextFieldPropertyMapper} from '../component/PropertyMapper.js'
+import {TextFieldEdit,TextAreaEdit,MultipleChoiceEdit,LinkEdit} from './EditComponent.jsx'
+import {TextFieldPropertyMapper, LinkPropertyMapper} from '../component/PropertyMapper.js'
 
 export default class FormEditComponent extends React.Component {
 
@@ -9,6 +9,7 @@ export default class FormEditComponent extends React.Component {
     return {
       "textField": TextFieldEdit,
       "textArea": TextAreaEdit,
+      "link": LinkEdit,
       "radioButton": MultipleChoiceEdit,
       "checkboxButton": MultipleChoiceEdit,
       "dropdown": MultipleChoiceEdit
@@ -19,7 +20,8 @@ export default class FormEditComponent extends React.Component {
     super(props)
     const fieldPropertyMapping = {
       "textField": TextFieldEditPropertyMapper,
-      "textArea": TextFieldEditPropertyMapper
+      "textArea": TextFieldEditPropertyMapper,
+      "link": LinkEditPropertyMapper
     }
 
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: FormEditComponent.fieldTypeMapping(), fieldPropertyMapperMapping: fieldPropertyMapping})
@@ -49,5 +51,14 @@ class EditPropertyMapperExtender{
 class TextFieldEditPropertyMapper extends TextFieldPropertyMapper {
   static map(props) {
     return EditPropertyMapperExtender.extendedMap(TextFieldPropertyMapper, props)
+  }
+}
+
+class LinkEditPropertyMapper extends LinkPropertyMapper {
+  static map(props) {
+    const baseProps = EditPropertyMapperExtender.extendedMap(LinkPropertyMapper, props)
+    return _.extend(baseProps, {
+      field: props.field
+    })
   }
 }

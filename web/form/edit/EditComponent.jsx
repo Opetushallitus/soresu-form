@@ -11,6 +11,7 @@ class EditComponent extends React.Component {
     const translations = {
       "h1": "Otsikko",
       "h3": "Väliotsikko",
+      "link": "Linkki",
       "p": "Ohjeteksti",
       "dateRange": "Päivämääräväli",
       "bulletList": "Lista",
@@ -204,6 +205,20 @@ export class AppendableEditWrapper extends EditComponent {
 export class BasicFieldEdit extends FieldEditComponent {
   render() {
     return super.renderEditable()
+  }
+}
+
+export class LinkEdit extends EditComponent {
+  render() {
+    const htmlId = this.props.htmlId
+    const textEdit = super.renderTranslationTable(htmlId + "-text", "Teksti", x => x.text)
+    const hrefEdit = this.renderTranslationTable(htmlId + "-href", "Osoite", x => x.params.href, "small-textarea")
+    return super.renderEditable(
+      <div>
+        {textEdit}
+        {hrefEdit}
+      </div>
+    )
   }
 }
 
