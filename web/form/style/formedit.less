@@ -52,6 +52,7 @@ div.soresu-appendable-wrapper-edit {
 }
 
 div.soresu-field-edit, div.soresu-appendable-wrapper-edit {
+  .soresu-focus-show-error();
   position: relative;
   margin: 10px 10px 0 0;
   label, table.translation th {
@@ -74,8 +75,10 @@ div.soresu-field-edit, div.soresu-appendable-wrapper-edit {
     height: 44px;
     padding: 8px 0 8px 12px;
     width: 400px;
-    border-color: @dark-gray;
-    border-bottom-color: #bcb7b6;
+    &:not(.error) {
+      border-color: @dark-gray;
+      border-bottom-color: #bcb7b6;
+    }
     &.small-textarea {
       height: 22px;
     }

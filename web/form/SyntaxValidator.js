@@ -58,7 +58,13 @@ export default class SyntaxValidator {
     const invalidEmailRegexp = /.*%0[aA].*/
     const validEmail = validEmailRegexp.test(input) && lastPartIsLongerThanOne(input) && !invalidEmailRegexp.test(input)
     return validEmail ? undefined : { error: "email" }
+  }
 
+  static validateUrl(input) {
+    // http(s)://xx.xx(.xx)*/any valid url characters
+    const validUrlRegexp = /^https?:\/\/[\da-z\-]{2,63}(\.[\da-z\-]{2,63})+(\/[a-z|0-9|\-\._\~\:\/\?#\[\]\@\!\$\&\'\(\)\*\+\,\;\=\%]*)?$/i
+    const validUrl = validUrlRegexp.test(input)
+    return validUrl ? undefined : { error: "url" }
   }
 
   static validateBusinessId(input) {

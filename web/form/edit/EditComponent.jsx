@@ -1,9 +1,11 @@
 import React from 'react'
 import ClassNames from 'classnames'
 import slug from 'speakingurl'
+import _ from 'lodash'
 
 import FormEditorController from './FormEditController.js'
 import FormUtil from '../FormUtil.js'
+import SyntaxValidator from '../SyntaxValidator.js'
 
 class EditComponent extends React.Component {
 
@@ -50,21 +52,29 @@ class EditComponent extends React.Component {
 
   }
 
-  renderTranslationTable(htmlId, name, valueGetter, extraClassName) {
+  static fieldClassWithValidation(value, validator, extraClassName) {
+    const invalidClassName = validator ? validator(value) ? "error" : undefined : undefined
+    const classNamesSet = ClassNames(invalidClassName, extraClassName)
+    return _.isEmpty(classNamesSet) ? undefined : classNamesSet
+  }
+
+  renderTranslationTable(htmlId, name, valueGetter, extraClassName, validator) {
     const field = this.props.field
     if(typeof valueGetter(field) === 'undefined') {
       return undefined
     }
+    const classNamesFi = EditComponent.fieldClassWithValidation(valueGetter(field).fi, validator, extraClassName)
+    const classNamesSv = EditComponent.fieldClassWithValidation(valueGetter(field).sv, validator, extraClassName)
     return (
       <table className="translation">
         <thead><tr><th>{name + " suomeksi"}</th><th>{name + " ruotsiksi"}</th></tr></thead>
         <tbody><tr>
-          <td><textarea className={extraClassName}
+          <td><textarea className={classNamesFi}
                         onChange={this.fieldValueUpdater(valueGetter, "fi")}
                         name={htmlId+"-fi"}
                         value={valueGetter(field).fi}>
           </textarea></td>
-          <td><textarea className={extraClassName}
+          <td><textarea className={classNamesSv}
                         onChange={this.fieldValueUpdater(valueGetter, "sv")}
                         name={htmlId+"-sv"}
                         value={valueGetter(field).sv}>
@@ -117,8 +127,7 @@ class EditComponent extends React.Component {
   }
 
   className() {
-    const classNames = ClassNames("soresu-edit", "soresu-field-edit", this.sizeClassName())
-    return !_.isEmpty(classNames) ? classNames : undefined
+    return ClassNames("soresu-edit", "soresu-field-edit", this.sizeClassName())
   }
 
   sizeClassName() {
@@ -212,7 +221,7 @@ export class LinkEdit extends EditComponent {
   render() {
     const htmlId = this.props.htmlId
     const textEdit = super.renderTranslationTable(htmlId + "-text", "Teksti", x => x.text)
-    const hrefEdit = this.renderTranslationTable(htmlId + "-href", "Osoite", x => x.params.href, "small-textarea")
+    const hrefEdit = this.renderTranslationTable(htmlId + "-href", "Osoite", x => x.params.href, "small-textarea", SyntaxValidator.validateUrl)
     return super.renderEditable(
       <div>
         {textEdit}
