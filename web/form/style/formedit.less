@@ -38,9 +38,6 @@ ol {
 div.soresu-edit {
   padding: 0 0 10px 0;
   border-right: none;
-  :last-child  {
-    margin-bottom: 0;
-  }
   table.translation {
     margin-top: 20px;
     width: 93%;
@@ -94,7 +91,9 @@ div.soresu-field-edit {
   margin-bottom: 30px;
   border-left: 1px solid #e6e6e6;
   padding-bottom: 0;
-
+  &:last-child  {
+    margin-bottom: 0;
+  }
   .soresu-edit-properties-line {
     display: table;
     table-layout: fixed;
@@ -163,25 +162,30 @@ div.soresu-field-edit {
   margin-top: 12px;
   border: 1px dashed #d3d3d3;
   background-color: @lighterer-gray;
-  a {
-    display: none;
-  }
-  &:hover {
-    a {
-      display: inline-block;
-      position: relative;
-      top: -6px;
-      margin-right: 20px;
-    }
-  }
-  span {
-    display: inline;
+  min-height: 46px;
+  .soresu-field-add-header {
+    float: left;
     text-transform: uppercase;
     font-size: 33px;
     font-weight: 300;
     padding-left: 10px;
     color: #5da3c7;
-    margin-right: 20px;
+    width: 40px;
+    &:after {
+      content: "+";
+    }
+  }
+  .soresu-field-adders {
+    margin: 10px 0px 10px 50px;
+  }
+  a {
+    display: none;
+    margin: 0px 20px 0px 0px;
+  }
+  &:hover {
+    a {
+      display: inline-block;
+    }
   }
 }
 

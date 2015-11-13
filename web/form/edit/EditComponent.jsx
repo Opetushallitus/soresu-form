@@ -102,16 +102,15 @@ class EditComponent extends React.Component {
         <span onClick={removeFieldOnClick} className="soresu-edit soresu-field-remove">Poista</span> :
         undefined
     return (
-        <div key={htmlId} className={this.className()}>
-          <h3>{EditComponent.fieldTypeInFI(field.fieldType)}</h3>
-          {removeField}
-          {labelEdit}
-          {fieldSpecificEdit}
-          <div className="soresu-field-add">
-            <span>+</span>
-            {addElementButtons}
-          </div>
+      <div key={htmlId} className={this.className()}>
+        <h3>{EditComponent.fieldTypeInFI(field.fieldType)}</h3>
+        {removeField}
+        {labelEdit}
+        {fieldSpecificEdit}
+        <div className="soresu-field-add">
+          <div className="soresu-field-add-header"></div><div className="soresu-field-adders">{addElementButtons}</div>
         </div>
+      </div>
     )
 
     function createAddOnClick(fieldType) {
