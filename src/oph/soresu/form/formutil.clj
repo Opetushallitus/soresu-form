@@ -60,9 +60,15 @@
      (map unwrap-node)
      flatten))
 
-(defn find-fields [node-list]
+(defn find-fields* [node-list predicate]
   (->> (flatten-elements node-list)
-    (filter is-form-field?)))
+       (filter predicate)))
+
+(defn find-fields [node-list]
+  (find-field* is-form-field?))
+
+(defn find-wrapper-elements [node-list]
+  (find-field* is-wrapper-element?))
 
 (defn decorate-matching [form lookup-table]
   (let [field-list (find-fields (:content form))]
