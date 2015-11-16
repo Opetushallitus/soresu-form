@@ -65,10 +65,10 @@
        (filter predicate)))
 
 (defn find-fields [node-list]
-  (find-field* is-form-field?))
+  (find-fields* is-form-field?))
 
 (defn find-wrapper-elements [node-list]
-  (find-field* is-wrapper-element?))
+  (find-fields* is-wrapper-element?))
 
 (defn decorate-matching [form lookup-table]
   (let [field-list (find-fields (:content form))]
