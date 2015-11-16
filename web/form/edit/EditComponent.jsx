@@ -220,7 +220,7 @@ export class LinkEdit extends EditComponent {
   render() {
     const htmlId = this.props.htmlId
     const textEdit = super.renderTranslationTable(htmlId + "-text", "Teksti", x => x.text)
-    const hrefEdit = this.renderTranslationTable(htmlId + "-href", "Osoite", x => x.params.href, "small-textarea", SyntaxValidator.validateUrl)
+    const hrefEdit = this.renderTranslationTable(htmlId + "-href", "Osoite", x => x.params.href, undefined, SyntaxValidator.validateUrl)
     return super.renderEditable(
       <div>
         {textEdit}
