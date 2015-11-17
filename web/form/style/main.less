@@ -451,9 +451,8 @@ button[disabled].soresu-text-button {
   border: 1px solid @light-gray;
 }
 
-a.soresu-tooltip {
+.soresu-tooltip {
   position: relative;
-  display: inline;
   &.soresu-help-icon {
     display: inline-block;
     width: 16px;
@@ -464,7 +463,8 @@ a.soresu-tooltip {
   }
 }
 
-a.soresu-tooltip > span {
+.soresu-tooltip > span {
+  .box-triangle(295px);
   position: absolute;
   width: 600px;
   left: -223px;
@@ -478,28 +478,24 @@ a.soresu-tooltip > span {
   visibility: hidden;
 }
 
-a:hover.soresu-tooltip > span {
+:hover.soresu-tooltip > span {
   visibility: visible;
   opacity: 0.95;
   z-index: 99;
 }
 
-a.soresu-tooltip > span {
-  .box-triangle(295px);
-}
-
-a.soresu-tooltip-up > span {
+.soresu-tooltip-up > span {
   .box-triangle-down(@light-gray, #fff);
 }
 
-a:hover.soresu-tooltip-up > span {
+:hover.soresu-tooltip-up > span {
   bottom: 32px;
 }
 
-a.soresu-tooltip-down > span {
+.soresu-tooltip-down > span {
   .box-triangle-up(@light-gray, #fff);
 }
 
-a:hover.soresu-tooltip-down > span {
+:hover.soresu-tooltip-down > span {
   top: 42px;
 }
