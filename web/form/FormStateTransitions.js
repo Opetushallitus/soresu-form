@@ -219,7 +219,7 @@ export default class FormStateTransitions {
 
   updateOld(state, serverOperation, onSuccessCallback) {
     const formOperations = state.extensionApi.formOperations
-    const url = formOperations.urlCreator.editEntityApiUrl(state)+ (serverOperation === serverOperations.submit ? "/submit" : "")
+    const url = serverOperation === serverOperations.submit ? formOperations.urlCreator.submitEntityApiUrl(state) : formOperations.urlCreator.editEntityApiUrl(state)
     const dispatcher = this.dispatcher
     const events = this.events
     const self = this

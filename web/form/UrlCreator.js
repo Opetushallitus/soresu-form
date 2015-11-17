@@ -9,6 +9,7 @@ export default class UrlCreator {
     this.formApiUrl = props.formApiUrl || defaultImpl
     this.newEntityApiUrl = props.newEntityApiUrl || defaultImpl
     this.editEntityApiUrl = props.editEntityApiUrl || defaultImpl
+    this.submitEntityApiUrl = props.submitEntityApiUrl || defaultImpl
     this.loadEntityApiUrl= props.loadEntityApiUrl || defaultImpl
 
     this.existingSubmissionEditUrl = props.existingSubmissionEditUrl || defaultImpl
