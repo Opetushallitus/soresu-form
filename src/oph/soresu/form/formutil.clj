@@ -43,10 +43,13 @@
   (has-attribute? :fieldClass "infoElement" field))
 
 (defn unwrap-answers [answers]
-  (let [map-fields (filter map? (vals answers))]
-    (if (empty? map-fields)
-      answers
-      (into answers (map unwrap-answers map-fields)))))
+  (let [pair (fn [answer] [(:key answer) (:value answer)])
+        unwrap (fn [accumulator answer]
+                 (if (vector? (:value answer))
+                   (conj accumulator (unwrap-answers (:value answer)))
+                   (conj accumulator (pair answer))))]
+    (->> (reduce unwrap [] answers)
+         (into {}))))
 
 (declare flatten-elements)
 
