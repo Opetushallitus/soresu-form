@@ -7,8 +7,7 @@ import FormPreview from './FormPreview.jsx'
 export default class FormContainer extends React.Component {
   render() {
     const state = this.props.state
-    const configuration = state.configuration
-    const preview = configuration.preview
+    const formContainerClass = this.props.formContainerClass
     const headerElements = _.get(this.props, "headerElements", "")
     const containerId = _.get(this.props, "containerId", "container")
     const formElementProps = {
@@ -16,20 +15,13 @@ export default class FormContainer extends React.Component {
       state: state,
       infoElementValues: this.props.infoElementValues,
     }
+    const formElement = React.createElement(formContainerClass, {...formElementProps})
 
     return (
       <section id={containerId}>
         {headerElements}
-        {this.formElement(preview, formElementProps)}
+        {formElement}
       </section>
     )
-  }
-
-  formElement(preview, formElementProps) {
-    if (preview) {
-      return <FormPreview {...formElementProps} />
-    } else {
-      return <Form {...formElementProps} />
-    }
   }
 }
