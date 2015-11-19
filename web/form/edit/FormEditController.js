@@ -22,6 +22,7 @@ export default class FormEditorController {
     this.formDraftJson = props.formDraftJson
     this.onEditCallback = props.onFormEdited
     this.allowEditing = props.allowEditing
+    this.readOnlyNotificationText = props.readOnlyNotificationText
   }
 
   doEdit(operation) {
