@@ -1,23 +1,15 @@
 import React from 'react'
-import moment from 'moment-timezone'
 
 import ComponentFactory from '../ComponentFactory.js'
 import LocalizedString from './LocalizedString.jsx'
 import Translator from './../Translator.js'
+import DateUtil from '../DateUtil.js'
 import {InfoElementPropertyMapper, AccordionElementPropertyMapper, LinkPropertyMapper} from './PropertyMapper.js'
 
 export class BasicInfoComponent extends React.Component {
-  static asDateString(date) {
-    return moment(date).tz('Europe/Helsinki').format('D.M.YYYY')
-  }
-
-  static asTimeString(date) {
-    return moment(date).tz('Europe/Helsinki').format('H.mm')
-  }
-
   asDateTimeString(date) {
     const timeLimiter = new Translator(this.props.translations["misc"]).translate("time", this.props.lang, "KLO")
-    return BasicInfoComponent.asDateString(date) + " " + timeLimiter + " " + BasicInfoComponent.asTimeString(date)
+    return DateUtil.asDateString(date) + " " + timeLimiter + " " + DateUtil.asTimeString(date)
   }
 
   translatedValue(valueId) {
