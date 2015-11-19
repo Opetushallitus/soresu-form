@@ -21,11 +21,14 @@ export default class FormEditorController {
   constructor(props) {
     this.formDraftJson = props.formDraftJson
     this.onEditCallback = props.onFormEdited
+    this.allowEditing = props.allowEditing
   }
 
   doEdit(operation) {
-    operation()
-    this.onEditCallback(JSON.stringify(this.formDraftJson, null, 2))
+    if (this.allowEditing) {
+      operation()
+      this.onEditCallback(JSON.stringify(this.formDraftJson, null, 2))
+    }
   }
 
   editField(fieldId, valueContainerGetter, valueName, newValue) {
