@@ -28,7 +28,7 @@ export default class FormPreview extends React.Component {
     const translations = state.configuration.translations
     const values = state.saveStatus.values
     const fields = state.form.content
-    var existingInputValue = InputValueStorage.readValue(fields, values, field.id)
+    var existingInputValue = (renderingParameters && renderingParameters.overridingInputValue) ? renderingParameters.overridingInputValue : InputValueStorage.readValue(fields, values, field.id)
     const value = _.isUndefined(existingInputValue) ? "" : existingInputValue
     const customProperties = controller.getCustomComponentProperties(state)
     return <FormPreviewComponent {...fieldProperties}
