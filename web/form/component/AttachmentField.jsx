@@ -33,7 +33,7 @@ export default class AttachmentField extends BasicSizedComponent {
   }
 }
 
-class ExistingAttachmentComponent {
+class ExistingAttachmentComponent extends React.Component {
   render() {
     const attachment = this.props.attachment
     const downloadUrl = this.props.downloadUrl
