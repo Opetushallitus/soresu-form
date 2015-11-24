@@ -25,6 +25,12 @@ export default class FormPreview extends React.Component {
   }
 
   static createFormPreviewComponent(controller, state, field, fieldProperties, renderingParameters) {
+    const attachment = state.saveStatus.attachments[field.id]
+    const attachmentDownloadUrl= controller.createAttachmentDownloadUrl(state, field)
+    return FormPreview._createFormPreviewComponent(controller, state, field, fieldProperties, renderingParameters, attachment, attachmentDownloadUrl)
+  }
+
+  static _createFormPreviewComponent(controller, state, field, fieldProperties, renderingParameters, attachment, attachmentDownloadUrl) {
     const translations = state.configuration.translations
     const values = state.saveStatus.values
     const fields = state.form.content
@@ -37,8 +43,8 @@ export default class FormPreview extends React.Component {
         translations={translations}
         controller={controller}
         customProps={customProperties}
-        attachment={state.saveStatus.attachments[field.id]}
-        attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field) }/>
+        attachment={attachment}
+        attachmentDownloadUrl={attachmentDownloadUrl}/>
   }
 
   static createInfoComponent(state, infoElementValues, field, fieldProperties, hideAccordingToPreviewParam) {
