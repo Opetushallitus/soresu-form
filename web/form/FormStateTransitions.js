@@ -114,6 +114,7 @@ export default class FormStateTransitions {
     const field = FormUtil.findField(state.form, fieldId)
     const fieldUpdate = FieldUpdateHandler.createFieldUpdate(field, newValue)
     FieldUpdateHandler.updateStateFromFieldUpdate(state, fieldUpdate)
+    FormBranchGrower.expandGrowingFieldSetIfNeeded(state, fieldUpdate)
   }
 
   onAttachmentUploadCompleted(state, responseFromServer) {
