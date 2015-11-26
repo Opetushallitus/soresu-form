@@ -95,8 +95,12 @@ export default class FormStateTransitions {
           })
           .catch(function(response) {
             console.log('upload error', response)
-            alert('Virhe tallennuksessa.')
-            //FormStateTransitions.handleServerError(dispatcher, events, response.status, response.statusText, "POST", url, response.data, serverOperation)
+            if(response.status === 400 && response.data && response.data["illegal-content-type"]) {
+              alert('Ei sallittu tiedostomuoto: ' + response.data["illegal-content-type"])
+            } else {
+              alert('Virhe tallennuksessa.')
+
+            }
           })
       }
       catch(error) {
