@@ -12,6 +12,7 @@ import FormBranchGrower from './FormBranchGrower'
 import FormBranchEditableFieldGrower from './FormBranchEditableFieldGrower.js'
 import FieldUpdateHandler from './FieldUpdateHandler.js'
 import JsUtil from './JsUtil.js'
+import Translator from './Translator.js'
 
 const serverOperations = {
   initialSave: 'initialSave',
@@ -82,6 +83,8 @@ export default class FormStateTransitions {
       const url = formOperations.urlCreator.attachmentBaseUrl(state, field)
       const dispatcher = this.dispatcher
       const events = this.events
+      const translations = state.configuration.translations
+      const lang = state.configuration.lang
       try {
         const attachment = files[0]
         if (files.length > 1) {
@@ -93,20 +96,16 @@ export default class FormStateTransitions {
             console.log("Uploaded file to server. Response=", JSON.stringify(response))
             dispatcher.push(events.attachmentUploadCompleted, response)
           })
-          .catch(function(response) {
-            console.log('upload error', response)
-            if(response.status === 400 && response.data && response.data["illegal-content-type"]) {
-              alert('Ei sallittu tiedostomuoto: ' + response.data["illegal-content-type"])
+          .catch(function(error) {
+            if(error.status === 400 && error.data && error.data["illegal-content-type"]) {
+              FormStateTransitions.handleAttachmentSaveError("attachment-has-illegal-content-type-error", error, translations, lang, {"illegal-content-type": error.data["illegal-content-type"]})
             } else {
-              alert('Virhe tallennuksessa.')
-
+              FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
             }
           })
       }
       catch(error) {
-        console.log('unexapected error', error)
-        alert('Virhe tallennuksessa.')
-        //  FormStateTransitions.handleUnexpectedServerError(dispatcher, events, "POST", url, error, serverOperation);
+        FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
       }
       finally {
         return state
@@ -153,6 +152,8 @@ export default class FormStateTransitions {
       const url = formOperations.urlCreator.attachmentDeleteUrl(state, fieldOfFile)
       const dispatcher = this.dispatcher
       const events = this.events
+      const translations = state.configuration.translations
+      const lang = state.configuration.lang
       try {
         state.saveStatus.attachmentUploadsInProgress[fieldOfFile.id] = true
         HttpUtil.delete(url)
@@ -160,16 +161,12 @@ export default class FormStateTransitions {
             console.log("Deleted attachment of field " + fieldOfFile.id + " . Response=", JSON.stringify(response))
             dispatcher.push(events.attachmentRemovalCompleted, fieldOfFile)
           })
-          .catch(function(response) {
-            console.log('upload error', response)
-            alert('Virhe poistossa.')
-            //FormStateTransitions.handleServerError(dispatcher, events, response.status, response.statusText, "POST", url, response.data, serverOperation)
+          .catch(function(error) {
+            FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
           })
       }
       catch(error) {
-        console.log('unexapected error', error)
-        alert('Virhe poistossa.')
-        //  FormStateTransitions.handleUnexpectedServerError(dispatcher, events, "POST", url, error, serverOperation);
+        FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
       }
       finally {
         return state
@@ -197,6 +194,12 @@ export default class FormStateTransitions {
   onChangeLang(state, lang) {
     state.configuration.lang = lang
     return state
+  }
+
+  static handleAttachmentSaveError(msgKey, error, translations, lang, msgKeyValues) {
+    console.error(msgKey, ": " , error)
+    const translator = new Translator(translations.errors)
+    alert(translator.translate(msgKey, lang, undefined, msgKeyValues))
   }
 
   static handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation) {
