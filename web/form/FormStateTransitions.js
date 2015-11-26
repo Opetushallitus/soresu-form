@@ -11,6 +11,7 @@ import FormRules from './FormRules'
 import FormBranchGrower from './FormBranchGrower'
 import FormBranchEditableFieldGrower from './FormBranchEditableFieldGrower.js'
 import FieldUpdateHandler from './FieldUpdateHandler.js'
+import JsUtil from './JsUtil.js'
 
 const serverOperations = {
   initialSave: 'initialSave',
@@ -112,6 +113,11 @@ export default class FormStateTransitions {
 
   static updateFieldValueInState(fieldId, newValue, state) {
     const field = FormUtil.findField(state.form, fieldId)
+    if (!field) {
+      console.log('Warning: field "' + fieldId + '" not found in state to update it with new value ', newValue ,
+        ' - was it removed maybe? State is', state)
+      return
+    }
     const fieldUpdate = FieldUpdateHandler.createFieldUpdate(field, newValue)
     FieldUpdateHandler.updateStateFromFieldUpdate(state, fieldUpdate)
     FormBranchGrower.expandGrowingFieldSetIfNeeded(state, fieldUpdate)
@@ -305,8 +311,12 @@ export default class FormStateTransitions {
   }
 
   onRemoveField(state, fieldToRemove) {
+    const deleteAttachmentF = field => this.dispatcher.push(this.events.startAttachmentRemoval, field)
     const growingParent = FormUtil.findGrowingParent(state.form.content, fieldToRemove.id)
     const answersObject = state.saveStatus.values
+    JsUtil.traverseMatching(fieldToRemove, n => { return n.fieldType === "namedAttachment"}, attachmentField => {
+      deleteAttachmentF(attachmentField)
+    })
     InputValueStorage.deleteValue(growingParent, answersObject, fieldToRemove.id)
     FormRules.removeField(state.form, growingParent, fieldToRemove)
     FormBranchEditableFieldGrower.ensureFirstChildIsRequired(state, growingParent)
