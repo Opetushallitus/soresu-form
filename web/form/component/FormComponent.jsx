@@ -14,6 +14,7 @@ import RadioButton from './RadioButton.jsx'
 import CheckboxButton from './CheckboxButton.jsx'
 import AttachmentField from './AttachmentField.jsx'
 import { TextFieldPropertyMapper,
+         UpperCaseTextFieldPropertyMapper,
          OptionFieldPropertyMapper,
          MultipleOptionFieldOnChangePropertyMapper,
          ButtonPropertyMapper,
@@ -41,8 +42,8 @@ export default class FormComponent extends React.Component {
       "emailField": TextFieldPropertyMapper,
       "moneyField": TextFieldPropertyMapper,
       "finnishBusinessIdField": TextFieldPropertyMapper,
-      "iban": TextFieldPropertyMapper,
-      "bic": TextFieldPropertyMapper,
+      "iban": UpperCaseTextFieldPropertyMapper,
+      "bic": UpperCaseTextFieldPropertyMapper,
       "dropdown": OptionFieldPropertyMapper,
       "radioButton": OptionFieldPropertyMapper,
       "checkboxButton": MultipleOptionFieldOnChangePropertyMapper,

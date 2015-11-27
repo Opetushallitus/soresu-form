@@ -67,6 +67,17 @@ export class TextFieldPropertyMapper extends CommonPropertyMapper {
   }
 }
 
+export class UpperCaseTextFieldPropertyMapper extends CommonPropertyMapper {
+  static map(props) {
+    const field = props.field
+    const commonProps = TextFieldPropertyMapper.map(props)
+    const onChange = e => { props.onChange(field, e.target.value.toUpperCase()) }
+    return _.extend(commonProps, {
+      onChange: onChange
+    })
+  }
+}
+
 export class OptionFieldPropertyMapper extends DefaultPropertyMapper {
   static map(props) {
     const commonProps = FieldOnChangePropertyMapper.map(props)
