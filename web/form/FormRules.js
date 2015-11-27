@@ -54,7 +54,7 @@ export default class FormRules {
     const newFieldPrototype = FormUtil.findField(fieldParentFromSpecification.children, fieldId)
     const newFieldIndex = FormUtil.findChildIndexAccordingToFieldSpecification(fieldParentFromSpecification.children, parentField.children, fieldId)
     parentField.children.splice(newFieldIndex, 0, newFieldPrototype.asMutable({deep: true}))
-    FormBranchGrower.addFormFieldsForGrowingFieldsInInitialRender(fieldParentFromSpecification, parentField, values)
+    FormBranchGrower.addFormFieldsForGrowingFieldsInInitialRender(fieldParentFromSpecification, parentField, values, true)
     return parentField
   }
 

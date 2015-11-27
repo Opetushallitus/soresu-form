@@ -5,7 +5,7 @@ import JsUtil from './JsUtil.js'
 import FormUtil from './FormUtil.js'
 
 export default class FormBranchGrower {
-  static addFormFieldsForGrowingFieldsInInitialRender(formSpecificationContent, formContent, answers) {
+  static addFormFieldsForGrowingFieldsInInitialRender(formSpecificationContent, formContent, answers, addPlaceHolders) {
     function populateRepeatingItem(baseObject, key, valueOfElement) {
       _.assign(baseObject, { "id": key })
       baseObject.children = baseObject.children.map(c => {
@@ -39,13 +39,15 @@ export default class FormBranchGrower {
       if (!_.isUndefined(growingSetValue) && !_.isEmpty(growingSetValue)) {
         populateGrowingSet(g, childPrototype, growingSetValue)
       }
-      const firstChildValue = g.children.length > 0 ? InputValueStorage.readValue(formContent, answers, g.children[0].id) : undefined
-      if (g.children.length > 1 || (!_.isUndefined(growingSetValue) && !_.isEmpty(firstChildValue))) {
-        const enabledPlaceHolderChild = FormBranchGrower.createNewChild(g, childPrototype, true)
-        g.children.push(enabledPlaceHolderChild)
+      if(addPlaceHolders) {
+        const firstChildValue = g.children.length > 0 ? InputValueStorage.readValue(formContent, answers, g.children[0].id) : undefined
+        if (g.children.length > 1 || (!_.isUndefined(growingSetValue) && !_.isEmpty(firstChildValue))) {
+          const enabledPlaceHolderChild = FormBranchGrower.createNewChild(g, childPrototype, true)
+          g.children.push(enabledPlaceHolderChild)
+        }
+        const disabledPlaceHolderChild = FormBranchGrower.createNewChild(g, childPrototype, false)
+        g.children.push(disabledPlaceHolderChild)
       }
-      const disabledPlaceHolderChild = FormBranchGrower.createNewChild(g, childPrototype, false)
-      g.children.push(disabledPlaceHolderChild)
     })
   }
 
