@@ -47,7 +47,7 @@ export default class FormStateTransitions {
 
   onInitialState(state, realInitialState) {
     const onInitialStateLoaded = realInitialState.extensionApi.onInitialStateLoaded
-    FormBranchGrower.addFormFieldsForGrowingFieldsInInitialRender(realInitialState.configuration.form.content, realInitialState.form.content, realInitialState.saveStatus.values, true)
+    FormBranchGrower.addFormFieldsForGrowingFieldsInInitialRender(realInitialState.configuration.form.content, realInitialState.form.content, realInitialState.saveStatus.values, !realInitialState.configuration.preview)
     if (_.isFunction(onInitialStateLoaded)) {
       onInitialStateLoaded(realInitialState)
     }
