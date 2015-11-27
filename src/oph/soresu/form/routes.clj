@@ -10,6 +10,9 @@
             [oph.soresu.form.schema :refer :all]
             [oph.soresu.form.validation :as validation]))
 
+(defn without-id [x]
+  (dissoc x :id))
+
 (defn create-form-submission [form-id answers]
   (let [submission (form-db/create-submission! form-id answers)]
     (if submission
@@ -44,7 +47,7 @@
         :return Form
         (let [form (form-db/get-form id)]
           (if form
-            (ok form)
+            (ok (without-id form))
             (not-found)))))
 
 (defroutes* form-routes
@@ -59,7 +62,7 @@
         :return Form
         (let [form (form-db/get-form id)]
           (if form
-            (ok form)
+            (ok (without-id form))
             (not-found))))
 
   (GET* "/:form-id/values/:values-id" [form-id values-id]
