@@ -53,8 +53,8 @@ export default class FormStateLoop {
       },
       configuration: {
         form: formP,
-        preview: queryParams.preview,
-        develMode: queryParams.devel,
+        preview: queryParams.preview === 'true',
+        develMode: queryParams.devel === 'true',
         lang: lang,
         translations: translationsP
       },
