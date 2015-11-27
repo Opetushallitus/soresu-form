@@ -50,5 +50,6 @@ describe('Bank account validator', function() {
     expect(BankAccountValidator.isValidBic("12345678")).to.equal(false)
     expect(BankAccountValidator.isValidBic("12345678910")).to.equal(false)
     expect(BankAccountValidator.isValidBic("IAMNOTABICNUMBER")).to.equal(false)
+    expect(BankAccountValidator.isValidBic("Fi2112345600000785")).to.equal(false)
   })
 })
