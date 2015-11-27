@@ -52,6 +52,10 @@ export default class FormUtil {
     return _.first(foundArray)
   }
 
+  static findFieldsByFieldType(formContent, fieldType) {
+    return JsUtil.flatFilter(formContent, n => { return n.fieldType === fieldType })
+  }
+
   static findFirstFieldIgnoringIndex(formContent, fieldId) {
     const foundArray = JsUtil.flatFilter(formContent, FormUtil.idIsSameOrSameIfIndexIgnoredPredicate(fieldId))
     return _.first(foundArray)
