@@ -28,7 +28,7 @@ export default class BankAccountValidator {
   static isValidBic(bic) {
     // match and capture (1) institution code, (2) ISO 3166-1 alpha-2 country code,
     // (3) location code, and (4) optional branch code
-    const bicGroups = bic.match(/^([a-zA-Z]{4})([a-zA-Z]{2})([0-9a-zA-Z]{2})([0-9a-zA-Z]{3})?$/)
+    const bicGroups = bic.match(/^([A-Z]{4})([A-Z]{2})([0-9A-Z]{2})([0-9A-Z]{3})?$/)
 
     if (!bicGroups) {
       return false

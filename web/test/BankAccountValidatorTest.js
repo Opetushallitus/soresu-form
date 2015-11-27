@@ -19,8 +19,16 @@ describe('Bank account validator', function() {
     expect(BankAccountValidator.isValidBic("NDEAFIHHXXX")).to.equal(true)
   })
 
+  it('can recognize a invalid BIC of 11 characters with some lowercase', function() {
+    expect(BankAccountValidator.isValidBic("NDEAFIHHxxx")).to.equal(false)
+  })
+
   it('can recognize a valid BIC of 8 characters', function() {
     expect(BankAccountValidator.isValidBic("NDEAFIHH")).to.equal(true)
+  })
+
+  it('can recognize an invalid BIC in of 8 lowercase characters', function() {
+    expect(BankAccountValidator.isValidBic("ndeafihh")).to.equal(false)
   })
 
   it('can recognize an invalid test BIC of 8 or 11 characters', function() {
