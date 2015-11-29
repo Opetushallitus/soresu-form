@@ -39,10 +39,6 @@ export default class FormBranchEditableFieldGrower {
       InputValueStorage.writeValue(state.configuration.form, state.saveStatus.values, fieldUpdate)
     })
 
-    growingParent.children.sort((firstChild, secondChild) => {
-      return JsUtil.naturalCompare(firstChild.id, secondChild.id)
-    })
-
     const fieldsToValidate = JsUtil.flatFilter(_.first(growingParent.children), f => { return !_.isUndefined(f.id) && f.fieldClass === "formField"})
     FieldUpdateHandler.triggerFieldUpdatesForValidation(fieldsToValidate, state)
 
