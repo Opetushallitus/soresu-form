@@ -28,9 +28,6 @@ export default class FormBranchGrower {
         populateRepeatingItem(o, itemValueObject.key, itemValueObject.value)
         return o
       })
-      growingParentElement.children.sort((firstChild, secondChild) => {
-        return JsUtil.naturalCompare(firstChild.id, secondChild.id)
-      })
     }
 
     _.forEach(JsUtil.flatFilter(formContent, n => { return n.fieldType === "growingFieldset"}), g => {
