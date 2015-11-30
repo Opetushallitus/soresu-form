@@ -45,6 +45,18 @@ export default class InputValueStorage {
 
   static readValue(formSpecificationContent, answersObject, fieldId) {
     const existingValueObject = JsUtil.flatFilter(answersObject, n => { return !_.isUndefined(n) && !_.isNull(n) && n.key === fieldId })
+    if (existingValueObject && existingValueObject[0] && _.isArray(existingValueObject[0].value)) {
+      existingValueObject[0].value.sort((first, second) => {
+        return JsUtil.naturalCompare(valueForComparison(first), valueForComparison(second))
+
+        function valueForComparison(valueArrayItem) {
+          if (_.isUndefined(valueArrayItem.key)) {
+            return valueArrayItem
+          }
+          return valueArrayItem.key
+        }
+      })
+    }
     return !_.isEmpty(existingValueObject) ? existingValueObject[0].value : ""
   }
 
