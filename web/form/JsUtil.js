@@ -71,6 +71,10 @@ export default class JsUtil {
   }
 
   static naturalCompare(a, b) {
+    if (!_.isString(a) || !_.isString(b)) {
+      console.log('Warning: do not know how to do natural comparison of "' + a + '" and "' + b + '", returning 0')
+      return 0
+    }
     const ax = [], bx = []
 
     a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) })
