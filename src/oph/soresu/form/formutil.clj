@@ -42,11 +42,18 @@
 (defn is-info-element? [field]
   (has-attribute? :fieldClass "infoElement" field))
 
-(defn unwrap-answers [answers]
+(defn in? [seq element] (some #(= element %) seq))
+
+(defn unwrap-answers
+  "Unwraps answers to normal map structure. Parameter list-valued-types contains names of
+   types that are expected to contain vector-typed values. This prevents recursion from
+   descending to such values and instead returns the value as list"
+  [answers list-valued-types]
   (let [pair (fn [answer] [(:key answer) (:value answer)])
         unwrap (fn [accumulator answer]
-                 (if (vector? (:value answer))
-                   (conj accumulator (unwrap-answers (:value answer)))
+                 (if (and (vector? (:value answer))
+                          (not (in? list-valued-types (:fieldType answer))))
+                   (conj accumulator (unwrap-answers (:value answer) list-valued-types))
                    (conj accumulator (pair answer))))]
     (->> (reduce unwrap [] answers)
          (into {}))))
