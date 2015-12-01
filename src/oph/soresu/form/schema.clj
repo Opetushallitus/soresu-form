@@ -47,35 +47,32 @@
                             :required s/Bool
                             (s/optional-key :label) LocalizedString
                             :helpText LocalizedString
-                            (s/optional-key :initialValue) (s/either LocalizedString
+                            (s/optional-key :initialValue) (s/cond-pre LocalizedString
                                                                      s/Int)
                             (s/optional-key :params) s/Any
                             (s/optional-key :options) [Option]
                             :fieldType (apply s/enum form-element-types)})
 
-    (s/defschema BasicElement (s/either FormField
-                                        Button
-                                        InfoElement))
+    (s/defschema BasicElement (s/conditional (fn [f] (= "formField" :fieldClass f)) FormField :else (s/conditional #(= "infoElement" :fieldClass %) InfoElement :else Button)))
 
     (s/defschema WrapperElement {:fieldClass              (s/eq "wrapperElement")
                                  :id                      s/Str
                                  :fieldType               (apply s/enum wrapper-element-types )
-                                 :children                [(s/either BasicElement
+                                 :children                [(s/cond-pre BasicElement
                                                            (s/recursive #'WrapperElement))]
                                  (s/optional-key :params) s/Any
                                  (s/optional-key :label)  LocalizedString
                                  (s/optional-key :helpText) LocalizedString})
 
     (s/defschema Answer {:key s/Str,
-                           :value (s/either s/Str
+                           :value (s/cond-pre s/Str
                                             s/Int
                                             [s/Str]
                                             [(s/recursive #'Answer)])
                            :fieldType (apply s/enum all-element-types)}))
 
 
-  (s/defschema Content [(s/either BasicElement
-                                  WrapperElement)])
+  (s/defschema Content [(s/conditional #(= "wrapperElement" :fieldClass %) WrapperElement :else BasicElement)])
 
   (s/defschema Rule {:type s/Str
                      :triggerId s/Str

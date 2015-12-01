@@ -80,8 +80,8 @@
   (PUT* "/:form-id/values" [form-id :as request]
         :path-params [form-id :- Long]
         :body    [answers (describe Answers "New answers")]
-        :return  (s/either Submission
-                           SubmissionValidationErrors)
+        :return  (s/cond-pre Submission
+                             SubmissionValidationErrors)
         :summary "Create initial form answers"
         (let [validation (validation/validate-form (form-db/get-form form-id) answers {})]
           (if (every? empty? (vals validation))
@@ -91,7 +91,7 @@
   (POST* "/:form-id/values/:values-id" [form-id values-id :as request]
          :path-params [form-id :- Long, values-id :- Long]
          :body    [answers (describe Answers "New answers")]
-         :return  (s/either Submission
+         :return  (s/cond-pre Submission
                             SubmissionValidationErrors)
          :summary "Update form values"
          (let [validation (validation/validate-form (form-db/get-form form-id) answers {})]
