@@ -40,7 +40,7 @@ class EditComponent extends React.Component {
       "vaSummingBudgetElement": "Rahoituslaskelman summarivi",
       "vaBudgetSummaryElement": "Rahoituslaskelman yhteenveto"
     }
-    return translations[fieldType] ? translations[fieldType] : field.fieldType
+    return translations[fieldType] ? translations[fieldType] : fieldType
   }
 
   fieldValueUpdater(valueContainerGetter, valueName, newValue) {
