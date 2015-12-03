@@ -12,6 +12,7 @@ export default class FormEditorController {
       "radioButton": "formField",
       "checkboxButton": "formField",
       "namedAttachment": "formField",
+      "koodistoField": "formField",
       "p": "infoElement",
       "h3": "infoElement",
       "link": "infoElement"
@@ -105,6 +106,7 @@ export default class FormEditorController {
         case "namedAttachment":
           break
         case "textField":
+        case "koodistoField":
           newField.params.maxlength = 100
           newField.params.size = "medium"
           break

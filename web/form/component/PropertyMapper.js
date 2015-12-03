@@ -180,3 +180,9 @@ export class AccordionElementPropertyMapper extends DefaultPropertyMapper {
     })
   }
 }
+
+export class KoodistoFieldPropertyMapper extends TextFieldPropertyMapper {
+  static map(props) {
+    return TextFieldPropertyMapper.map(props)
+  }
+}
