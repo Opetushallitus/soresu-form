@@ -100,12 +100,12 @@ export default class FormStateTransitions {
             if(error.status === 400 && error.data && error.data["illegal-content-type"]) {
               FormStateTransitions.handleAttachmentSaveError("attachment-has-illegal-content-type-error", error, translations, lang, {"illegal-content-type": error.data["illegal-content-type"]})
             } else {
-              FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
+              FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
             }
           })
       }
       catch(error) {
-        FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
+        FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
       }
       finally {
         return state
