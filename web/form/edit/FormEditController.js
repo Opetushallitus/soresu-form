@@ -28,8 +28,8 @@ export default class FormEditorController {
 
   doEdit(operation) {
     if (this.allowEditing) {
-      operation()
-      this.onEditCallback(JSON.stringify(this.formDraftJson, null, 2))
+      const result = operation()
+      this.onEditCallback(JSON.stringify(this.formDraftJson, null, 2), result)
     }
   }
 
@@ -77,6 +77,7 @@ export default class FormEditorController {
       } else {
         parent.children.splice(indexOfNewChild, 0, newChild);
       }
+      return newChild
     })
 
     function createNewField(fieldType, id) {
