@@ -17,6 +17,41 @@ export default class FormStateLoop {
     this.events = events
   }
 
+  static initDefaultValues(values, initialValues, formSpecificationContent, lang) {
+    function determineInitialValue(field) {
+      if (field.id in initialValues) {
+        return initialValues[field.id]
+      } else if (!_.isEmpty(field.options)) {
+        return field.options[0].value
+      } else if (!_.isUndefined(field.initialValue)) {
+        if (_.isObject(field.initialValue)) {
+          const translator = new Translator(field)
+          return translator.translate("initialValue", lang)
+        } else if (FormUtil.isNumeric(field.initialValue)) {
+          return field.initialValue.toString()
+        }
+        return undefined
+      }
+    }
+
+    const fields = JsUtil.flatFilter(formSpecificationContent, n => { return !_.isUndefined(n.id) })
+    _.forEach(fields, f => {
+      const currentValueFromState = InputValueStorage.readValue(formSpecificationContent, values, f.id)
+      if (currentValueFromState === "") {
+        const initialValueForField = determineInitialValue(f, initialValues)
+        if (!_.isUndefined(initialValueForField)) {
+          InputValueStorage.writeValue(formSpecificationContent, values,
+              { id: f.id,
+                field: f,
+                value: initialValueForField,
+                fieldType: f.fieldType,
+                validationErrors: []})
+        }
+      }
+    })
+    return values
+  }
+
   initialize(controller, formOperations, initialValues, urlContent) {
     const query = urlContent.parsedQuery
     const queryParams = {
@@ -131,45 +166,9 @@ export default class FormStateLoop {
         }
       })
       return valuesP.combine(formP, function(values, form) {
-        return initDefaultValues(values, initialValues, form.content, lang)
+        return FormStateLoop.initDefaultValues(values, initialValues, form.content, lang)
       })
-    }
-
-    function initDefaultValues(values, initialValues, formSpecificationContent, lang) {
-      function determineInitialValue(field) {
-        if (field.id in initialValues) {
-          return initialValues[field.id]
-        } else if (!_.isEmpty(field.options)) {
-          return field.options[0].value
-        } else if (!_.isUndefined(field.initialValue)) {
-          if (_.isObject(field.initialValue)) {
-            const translator = new Translator(field)
-            return translator.translate("initialValue", lang)
-          } else if (FormUtil.isNumeric(field.initialValue)) {
-            return field.initialValue.toString()
-          }
-          return undefined
-        }
-      }
-
-      const fields = JsUtil.flatFilter(formSpecificationContent, n => { return !_.isUndefined(n.id) })
-      _.forEach(fields, f => {
-        const currentValueFromState = InputValueStorage.readValue(formSpecificationContent, values, f.id)
-        if (currentValueFromState === "") {
-          const initialValueForField = determineInitialValue(f, initialValues)
-          if (!_.isUndefined(initialValueForField)) {
-            InputValueStorage.writeValue(formSpecificationContent, values,
-              { id: f.id,
-                field: f,
-                value: initialValueForField,
-                fieldType: f.fieldType,
-                validationErrors: []})
-          }
-        }
-      })
-      return values
     }
   }
-
 
 }
