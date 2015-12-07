@@ -36,7 +36,7 @@ export default class KoodistoFieldEdit extends EditComponent {
       return <span>Ei koodistoja.</span>
     }
     const koodistoSelectionOnChange = selectedKoodisto => {
-      this.fieldValueUpdater(valueGetter, "koodisto", selectedKoodisto.uri)()
+      this.fieldValueUpdater(valueGetter, "koodisto", selectedKoodisto)()
     }
     return <KoodistoDropdown id={htmlId} name={name} koodisto={valueGetter(field).koodisto} koodistosList={koodistos.content} onChange={koodistoSelectionOnChange} />
   }
