@@ -22,7 +22,9 @@ export default class FormEdit extends React.Component {
         formEditorController={formEditorController}
         customProps={customProperties}
         attachment={state.saveStatus.attachments[field.id]}
-        attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field) }/>
+        attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field) }
+        koodistos={state.koodistos}
+        koodistosLoader={state.koodistosLoader}/>
   }
 
   static renderField(controller, formEditorController, state, infoElementValues, field, renderingParameters) {

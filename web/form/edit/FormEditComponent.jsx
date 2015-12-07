@@ -1,7 +1,8 @@
 import React from 'react'
 import ComponentFactory from '../ComponentFactory.js'
 import {TextFieldEdit,TextAreaEdit,MultipleChoiceEdit,LinkEdit} from './EditComponent.jsx'
-import {TextFieldPropertyMapper, LinkPropertyMapper} from '../component/PropertyMapper.js'
+import KoodistoFieldEdit from './KoodistoFieldEdit.jsx'
+import {TextFieldPropertyMapper, LinkPropertyMapper, KoodistoFieldPropertyMapper} from '../component/PropertyMapper.js'
 
 export default class FormEditComponent extends React.Component {
 
@@ -12,7 +13,8 @@ export default class FormEditComponent extends React.Component {
       "link": LinkEdit,
       "radioButton": MultipleChoiceEdit,
       "checkboxButton": MultipleChoiceEdit,
-      "dropdown": MultipleChoiceEdit
+      "dropdown": MultipleChoiceEdit,
+      "koodistoField": KoodistoFieldEdit
     }
   }
 
@@ -21,7 +23,8 @@ export default class FormEditComponent extends React.Component {
     const fieldPropertyMapping = {
       "textField": TextFieldEditPropertyMapper,
       "textArea": TextFieldEditPropertyMapper,
-      "link": LinkEditPropertyMapper
+      "link": LinkEditPropertyMapper,
+      "koodistoField": KoodistoFieldEditPropertyMapper
     }
 
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: FormEditComponent.fieldTypeMapping(), fieldPropertyMapperMapping: fieldPropertyMapping})
@@ -59,6 +62,16 @@ class LinkEditPropertyMapper extends LinkPropertyMapper {
     const baseProps = EditPropertyMapperExtender.extendedMap(LinkPropertyMapper, props)
     return _.extend(baseProps, {
       field: props.field
+    })
+  }
+}
+
+class KoodistoFieldEditPropertyMapper extends KoodistoFieldPropertyMapper {
+  static map(props) {
+    const baseProps = EditPropertyMapperExtender.extendedMap(KoodistoFieldPropertyMapper, props)
+    return _.extend(baseProps, {
+      koodistos: props.koodistos,
+      koodistosLoader: props.koodistosLoader
     })
   }
 }

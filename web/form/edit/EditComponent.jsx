@@ -7,7 +7,7 @@ import FormEditorController from './FormEditController.js'
 import FormUtil from '../FormUtil.js'
 import SyntaxValidator from '../SyntaxValidator.js'
 
-class EditComponent extends React.Component {
+export class EditComponent extends React.Component {
 
   static fieldTypeInFI(fieldType){
     const translations = {
