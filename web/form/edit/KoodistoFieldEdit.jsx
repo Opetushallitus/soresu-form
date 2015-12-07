@@ -13,12 +13,14 @@ export default class KoodistoFieldEdit extends EditComponent {
     const koodistos = this.props.koodistos
     const textEdit = super.renderTranslationTable(htmlId + "-text", "Teksti", x => x.text)
     const koodistoChoice = this.renderKoodistoChoice(htmlId + "-koodisto", "Koodisto", x => x.params, koodistos)
+    const inputTypeChoice = this.renderInputElementType(htmlId)
     return super.renderEditable(
       <div>
         {textEdit}
         <div>
           <div>Valitse koodisto</div>
           {koodistoChoice}
+          {inputTypeChoice}
         </div>
       </div>
     )
@@ -39,6 +41,35 @@ export default class KoodistoFieldEdit extends EditComponent {
       this.fieldValueUpdater(valueGetter, "koodisto", selectedKoodisto)()
     }
     return <KoodistoDropdown id={htmlId} name={name} koodisto={valueGetter(field).koodisto} koodistosList={koodistos.content} onChange={koodistoSelectionOnChange} />
+  }
+
+  renderInputElementType(htmlId) {
+    const field = this.props.field
+    const inputTypeAlternatives = ["radioButton", "checkboxButton"]
+    const inputTypeTexts = {
+      "radioButton": EditComponent.fieldTypeInFI("radioButton"),
+      "checkboxButton": EditComponent.fieldTypeInFI("checkboxButton")
+    }
+    const inputTypeAlternativeButtons = []
+    for (var i = 0; i < inputTypeAlternatives.length; i++) {
+      inputTypeAlternativeButtons.push(
+        <input type="radio" id={htmlId + ".inputType." + i}
+               key={"input-type-input-" + i}
+               name={htmlId + "-input-type"}
+               value={inputTypeAlternatives[i]}
+               onChange={this.fieldValueUpdater(x => x.params, "inputType")}
+               checked={inputTypeAlternatives[i] === field.params.inputType ? true: null} />
+      )
+      inputTypeAlternativeButtons.push(
+        <label className="soresu-input-type-selection" key={"input-type-label-" + i} htmlFor={htmlId + ".inputType." + i}>
+          {inputTypeTexts[inputTypeAlternatives[i]]}
+        </label>
+      )
+    }
+    return <span className="soresu-edit-property shift-left" key={htmlId+"input-type-edit-property"}>
+             <label>Syöttökentän tyyppi</label>
+             {inputTypeAlternativeButtons}
+           </span>
   }
 }
 
