@@ -32,13 +32,17 @@
        (:koodistos)
        (mapv #(select-keys % [:koodistoUri :latestKoodistoVersio]))))
 
+(defn- nil-to-empty-string [x]
+  (or x ""))
+
 (defn- extract-name-with-language [language metadata]
   (->> metadata
        (filter #(= language (:kieli %)))
        (filter :nimi)
        (set)
        (mapv :nimi)
-       (first)))
+       (first)
+       nil-to-empty-string))
 
 (defn- extract-name [koodisto-version]
   (->> koodisto-version
