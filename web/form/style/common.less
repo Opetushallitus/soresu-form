@@ -97,3 +97,53 @@
     outline: 1px solid @bright-red;
   }
 }
+
+@soresu-chevron-offset: 10px;
+.soresu-chevron-up(@size, @thickness, @color) {
+  position: relative;
+  display: block;
+  height: @size;
+
+  &:before, &:after {
+    right: 0;
+    position: absolute;
+    display: block;
+    content: "";
+    border: (@size / 2) solid transparent;
+  }
+
+  &:before {
+    top: auto;
+    bottom: 0;
+    border-bottom-color: @color;
+  }
+
+  &:after {
+    bottom: (-1 * @thickness);
+    border-bottom-color: #fff; /* Match background colour */
+  }
+}
+
+.soresu-chevron-down(@size, @thickness, @color) {
+  position: relative;
+  display: block;
+  height: @size;
+
+  &:before, &:after {
+    right: 0;
+    position: absolute;
+    display: block;
+    content: "";
+    border: (@size / 2) solid transparent;
+  }
+
+  &:before {
+    top: 10px;
+    border-top-color: @color;
+  }
+
+  &:after {
+    top: 10px + (-1 * @thickness);
+    border-top-color: #fff; /* Match background colour */
+  }
+}

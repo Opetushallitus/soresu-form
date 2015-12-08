@@ -495,9 +495,7 @@ button[disabled].soresu-text-button {
         border: solid 4px @light-green;
         padding: 10px;
         span {
-          &:after {
-            content: " \02C4";
-          }
+          .soresu-chevron-up(14px, 1px, @mid-gray);
         }
       }
       input.rw-input {
@@ -519,16 +517,8 @@ button[disabled].soresu-text-button {
     background-color: #fff;
     border: solid 4px @light-green;
     span {
-      &:after {
-        vertical-align: bottom;
-        content: " \2C5";
-        font-family: Arial, sans-serif;
-        color: @light-gray;
-        text-align: right;
-        position: absolute;
-        right: 37px;
-        font-weight: 100;
-      }
+      padding-bottom: 8px;
+      .soresu-chevron-down(14px, 1px, @mid-gray);
     }
   }
 
