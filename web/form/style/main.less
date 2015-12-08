@@ -465,17 +465,19 @@ button[disabled].soresu-text-button {
     min-width: @soresu-dropdown-width;
     background: none;
     border: none;
+    padding: 0 0 4px 0;
     input {
       width: @soresu-dropdown-width - 20px;
     }
 
     .rw-popup-container {
       z-index: 20000;
-      width: @soresu-dropdown-width + 32px;
+      width: @soresu-dropdown-width + 26px;
       max-height: 1000px;
-      left: -2px;
-      border-left: 1px solid @light-gray;
-      border-right: 1px solid @light-gray;
+      padding-top: 16px;
+      top: 50px;
+      border: 1px solid @light-gray;
+      border-top: none;
 
       ul {
         height: auto;
@@ -488,6 +490,7 @@ button[disabled].soresu-text-button {
 
     &.rw-open {
       height: auto;
+      box-shadow: none;
       div.rw-input {
         border: solid 4px @light-green;
         padding: 10px;
@@ -498,7 +501,9 @@ button[disabled].soresu-text-button {
         }
       }
       input.rw-input {
+        height: 26px;
         margin-left: 12px;
+        margin-bottom: 2px;
       }
       .rw-popup-container {
         height: auto !important;
@@ -507,6 +512,7 @@ button[disabled].soresu-text-button {
   }
 
   div.rw-input {
+    min-width: @soresu-dropdown-width;
     margin: 0;
     padding: 10px;
     color: #000;
