@@ -106,6 +106,7 @@
 
   &:before, &:after {
     right: 0;
+    top: -10px;
     position: absolute;
     display: block;
     content: "";
@@ -113,13 +114,12 @@
   }
 
   &:before {
-    top: auto;
-    bottom: 0;
+    bottom: 10px;
     border-bottom-color: @color;
   }
 
   &:after {
-    bottom: (-1 * @thickness);
+    bottom: 10px + (-1 * @thickness);
     border-bottom-color: #fff; /* Match background colour */
   }
 }
