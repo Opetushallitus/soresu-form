@@ -456,7 +456,9 @@ button[disabled].soresu-text-button {
 @soresu-dropdown-width: 350px;
 .soresu-dropdown {
   position: relative;
-  min-height: 60px;
+  min-height: 70px;
+  margin-top: 0;
+  padding-left: 0;
   min-width: @soresu-dropdown-width;
 
   .rw-dropdownlist {
@@ -468,6 +470,7 @@ button[disabled].soresu-text-button {
     }
 
     .rw-popup-container {
+      z-index: 20000;
       width: @soresu-dropdown-width + 32px;
       max-height: 1000px;
       left: -2px;
@@ -487,6 +490,7 @@ button[disabled].soresu-text-button {
       height: auto;
       div.rw-input {
         border: solid 4px @light-green;
+        padding: 10px;
         span {
           &:after {
             content: " \02C4";
