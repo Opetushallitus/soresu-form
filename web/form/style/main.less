@@ -453,22 +453,51 @@ button[disabled].soresu-text-button {
   border: 1px solid @light-gray;
 }
 
+@soresu-dropdown-width: 350px;
 .soresu-dropdown {
   position: relative;
   min-height: 60px;
-  min-width: 200px;
+  min-width: @soresu-dropdown-width;
 
   .rw-dropdownlist {
-    min-width: 0;
+    min-width: @soresu-dropdown-width;
+    background: none;
+    border: none;
     input {
-      width: auto;
+      width: @soresu-dropdown-width - 20px;
     }
 
     .rw-popup-container {
-      width: auto;
+      width: @soresu-dropdown-width + 32px;
+      max-height: 1000px;
+      left: -2px;
+      border-left: 1px solid @light-gray;
+      border-right: 1px solid @light-gray;
 
+      ul {
+        height: auto;
+      }
       li {
+        margin: 0 12px 0 12px;
         width: auto;
+      }
+    }
+
+    &.rw-open {
+      height: auto;
+      div.rw-input {
+        border: solid 4px @light-green;
+        span {
+          &:after {
+            content: " \02C4";
+          }
+        }
+      }
+      input.rw-input {
+        margin-left: 12px;
+      }
+      .rw-popup-container {
+        height: auto !important;
       }
     }
   }
@@ -484,6 +513,11 @@ button[disabled].soresu-text-button {
         vertical-align: bottom;
         content: " \2C5";
         font-family: Arial, sans-serif;
+        color: @light-gray;
+        text-align: right;
+        position: absolute;
+        right: 37px;
+        font-weight: 100;
       }
     }
   }
