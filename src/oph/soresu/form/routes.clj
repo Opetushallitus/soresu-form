@@ -8,7 +8,8 @@
             [schema.core :as s]
             [oph.soresu.form.db :as form-db]
             [oph.soresu.form.schema :refer :all]
-            [oph.soresu.form.validation :as validation]))
+            [oph.soresu.form.validation :as validation]
+            [oph.soresu.form.formhandler :as formhandler]))
 
 (defn without-id [x]
   (dissoc x :id))
@@ -39,6 +40,11 @@
         (ok submission)
         (internal-server-error!)))))
 
+(defn- form-to-return [form]
+  (->> form
+       (without-id)
+       (formhandler/add-koodisto-values)))
+
 (defroutes* form-restricted-routes
   "Restricted form routes"
 
@@ -47,7 +53,7 @@
         :return Form
         (let [form (form-db/get-form id)]
           (if form
-            (ok (without-id form))
+            (ok (form-to-return form))
             (not-found)))))
 
 (defroutes* form-routes
@@ -62,7 +68,7 @@
         :return Form
         (let [form (form-db/get-form id)]
           (if form
-            (ok (without-id form))
+            (ok (form-to-return form))
             (not-found))))
 
   (GET* "/:form-id/values/:values-id" [form-id values-id]
