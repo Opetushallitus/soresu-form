@@ -16,16 +16,10 @@
 (defn- set-field-type-from-params [koodisto-field-node]
   (assoc koodisto-field-node :fieldType (-> koodisto-field-node :params :inputType)))
 
-(defn- add-options-to-koodisto-fields [node]
-  (process-koodisto-field node add-koodisto-options))
-
-(defn- set-koodisto-field-fieldtypes [node]
-  (process-koodisto-field node set-field-type-from-params))
-
-(defn- transform [node-operation form]
-  (formutil/transform-form-content form node-operation))
+(defn- transform-koodisto-fields [node-operation form]
+  (formutil/transform-form-content form #(process-koodisto-field % node-operation)))
 
 (defn add-koodisto-values [form]
   (->> form
-       (transform add-options-to-koodisto-fields)
-       (transform set-koodisto-field-fieldtypes)))
+       (transform-koodisto-fields add-koodisto-options)
+       (transform-koodisto-fields set-field-type-from-params)))
