@@ -230,6 +230,28 @@ div.soresu-radio-option-edit {
   }
 }
 
+@koodisto-dropdown-width: 450px;
+.koodisto-dropdown-container {
+  position: relative;
+  left: -170px;
+
+  .rw-dropdownlist {
+    min-width: @koodisto-dropdown-width;
+    input {
+      width: @koodisto-dropdown-width;
+    }
+
+    .rw-popup-container {
+      width: @koodisto-dropdown-width + 20px;
+
+      li {
+        width: auto;
+        display: block;
+      }
+    }
+  }
+}
+
 .koodisto-dropdown {
   position: relative;
   right: 11px;

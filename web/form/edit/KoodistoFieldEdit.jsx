@@ -13,15 +13,11 @@ export default class KoodistoFieldEdit extends FieldEditComponent {
     const koodistos = this.props.koodistos
     const koodistoChoice = this.renderKoodistoChoice(htmlId + "-koodisto", "Koodisto", x => x.params, koodistos)
     const inputTypeChoice = this.renderInputElementType(htmlId)
-    return super.renderEditable(
-      <div>
-        <div>
-          <div>Valitse koodisto</div>
-          {koodistoChoice}
-          {inputTypeChoice}
-        </div>
-      </div>
-    )
+    const propertyEditors = [
+      <div className="koodisto-dropdown-container">Valitse koodisto {koodistoChoice}</div>,
+      inputTypeChoice
+    ]
+    return super.renderEditable(undefined, propertyEditors)
   }
 
   renderKoodistoChoice(htmlId, name, valueGetter, koodistos) {
