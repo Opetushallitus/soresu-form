@@ -11,6 +11,7 @@ export default class FormEditorController {
       "textArea": "formField",
       "radioButton": "formField",
       "checkboxButton": "formField",
+      "dropdown": "formField",
       "namedAttachment": "formField",
       "koodistoField": "formField",
       "p": "infoElement",
