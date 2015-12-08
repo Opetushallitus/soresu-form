@@ -5,18 +5,16 @@ import ReactWidgets from 'react-widgets'
 
 import moment from 'moment-timezone'
 
-import {EditComponent} from './EditComponent.jsx'
+import {EditComponent, FieldEditComponent} from './EditComponent.jsx'
 
-export default class KoodistoFieldEdit extends EditComponent {
+export default class KoodistoFieldEdit extends FieldEditComponent {
   render() {
     const htmlId = this.props.htmlId
     const koodistos = this.props.koodistos
-    const textEdit = super.renderTranslationTable(htmlId + "-text", "Teksti", x => x.text)
     const koodistoChoice = this.renderKoodistoChoice(htmlId + "-koodisto", "Koodisto", x => x.params, koodistos)
     const inputTypeChoice = this.renderInputElementType(htmlId)
     return super.renderEditable(
       <div>
-        {textEdit}
         <div>
           <div>Valitse koodisto</div>
           {koodistoChoice}
