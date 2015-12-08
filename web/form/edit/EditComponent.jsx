@@ -7,7 +7,7 @@ import FormEditorController from './FormEditController.js'
 import FormUtil from '../FormUtil.js'
 import SyntaxValidator from '../SyntaxValidator.js'
 
-class EditComponent extends React.Component {
+export class EditComponent extends React.Component {
 
   static fieldTypeInFI(fieldType){
     const translations = {
@@ -32,6 +32,7 @@ class EditComponent extends React.Component {
       "fieldset": "Kenttärivi",
       "growingFieldset": "Kasvava kenttälista",
       "growingFieldsetChild": "Kasvavan kenttälistan rivi",
+      "koodistoField": "Koodistokenttä",
       "vaFocusAreas": "Painopistealueet",
       "vaEmailNotification": "Sähköposti, johon lähetetään tiedoksi",
       "vaProjectDescription": "Tavoite-Toiminta-Tulos",

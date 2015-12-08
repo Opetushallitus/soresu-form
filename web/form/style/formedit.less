@@ -1,5 +1,6 @@
 @import "variables.less";
 @import "common";
+@import "soresu-react-widget-dropdown.less";
 
 .soresu-read-only-notification {
   display: inline-block;
@@ -227,4 +228,33 @@ div.soresu-radio-option-edit {
     height: 100%;
     right: auto;
   }
+}
+
+@koodisto-dropdown-width: 450px;
+.koodisto-dropdown-container {
+  position: relative;
+  left: -170px;
+
+  .rw-dropdownlist {
+    min-width: @koodisto-dropdown-width;
+    input {
+      width: @koodisto-dropdown-width;
+    }
+
+    .rw-popup-container {
+      width: @koodisto-dropdown-width + 20px;
+
+      li {
+        width: auto;
+        display: block;
+      }
+    }
+  }
+}
+
+.koodisto-dropdown {
+  position: relative;
+  right: 11px;
+  height: 35px;
+  z-index: 20000;
 }

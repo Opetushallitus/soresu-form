@@ -1,5 +1,6 @@
 @import "variables.less";
 @import "common.less";
+@import "soresu-react-widget-dropdown.less";
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -450,6 +451,42 @@ button.soresu-text-button {
 button[disabled].soresu-text-button {
   background-color: @light-gray;
   border: 1px solid @light-gray;
+}
+
+.soresu-dropdown {
+  position: relative;
+  min-height: 60px;
+  min-width: 200px;
+
+  .rw-dropdownlist {
+    min-width: 0;
+    input {
+      width: auto;
+    }
+
+    .rw-popup-container {
+      width: auto;
+
+      li {
+        width: auto;
+      }
+    }
+  }
+
+  div.rw-input {
+    margin: 0;
+    padding: 10px;
+    color: #000;
+    background-color: #fff;
+    border: solid 4px @light-green;
+    span {
+      &:after {
+        vertical-align: bottom;
+        content: " \2C5";
+        font-family: Arial, sans-serif;
+      }
+    }
+  }
 }
 
 .soresu-tooltip {

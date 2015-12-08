@@ -13,12 +13,15 @@ import Dropdown from './Dropdown.jsx'
 import RadioButton from './RadioButton.jsx'
 import CheckboxButton from './CheckboxButton.jsx'
 import AttachmentField from './AttachmentField.jsx'
+import KoodistoField from './KoodistoField.jsx'
 import { TextFieldPropertyMapper,
          UpperCaseTextFieldPropertyMapper,
          OptionFieldPropertyMapper,
+         DropdownFieldPropertyMapper,
          MultipleOptionFieldOnChangePropertyMapper,
          ButtonPropertyMapper,
-         AttachmentFieldPropertyMapper} from './PropertyMapper'
+         AttachmentFieldPropertyMapper,
+         KoodistoFieldPropertyMapper} from './PropertyMapper'
 
 export default class FormComponent extends React.Component {
   constructor(props) {
@@ -34,7 +37,8 @@ export default class FormComponent extends React.Component {
       "dropdown": Dropdown,
       "radioButton": RadioButton,
       "checkboxButton": CheckboxButton,
-      "namedAttachment": AttachmentField
+      "namedAttachment": AttachmentField,
+      "koodistoField": KoodistoField
     }
     const fieldPropertyMapperMapping = {
       "textField": TextFieldPropertyMapper,
@@ -44,10 +48,11 @@ export default class FormComponent extends React.Component {
       "finnishBusinessIdField": TextFieldPropertyMapper,
       "iban": UpperCaseTextFieldPropertyMapper,
       "bic": UpperCaseTextFieldPropertyMapper,
-      "dropdown": OptionFieldPropertyMapper,
+      "dropdown": DropdownFieldPropertyMapper,
       "radioButton": OptionFieldPropertyMapper,
       "checkboxButton": MultipleOptionFieldOnChangePropertyMapper,
-      "namedAttachment": AttachmentFieldPropertyMapper
+      "namedAttachment": AttachmentFieldPropertyMapper,
+      "koodistoField": KoodistoFieldPropertyMapper
     }
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: fieldTypeMapping, fieldPropertyMapperMapping: fieldPropertyMapperMapping })
   }

@@ -87,6 +87,15 @@ export class OptionFieldPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
+export class DropdownFieldPropertyMapper extends OptionFieldPropertyMapper {
+  static map(props) {
+    const commonProps = OptionFieldPropertyMapper.map(props)
+    return _.extend(commonProps, {
+      onChange: selectedOption => { props.onChange(props.field, selectedOption.value) }
+    })
+  }
+}
+
 export class MultipleOptionFieldOnChangePropertyMapper extends FieldPropertyMapper {
   static map(props) {
     const optionProps = OptionFieldPropertyMapper.map(props)
@@ -178,5 +187,11 @@ export class AccordionElementPropertyMapper extends DefaultPropertyMapper {
     return _.extend(commonProps, {
       renderingParameters: { initiallyOpen: initiallyOpen }
     })
+  }
+}
+
+export class KoodistoFieldPropertyMapper extends TextFieldPropertyMapper {
+  static map(props) {
+    return TextFieldPropertyMapper.map(props)
   }
 }
