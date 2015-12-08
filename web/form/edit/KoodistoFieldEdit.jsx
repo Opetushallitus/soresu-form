@@ -46,11 +46,6 @@ export default class KoodistoFieldEdit extends EditComponent {
   renderInputElementType(htmlId) {
     const field = this.props.field
     const inputTypeAlternatives = ["radioButton", "checkboxButton", "dropdown"]
-    const inputTypeTexts = {
-      "radioButton": EditComponent.fieldTypeInFI("radioButton"),
-      "checkboxButton": EditComponent.fieldTypeInFI("checkboxButton"),
-      "dropdown": EditComponent.fieldTypeInFI("dropdown")
-    }
     const inputTypeAlternativeButtons = []
     for (var i = 0; i < inputTypeAlternatives.length; i++) {
       inputTypeAlternativeButtons.push(
@@ -63,7 +58,7 @@ export default class KoodistoFieldEdit extends EditComponent {
       )
       inputTypeAlternativeButtons.push(
         <label className="soresu-input-type-selection" key={"input-type-label-" + i} htmlFor={htmlId + ".inputType." + i}>
-          {inputTypeTexts[inputTypeAlternatives[i]]}
+          {EditComponent.fieldTypeInFI(inputTypeAlternatives[i])}
         </label>
       )
     }
