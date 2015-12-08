@@ -68,4 +68,5 @@
 (defn get-koodi-options [koodisto-uri version]
   (let [koodisto-version-url (str koodisto-base-url koodisto-version-path koodisto-uri "/" version)]
     (->> (do-get koodisto-version-url)
-         (mapv koodi-value->soresu-option))))
+         (mapv koodi-value->soresu-option)
+         (sort-by (fn [x] (-> x :label :fi)) compare-case-insensitively))))
