@@ -2,7 +2,9 @@
   (:use [clojure.tools.trace])
   (:require [org.httpkit.client :as http]
             [cheshire.core :as cheshire]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [pandect.algo.sha256 :refer :all]
+            [oph.soresu.common.db.queris :as queries]))
 
 (def koodisto-base-url "https://virkailija.opintopolku.fi:443/koodisto-service/rest/")
 (def all-koodisto-groups-path "codes")
@@ -74,3 +76,22 @@
     (->> (do-get koodisto-version-url)
          (mapv koodi-value->soresu-option)
          (sort-by (fn [x] (-> x :label :fi)) compare-case-insensitively))))
+
+(defn- get-cached-koodisto [koodisto-uri version checksum]
+  (->> {:koodisto_uri koodisto-uri
+        :version version
+        :checksum checksum}
+       (exec db queries/get-koodisto)
+       first))
+
+(defn get-cached-koodi-options [db koodisto-uri version checksum]
+  (if-let [cached-koodisto (get-cached-koodisto koodisto-uri version checksum)]
+    cached-koodisto
+    (let [koodisto (get-koodi-options koodisto-uri version)
+          checksum (->> (generate-string koodisto)
+                        (sha256))]
+      (exec db queries/create-koodisto {:koodisto_uri koodisto-uri
+                                        :version version
+                                        :checksum checksum
+                                        :content koodisto})
+      (get-cached-koodisto koodisto-uri version checksum))))
