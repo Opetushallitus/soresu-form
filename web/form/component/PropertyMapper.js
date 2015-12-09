@@ -78,6 +78,17 @@ export class UpperCaseTextFieldPropertyMapper extends CommonPropertyMapper {
   }
 }
 
+export class TrimmingTextFieldPropertyMapper extends TextFieldPropertyMapper {
+  static map(props) {
+    const field = props.field
+    const commonProps = TextFieldPropertyMapper.map(props)
+    const onChange = e => { props.onChange(field, _.trim(e.target.value)) }
+    return _.extend(commonProps, {
+      onChange: onChange
+    })
+  }
+}
+
 export class OptionFieldPropertyMapper extends DefaultPropertyMapper {
   static map(props) {
     const commonProps = FieldOnChangePropertyMapper.map(props)

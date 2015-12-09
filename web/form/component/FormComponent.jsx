@@ -15,6 +15,7 @@ import CheckboxButton from './CheckboxButton.jsx'
 import AttachmentField from './AttachmentField.jsx'
 import KoodistoField from './KoodistoField.jsx'
 import { TextFieldPropertyMapper,
+         TrimmingTextFieldPropertyMapper,
          UpperCaseTextFieldPropertyMapper,
          OptionFieldPropertyMapper,
          DropdownFieldPropertyMapper,
@@ -43,7 +44,7 @@ export default class FormComponent extends React.Component {
     const fieldPropertyMapperMapping = {
       "textField": TextFieldPropertyMapper,
       "textArea": TextFieldPropertyMapper,
-      "emailField": TextFieldPropertyMapper,
+      "emailField": TrimmingTextFieldPropertyMapper,
       "moneyField": TextFieldPropertyMapper,
       "finnishBusinessIdField": TextFieldPropertyMapper,
       "iban": UpperCaseTextFieldPropertyMapper,
