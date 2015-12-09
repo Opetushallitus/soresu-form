@@ -43,7 +43,7 @@
 (defn- form-to-return [form]
   (->> form
        (without-id)
-       (formhandler/add-koodisto-values)))
+       (formhandler/add-koodisto-values :db)))
 
 (defroutes* form-restricted-routes
   "Restricted form routes"

@@ -4,7 +4,8 @@
             [cheshire.core :as cheshire]
             [clojure.string :as str]
             [pandect.algo.sha256 :refer :all]
-            [oph.soresu.common.db.queris :as queries]))
+            [oph.soresu.common.db :as db]
+            [oph.soresu.common.db.queries :as queries]))
 
 (def koodisto-base-url "https://virkailija.opintopolku.fi:443/koodisto-service/rest/")
 (def all-koodisto-groups-path "codes")
@@ -77,21 +78,21 @@
          (mapv koodi-value->soresu-option)
          (sort-by (fn [x] (-> x :label :fi)) compare-case-insensitively))))
 
-(defn- get-cached-koodisto [koodisto-uri version checksum]
+(defn- get-cached-koodisto [db-key koodisto-uri version checksum]
   (->> {:koodisto_uri koodisto-uri
         :version version
         :checksum checksum}
-       (exec db queries/get-koodisto)
+       (db/exec db-key queries/get-koodisto)
        first))
 
-(defn get-cached-koodi-options [db koodisto-uri version checksum]
-  (if-let [cached-koodisto (get-cached-koodisto koodisto-uri version checksum)]
+(defn get-cached-koodi-options [db-key koodisto-uri version]
+  (if-let [cached-koodisto (trace "cached koodisto" (get-cached-koodisto db-key koodisto-uri version nil))]
     cached-koodisto
     (let [koodisto (get-koodi-options koodisto-uri version)
-          checksum (->> (generate-string koodisto)
-                        (sha256))]
-      (exec db queries/create-koodisto {:koodisto_uri koodisto-uri
-                                        :version version
-                                        :checksum checksum
-                                        :content koodisto})
+          checksum (trace "checksum" (->> (cheshire/generate-string koodisto)
+                                          (sha256)))]
+      (db/exec db-key queries/create-koodisto {:koodisto_uri koodisto-uri
+                                               :version version
+                                               :checksum checksum
+                                               :content koodisto})
       (get-cached-koodisto koodisto-uri version checksum))))
