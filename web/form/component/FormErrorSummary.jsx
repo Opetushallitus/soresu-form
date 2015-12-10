@@ -110,7 +110,8 @@ export default class FormErrorSummary extends React.Component {
         }
       }
       if(field) {
-        FormUtil.scrollTo(field.previousElementSibling, 700, function () {field.focus()})
+        const scrollToElement = field.previousElementSibling || field
+        FormUtil.scrollTo(scrollToElement, 700, function () {field.focus()})
       }
       else {
         console.error("Can not scroll to field, because not found " + id)
