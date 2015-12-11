@@ -86,11 +86,11 @@
        first))
 
 (defn get-cached-koodi-options [db-key koodisto-uri version]
-  (if-let [cached-koodisto (trace "cached koodisto" (get-cached-koodisto db-key koodisto-uri version nil))]
+  (if-let [cached-koodisto (get-cached-koodisto db-key koodisto-uri version nil)]
     cached-koodisto
     (let [koodisto (get-koodi-options koodisto-uri version)
-          checksum (trace "checksum" (->> (cheshire/generate-string koodisto)
-                                          (sha256)))]
+          checksum (->> (cheshire/generate-string koodisto)
+                        (sha256))]
       (db/exec db-key queries/create-koodisto<! {:koodisto_uri koodisto-uri
                                                  :version version
                                                  :checksum checksum
