@@ -76,19 +76,19 @@ export class KoodistoDropdown extends Component {
       emptyFilter: 'Ei tuloksia'
     }
     return <div className="koodisto-dropdown">
-             <ReactWidgets.DropdownList  defaultOpen={defaultOpen}
-                                         valueField="uri"
-                                         textField={koodistoToText}
-                                         data={koodistosList}
-                                         defaultValue={koodisto}
-                                         valueComponent={KoodistoEntry}
-                                         caseSensitive={false}
-                                         minLength={3}
-                                         filter='contains'
-                                         duration={0}
-                                         onChange={onChange}
-                                         messages={messages}
-                                         placeholder="Valitse koodisto"/>
+             <ReactWidgets.DropdownList defaultOpen={defaultOpen}
+                                        valueField="uri"
+                                        textField={koodistoToText}
+                                        data={koodistosList}
+                                        defaultValue={koodisto}
+                                        valueComponent={KoodistoEntry}
+                                        caseSensitive={false}
+                                        minLength={3}
+                                        filter='contains'
+                                        duration={0}
+                                        onChange={onChange}
+                                        messages={messages}
+                                        placeholder="Valitse koodisto"/>
            </div>
   }
 }
