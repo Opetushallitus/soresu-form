@@ -91,8 +91,8 @@
     (let [koodisto (get-koodi-options koodisto-uri version)
           checksum (trace "checksum" (->> (cheshire/generate-string koodisto)
                                           (sha256)))]
-      (db/exec db-key queries/create-koodisto {:koodisto_uri koodisto-uri
-                                               :version version
-                                               :checksum checksum
-                                               :content koodisto})
-      (get-cached-koodisto koodisto-uri version checksum))))
+      (db/exec db-key queries/create-koodisto<! {:koodisto_uri koodisto-uri
+                                                 :version version
+                                                 :checksum checksum
+                                                 :content [koodisto]})
+      (get-cached-koodisto db-key koodisto-uri version checksum))))
