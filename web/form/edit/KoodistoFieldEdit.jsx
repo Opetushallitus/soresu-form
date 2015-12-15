@@ -34,7 +34,11 @@ export default class KoodistoFieldEdit extends FieldEditComponent {
     const koodistoSelectionOnChange = selectedKoodisto => {
       this.fieldValueUpdater(valueGetter, "koodisto", selectedKoodisto)()
     }
-    return <KoodistoDropdown id={htmlId} name={name} koodisto={valueGetter(field).koodisto} koodistosList={koodistos.content} onChange={koodistoSelectionOnChange} />
+    return <KoodistoDropdown id={htmlId}
+                             name={name}
+                             koodisto={valueGetter(field).koodisto}
+                             koodistosList={koodistos.content}
+                             onChange={koodistoSelectionOnChange} />
   }
 
   renderInputElementType(htmlId) {
