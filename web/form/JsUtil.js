@@ -35,7 +35,7 @@ export default class JsUtil {
     })
     if (allNodesContainingNode.length > 1) {
       throw new Error("Cannot handle case with " + allNodesContainingNode.length +
-        " growing parents yet, expected a single one. fieldId=" + idToFind)
+        " parents (" + JSON.stringify(allNodesContainingNode) + "), expected a single one. fieldId=" + idToFind)
     }
     return _.first(allNodesContainingNode)
   }
