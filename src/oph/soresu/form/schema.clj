@@ -29,6 +29,7 @@
 
   (let [default-form-element-types [:textField
                                     :textArea
+                                    :nameField
                                     :emailField
                                     :moneyField
                                     :finnishBusinessIdField

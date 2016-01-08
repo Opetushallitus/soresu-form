@@ -18,6 +18,7 @@ export default class FormPreviewComponent extends React.Component {
     const fieldTypeMapping = {
       "textField": BasicValue,
       "textArea": TextAreaValue,
+      "nameField": BasicValue,
       "emailField": BasicValue,
       "moneyField": MoneyValue,
       "finnishBusinessIdField": BasicValue,
@@ -32,6 +33,7 @@ export default class FormPreviewComponent extends React.Component {
      const fieldPropertyMapping = {
       "textField": TextFieldPropertyMapper,
       "textArea": TextFieldPropertyMapper,
+      "nameField": TextFieldPropertyMapper,
       "emailField": TextFieldPropertyMapper,
       "moneyField": TextFieldPropertyMapper,
       "finnishBusinessIdField": TextFieldPropertyMapper,
