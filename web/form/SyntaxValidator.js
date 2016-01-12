@@ -4,7 +4,7 @@ import BankAccountValidator from './BankAccountValidator.js'
 import MoneyValidator from './MoneyValidator'
 
 export default class SyntaxValidator {
-  static validateSyntax(field, value) {
+  static validateSyntax(field, value, customFieldSyntaxValidator) {
     var validationErrors = []
     if (field.required && (!value || _.trim(value).length < 1)) {
       validationErrors = [{error: "required"}]
@@ -43,6 +43,13 @@ export default class SyntaxValidator {
           validationErrors.push(bicError)
         }
         break;
+      default:
+        if(customFieldSyntaxValidator) {
+          const customError = customFieldSyntaxValidator.validateSyntax(field, value)
+          if (customError) {
+            validationErrors.push(customError)
+          }
+        }
     }
 
     return validationErrors

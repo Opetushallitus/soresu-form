@@ -121,7 +121,7 @@ export default class FormStateTransitions {
         ' - was it removed maybe? State is', state)
       return
     }
-    const fieldUpdate = FieldUpdateHandler.createFieldUpdate(field, newValue)
+    const fieldUpdate = FieldUpdateHandler.createFieldUpdate(field, newValue, state.extensionApi.customFieldSyntaxValidator)
     FieldUpdateHandler.updateStateFromFieldUpdate(state, fieldUpdate)
     FormBranchGrower.expandGrowingFieldSetIfNeeded(state, fieldUpdate)
   }

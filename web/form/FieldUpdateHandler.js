@@ -6,13 +6,13 @@ import SyntaxValidator from './SyntaxValidator.js'
 import JsUtil from './JsUtil.js'
 
 export default class FieldUpdateHandler {
-  static createFieldUpdate(field, value) {
+  static createFieldUpdate(field, value, customFieldSyntaxValidator) {
     return {id: field.id,
             field: field,
             value: value,
             fieldType: field.fieldType,
             validationErrors:
-            SyntaxValidator.validateSyntax(field, value) };
+            SyntaxValidator.validateSyntax(field, value, customFieldSyntaxValidator) };
   }
 
   static updateStateFromFieldUpdate(state, fieldUpdate) {
@@ -41,7 +41,7 @@ export default class FieldUpdateHandler {
   static triggerFieldUpdatesForValidation(fieldsToValidate, state) {
     _.forEach(fieldsToValidate, fieldToValidate => {
       const value = InputValueStorage.readValue(state.form.content, state.saveStatus.values, fieldToValidate.id)
-      const fieldUpdate = FieldUpdateHandler.createFieldUpdate(fieldToValidate, value)
+      const fieldUpdate = FieldUpdateHandler.createFieldUpdate(fieldToValidate, value, state.extensionApi.customFieldSyntaxValidator)
       FieldUpdateHandler.updateStateFromFieldUpdate(state, fieldUpdate)
     })
   }

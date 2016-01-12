@@ -18,7 +18,7 @@ export default class FormBranchEditableFieldGrower {
       const existingInputValue = InputValueStorage.readValue(state.configuration.form, state.saveStatus.values, n.id)
       const isGrowingFieldSetValue = prototypeNode.fieldType === "growingFieldset" || prototypeNode.fieldType === "growingFieldsetChild"
       if (!isGrowingFieldSetValue) {
-        updatesToWrite.push(FieldUpdateHandler.createFieldUpdate(prototypeNode, existingInputValue))
+        updatesToWrite.push(FieldUpdateHandler.createFieldUpdate(prototypeNode, existingInputValue, state.extensionApi.customFieldSyntaxValidator))
       }
       idsWhoseInputToDelete.push(n.id)
     })

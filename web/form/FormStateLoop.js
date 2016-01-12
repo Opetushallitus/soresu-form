@@ -95,6 +95,7 @@ export default class FormStateLoop {
       },
       extensionApi: {
         formOperations: formOperations,
+        customFieldSyntaxValidator: controller.getCustomFieldSyntaxValidator(),
         onInitialStateLoaded: controller.onInitialStateLoaded
       }
     }

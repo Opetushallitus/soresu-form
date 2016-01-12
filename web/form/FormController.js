@@ -34,7 +34,13 @@ export default class FormController {
     this.formP = props.formP
     this.customComponentFactory = props.customComponentFactory
     this.customPreviewComponentFactory = props.customPreviewComponentFactory
+    this.customFieldSyntaxValidator = props.customFieldSyntaxValidator
     this.stateLoop = new FormStateLoop(dispatcher, events)
+    this._bind('componentOnChangeListener', 'initFieldValidation', 'getCustomFieldSyntaxValidator')
+  }
+
+  _bind(...methods) {
+    methods.forEach((method) => this[method] = this[method].bind(this))
   }
 
   initialize(formOperations, initialValues, urlContent) {
@@ -60,7 +66,7 @@ export default class FormController {
   }
 
   componentOnChangeListener(field, newValue) {
-    dispatcher.push(events.updateField, FieldUpdateHandler.createFieldUpdate(field, newValue))
+    dispatcher.push(events.updateField, FieldUpdateHandler.createFieldUpdate(field, newValue, this.customFieldSyntaxValidator))
   }
 
   createAttachmentDownloadUrl(state, field) {
@@ -81,7 +87,7 @@ export default class FormController {
   }
 
   initFieldValidation(field, value) {
-    dispatcher.push(events.fieldValidation, {id: field.id, validationErrors: SyntaxValidator.validateSyntax(field, value)})
+    dispatcher.push(events.fieldValidation, {id: field.id, validationErrors: SyntaxValidator.validateSyntax(field, value, this.customFieldSyntaxValidator)})
   }
 
   isSaveDraftAllowed(state) {
@@ -95,6 +101,10 @@ export default class FormController {
 
   getCustomComponentTypeMapping() {
     return this.customComponentFactory ? this.customComponentFactory.fieldTypeMapping : {}
+  }
+
+  getCustomFieldSyntaxValidator() {
+    return this.customFieldSyntaxValidator
   }
 
   createCustomComponent(componentProps) {
