@@ -1,25 +1,12 @@
 (ns oph.soresu.form.schema
   (:require [schema.core :as s]))
 
-(defn create-form-schema [custom-wrapper-element-types custom-form-element-types]
+(defn create-form-schema [custom-wrapper-element-types custom-form-element-types custom-info-element-types]
   (s/defschema LocalizedString {:fi s/Str
                                 :sv s/Str})
 
   (s/defschema Option {:value s/Str
                        (s/optional-key :label) LocalizedString})
-
-  (s/defschema InfoElement {:fieldClass (s/eq "infoElement")
-                            :id s/Str
-                            :fieldType (s/enum :h1
-                                               :h3
-                                               :link
-                                               :p
-                                               :bulletList
-                                               :dateRange
-                                               :endOfDateRange)
-                            (s/optional-key :params) s/Any
-                            (s/optional-key :label) LocalizedString
-                            (s/optional-key :text) LocalizedString})
 
   (s/defschema Button {:fieldClass (s/eq "button")
                        :id s/Str
@@ -43,7 +30,15 @@
         form-element-types (into custom-form-element-types default-form-element-types)
         default-wrapper-element-types [:theme :fieldset :growingFieldset :growingFieldsetChild ]
         wrapper-element-types (into custom-wrapper-element-types default-wrapper-element-types)
-        all-element-types (into form-element-types wrapper-element-types)]
+        all-answer-element-types (into form-element-types wrapper-element-types)
+        default-info-element-types [:h1
+                                    :h3
+                                    :link
+                                    :p
+                                    :bulletList
+                                    :dateRange
+                                    :endOfDateRange]
+        info-element-types (into custom-info-element-types default-info-element-types)]
     (s/defschema FormField {:fieldClass (s/eq "formField")
                             :id s/Str
                             :required s/Bool
@@ -54,6 +49,13 @@
                             (s/optional-key :params) s/Any
                             (s/optional-key :options) [Option]
                             :fieldType (apply s/enum form-element-types)})
+
+    (s/defschema InfoElement {:fieldClass (s/eq "infoElement")
+                              :id s/Str
+                              :fieldType (apply s/enum info-element-types)
+                              (s/optional-key :params) s/Any
+                              (s/optional-key :label) LocalizedString
+                              (s/optional-key :text) LocalizedString})
 
     (s/defschema BasicElement (s/either FormField
                                         Button
@@ -73,7 +75,7 @@
                                             s/Int
                                             [s/Str]
                                             [(s/recursive #'Answer)])
-                           :fieldType (apply s/enum all-element-types)}))
+                           :fieldType (apply s/enum all-answer-element-types)}))
 
 
   (s/defschema Content [(s/either BasicElement

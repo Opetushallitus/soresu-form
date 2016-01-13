@@ -152,7 +152,15 @@ export default class InfoElement extends React.Component {
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: fieldTypeMapping, fieldPropertyMapperMapping: fieldPropertyMapping })
   }
 
+
   render() {
-    return this.componentFactory.createComponent(this.props)
+    const controller = this.props.controller
+    const fieldType = this.props.fieldType
+
+    if (fieldType in controller.getCustomComponentTypeMapping()) {
+      return controller.createCustomComponent(this.props)
+    } else {
+      return this.componentFactory.createComponent(this.props)
+    }
   }
 }

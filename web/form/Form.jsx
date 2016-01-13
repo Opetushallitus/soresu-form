@@ -20,6 +20,7 @@ export default class Form extends React.Component {
     const renderField = function (field, renderingParameters) {
       const htmlId = controller.constructHtmlId(fields, field.id)
       const fieldProperties = {
+        controller: controller,
         fieldType: field.fieldType,
         lang: state.configuration.lang,
         key: htmlId,
@@ -34,8 +35,7 @@ export default class Form extends React.Component {
         const formOperations = state.extensionApi.formOperations
         const saved = controller.isSaveDraftAllowed(state)
         const fieldDisabled = !formOperations.isFieldEnabled(saved, field.id) || field.forceDisabled === true
-        const extendedProperties = _.extend(fieldProperties, { controller: controller,
-                                                               disabled: fieldDisabled,
+        const extendedProperties = _.extend(fieldProperties, { disabled: fieldDisabled,
                                                                renderingParameters: renderingParameters,
                                                                allAttachments: state.saveStatus.attachments,
                                                                attachmentUploadsInProgress: state.saveStatus.attachmentUploadsInProgress})
@@ -54,7 +54,8 @@ export default class Form extends React.Component {
 
     function createInfoElement(fieldProperties) {
       return <InfoElement {...fieldProperties}
-                          values={infoElementValues} />
+                          values={infoElementValues}
+                          answersObject={values} />
     }
 
     function createFormComponent(field, extendedProperties) {
