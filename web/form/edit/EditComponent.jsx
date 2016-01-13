@@ -39,7 +39,9 @@ export class EditComponent extends React.Component {
       "vaBudget": "Rahoituslaskelma",
       "vaBudgetItemElement": "Rahoituslaskelman rivi",
       "vaSummingBudgetElement": "Rahoituslaskelman summarivi",
-      "vaBudgetSummaryElement": "Rahoituslaskelman yhteenveto"
+      "vaBudgetSummaryElement": "Rahoituslaskelman yhteenveto",
+      "vaTraineeDayCalculator": "Koulutettavapäivälaskuri",
+      "vaTraineeDayTotalCalculator": "Koulutettavapäivät yhteensä"
     }
     return translations[fieldType] ? translations[fieldType] : fieldType
   }
