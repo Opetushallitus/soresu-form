@@ -43,6 +43,10 @@ export default class InputValueStorage {
     return growingParent
   }
 
+  static readValues(answersObject, fieldType) {
+    return JsUtil.flatFilter(answersObject, n => { return !_.isUndefined(n) && !_.isNull(n) && n.fieldType === fieldType })
+  }
+
   static readValue(formSpecificationContent, answersObject, fieldId) {
     const existingValueObject = JsUtil.flatFilter(answersObject, n => { return !_.isUndefined(n) && !_.isNull(n) && n.key === fieldId })
     if (existingValueObject && existingValueObject[0] && _.isArray(existingValueObject[0].value)) {
