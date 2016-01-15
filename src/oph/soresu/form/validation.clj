@@ -48,12 +48,10 @@
     []))
 
 (defn validate-email-field [field answer]
-  (if (not (and (has-field-type? "emailField" field)
-                (= (:required field))))
+  (if (or (not (has-field-type? "emailField" field))
+          (empty? answer))
     []
-    (if (and (not (nil? answer))
-             (not (string/blank? answer))
-             (re-matches #"\S+@\S+\.\S+" answer)
+    (if (and (re-matches #"\S+@\S+\.\S+" answer)
              (not (re-matches #".*%0[aA].*" answer))
              (<= (count answer) 254)
              (> (-> answer (string/split #"\.") last count) 1))
@@ -61,17 +59,16 @@
         [{:error "email"}])))
 
 (defn validate-finnish-business-id-field [field answer]
-  (if (not (and (has-field-type? "finnishBusinessIdField" field)
-                (:required field)))
+  (if (or (not (has-field-type? "finnishBusinessIdField" field))
+          (empty? answer))
     []
-    (if (and (not (nil? answer))
-             (re-matches #"^[0-9]{7}-[0-9]$" answer))
+    (if (re-matches #"^[0-9]{7}-[0-9]$" answer)
       (let [multipliers [7 9 10 5 8 4 2]
             check-digit (read-string (subs answer 8 9))
             digits (mapv (comp read-string str) (subs answer 0 7))
             sum (apply + (map * multipliers digits))
             remainder (mod sum 11)
-            calculated-check-digit (- 11 remainder)]
+            calculated-check-digit (if (= remainder 0) 0 (- 11 remainder))]
         (if (= check-digit calculated-check-digit)
           []
           [{:error "finnishBusinessId"}]))
