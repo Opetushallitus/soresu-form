@@ -36,6 +36,14 @@
       (let [result (validate-email-field email-field "")]
         (should= [] result)))
 
+  (it "requires email if empty given"
+      (let [result (validate-required email-field "")]
+        (should= [{:error "required"}] result)))
+
+  (it "requires finnish-business-id-field if no given"
+      (let [result (validate-required finnish-business-id-field nil)]
+        (should= [{:error "required"}] result)))
+
   (it "validates valid finnish business id with checskum 0"
       (let [result (validate-finnish-business-id-field finnish-business-id-field "0165761-0")]
         (should= [] result)))
