@@ -91,7 +91,7 @@ export default class SyntaxValidator {
       sum += multipliers[i] * digits[i]
     }
     var modulo = sum % 11
-    var calculatedCheckDigit = 11 - modulo
+    var calculatedCheckDigit = modulo === 0 ? 0 : 11 - modulo
     return calculatedCheckDigit == checkDigit ? undefined : { error: "finnishBusinessId" }
   }
 
