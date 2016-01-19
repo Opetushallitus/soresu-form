@@ -14,7 +14,8 @@ export default class RemoveButton extends React.Component {
       }
     }
     const removeAltText = new Translator(props.translations["misc"]).translate("remove", props.lang, "POISTA")
-    return (<button className="soresu-remove"
+    return (<button type="button"
+                    className="soresu-remove"
                     tabIndex="-1"
                     alt={removeAltText}
                     title={removeAltText}

@@ -302,7 +302,7 @@ export class MultipleChoiceEdit extends FieldEditComponent {
     return super.renderEditable(
       <div className="soresu-radio-button-edit">
         {optionElements}
-        <button className="soresu-edit" onClick={appendOption}>Lisää vastausvaihtoehto {field.options.length + 1}</button>
+        <button type="button" className="soresu-edit" onClick={appendOption}>Lisää vastausvaihtoehto {field.options.length + 1}</button>
       </div>)
 
     function renderOption(option) {
