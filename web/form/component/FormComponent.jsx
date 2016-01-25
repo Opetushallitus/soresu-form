@@ -45,7 +45,7 @@ export default class FormComponent extends React.Component {
     const fieldPropertyMapperMapping = {
       "textField": TextFieldPropertyMapper,
       "textArea": TextFieldPropertyMapper,
-      "nameField": TrimmingTextFieldPropertyMapper,
+      "nameField": TextFieldPropertyMapper,
       "emailField": TrimmingTextFieldPropertyMapper,
       "moneyField": TextFieldPropertyMapper,
       "finnishBusinessIdField": TextFieldPropertyMapper,
