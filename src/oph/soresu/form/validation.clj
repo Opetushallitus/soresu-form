@@ -29,14 +29,14 @@
   (let [maxlength ((get field :params {}) :maxlength)]
     (if (and (has-field-type? "textArea" field)
              (> (count answer) maxlength))
-      [{:error "maxlength", :max maxlength}]
+      [{:error "maxlength", :info {:max maxlength}}]
       [])))
 
 (defn validate-texfield-maxlength [field answer]
   (let [maxlength ((get field :params {}) :maxlength)]
     (if (and (has-field-type? "textField" field)
              (> (count answer) maxlength))
-      [{:error "maxlength", :max maxlength}]
+      [{:error "maxlength", :info {:max maxlength}}]
       [])))
 
 (defn validate-email-security [field answer]
