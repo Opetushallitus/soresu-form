@@ -36,14 +36,14 @@ describe('Bank account validator', function() {
     expect(BankAccountValidator.isValidBic("NDEAFI00XXX")).to.equal(false)
   })
 
-  it('can recognize an invalid passive BIC of 8 or 11 characters', function() {
-    expect(BankAccountValidator.isValidBic("NDEAFI01")).to.equal(false)
-    expect(BankAccountValidator.isValidBic("NDEAFI01XXX")).to.equal(false)
+  it('can recognize an valid passive BIC of 8 or 11 characters', function() {
+    expect(BankAccountValidator.isValidBic("NDEAFI01")).to.equal(true)
+    expect(BankAccountValidator.isValidBic("NDEAFI01XXX")).to.equal(true)
   })
 
-  it('can recognize an invalid reverse BIC of 8 or 11 characters', function() {
-    expect(BankAccountValidator.isValidBic("NDEAFI02")).to.equal(false)
-    expect(BankAccountValidator.isValidBic("NDEAFI02XXX")).to.equal(false)
+  it('can recognize an valid reverse BIC of 8 or 11 characters', function() {
+    expect(BankAccountValidator.isValidBic("AABAFI22")).to.equal(true)
+    expect(BankAccountValidator.isValidBic("AABAFI22XXX")).to.equal(true)
   })
 
   it('can recognize an invalid BIC', function() {
