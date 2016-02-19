@@ -34,4 +34,14 @@ describe('Syntax validator', function() {
     expect(result).to.have.property("error")
     expect(result.error).to.equal("email")
   })
+  it('does not allow escaped linefeed characters in emails', function() {
+    const result = SyntaxValidator.validateEmail("invalid.em%0Ail@example.com")
+    expect(result).to.have.property("error")
+    expect(result.error).to.equal("email")
+  })
+  it('does not allow non-ascii characters in emails', function() {
+    const result = SyntaxValidator.validateEmail("invalid.emäil@example.com")
+    expect(result).to.have.property("error")
+    expect(result.error).to.equal("email")
+  })
 })
