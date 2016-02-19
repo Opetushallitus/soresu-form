@@ -21,5 +21,17 @@ describe('Syntax validator', function() {
     expect(result).to.have.property("error")
     expect(result.error).to.equal("finnishBusinessId")
   })
-
+  it('can validate basic email', function() {
+    expect(SyntaxValidator.validateEmail("valid.email@example.com")).to.equal(undefined)
+  })
+  it('notices invalid email with only one domain part', function() {
+    const result = SyntaxValidator.validateEmail("invalid.email@example")
+    expect(result).to.have.property("error")
+    expect(result.error).to.equal("email")
+  })
+  it('notices invalid email with space between', function() {
+    const result = SyntaxValidator.validateEmail("invalid. email@example.com")
+    expect(result).to.have.property("error")
+    expect(result.error).to.equal("email")
+  })
 })
