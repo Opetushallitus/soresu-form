@@ -58,12 +58,10 @@ export default class FormStateLoop {
       preview: query.preview || false,
       devel: query.devel || false
     }
-    const translationsP = Bacon.fromPromise(HttpUtil.get("/translations.json"))
+    const translationsP = Bacon.fromPromise(HttpUtil.get("/translations.json")).map(Immutable)
     const savedObjectP = loadSavedObjectPromise(formOperations, urlContent)
     const existingAttachmentsP = loadAttachmentsPromise(formOperations, urlContent)
-    const formP = controller.formP.map(function(form) {
-      return Immutable(form)
-    })
+    const formP = controller.formP.map(Immutable)
     const lang = formOperations.chooseInitialLanguage(urlContent)
     const initialValuesP = getInitialFormValuesPromise(formOperations, formP, initialValues, savedObjectP, lang)
     const initialFormStateP = initialValuesP.combine(formP, function(values, form) {
