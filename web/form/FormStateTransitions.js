@@ -241,7 +241,6 @@ export default class FormStateTransitions {
       state.saveStatus.saveInProgress = true
       HttpUtil.post(url, state.saveStatus.values)
         .then(function(response) {
-          console.log("Saved to server (", serverOperation, "). Response=", JSON.stringify(response))
           self.pushSaveCompletedEvent(state, response, onSuccessCallback)
         })
         .catch(function(response) {
