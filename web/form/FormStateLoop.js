@@ -2,7 +2,7 @@ import Bacon from 'baconjs'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
 
-import HttpUtil from 'va-common/web/HttpUtil'
+import HttpUtil from '../HttpUtil'
 
 import InputValueStorage from './InputValueStorage'
 import JsUtil from './JsUtil'
