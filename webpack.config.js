@@ -20,7 +20,7 @@ module.exports = {
     libraryTarget: "umd"
   },
   entry: {
-    soresu: "/soresu.js"
+    soresu: "./soresu"
   },
   externals: {
     "react": "React",
