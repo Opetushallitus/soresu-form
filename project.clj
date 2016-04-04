@@ -56,8 +56,13 @@
 
   :target-path "target/%s"
 
+  :resource-paths ["resources"]
+
+  :clean-targets ^{:protect false} ["resources/public/js" "target"]
+
   :prep-tasks [
     "buildfront"
+    "buildjs"
     "compile"]
 
   :plugins [[speclj "3.3.1"]
@@ -72,4 +77,5 @@
   :uberjar-exclusions [#".*"]                               ;; Kludge to make top-level "lein sub uberjar" faster
   :auto-clean false
 
-  :aliases {"buildfront" ^{:doc "Build frontend code with npm"} ["shell" "npm" "install"]})
+  :aliases {"buildfront" ^{:doc "Build frontend code with npm"} ["shell" "npm" "install"]
+            "buildjs"    ^{:doc "Build js bundle for require or script usage"} ["shell" "node" "node_modules/webpack/bin/webpack.js"]})
