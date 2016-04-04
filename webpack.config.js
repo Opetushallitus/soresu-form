@@ -20,12 +20,9 @@ module.exports = {
     libraryTarget: "umd"
   },
   entry: {
-    soresu: "./soresu"
+    soresu: "./web/soresu"
   },
   externals: {
-    "react": "React",
-    "moment-timezone": "moment",
-    "baconjs": "Bacon"
   },
   module: {
     loaders: [
