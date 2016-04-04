@@ -57,9 +57,8 @@
   :target-path "target/%s"
 
   :prep-tasks [
-       "buildfront"
-       "compile"
-  ]
+    "buildfront"
+    "compile"]
 
   :plugins [[speclj "3.3.1"]
             [lein-modules "0.3.11"]
