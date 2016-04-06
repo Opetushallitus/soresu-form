@@ -14,30 +14,30 @@
                        (s/optional-key :params) s/Any
                        :fieldType s/Keyword})
 
-  (let [default-form-element-types [:textField
-                                    :textArea
-                                    :nameField
-                                    :emailField
-                                    :moneyField
-                                    :finnishBusinessIdField
-                                    :iban
-                                    :bic
-                                    :dropdown
-                                    :radioButton
-                                    :checkboxButton
-                                    :namedAttachment
-                                    :koodistoField]
+  (let [default-form-element-types ["textField"
+                                    "textArea"
+                                    "nameField"
+                                    "emailField"
+                                    "moneyField"
+                                    "finnishBusinessIdField"
+                                    "iban"
+                                    "bic"
+                                    "dropdown"
+                                    "radioButton"
+                                    "checkboxButton"
+                                    "namedAttachment"
+                                    "koodistoField"]
         form-element-types (into custom-form-element-types default-form-element-types)
-        default-wrapper-element-types [:theme :fieldset :growingFieldset :growingFieldsetChild ]
+        default-wrapper-element-types ["theme" "fieldset" "growingFieldset" "growingFieldsetChild" ]
         wrapper-element-types (into custom-wrapper-element-types default-wrapper-element-types)
         all-answer-element-types (into form-element-types wrapper-element-types)
-        default-info-element-types [:h1
-                                    :h3
-                                    :link
-                                    :p
-                                    :bulletList
-                                    :dateRange
-                                    :endOfDateRange]
+        default-info-element-types ["h1"
+                                    "h3"
+                                    "link"
+                                    "p"
+                                    "bulletList"
+                                    "dateRange"
+                                    "endOfDateRange"]
         info-element-types (into custom-info-element-types default-info-element-types)]
     (s/defschema FormField {:fieldClass (s/eq "formField")
                             :id s/Str
