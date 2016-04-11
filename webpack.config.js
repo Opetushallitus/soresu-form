@@ -23,6 +23,9 @@ module.exports = {
     soresu: "./web/soresu"
   },
   externals: {
+    "react": "React",
+    "react-dom": "ReactDOM",
+    "react-widgets", "ReactWidgets"
   },
   module: {
     loaders: [
