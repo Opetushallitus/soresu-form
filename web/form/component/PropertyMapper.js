@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import Immutable from 'seamless-immutable'
 
 import BasicFieldComponent from './BasicFieldComponent.jsx'
 
@@ -20,7 +21,7 @@ class CommonPropertyMapper extends DefaultPropertyMapper {
     return {
       htmlId: props.htmlId,
       fieldType: props.fieldType,
-      translations: props.translations.merge({label: field.label, helpText: field.helpText, text: field.text}),
+      translations: Immutable(props.translations).merge({label: field.label, helpText: field.helpText, text: field.text}),
       translationKey: "label",
       lang: props.lang
     }
