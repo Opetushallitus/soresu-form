@@ -25,7 +25,7 @@ module.exports = {
   externals: {
     "react": "React",
     "react-dom": "ReactDOM",
-    "react-widgets", "ReactWidgets"
+    "react-widgets": "ReactWidgets"
   },
   module: {
     loaders: [
