@@ -40,9 +40,12 @@
     "mocha-jsdom": "^0.5.0",
     "mocha-junit-reporter": "^1.5.0",
     "phantomjs": "1.9.17",
+    "query-string": "^4.1.0",
     "react-addons-test-utils": "^0.14.3",
     "react-tools": "^0.13.3",
     "seamless-immutable": "^5.1.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
     "watch-spawn": "^1.0.5"
   },
   "private": true,
