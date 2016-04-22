@@ -127,10 +127,12 @@ export default class FormStateTransitions {
   }
 
   onAttachmentUploadCompleted(state, responseFromServer) {
+    const formOperations = state.extensionApi.formOperations
     const fieldId = responseFromServer["field-id"]
     state.saveStatus.attachments[fieldId] = responseFromServer
     const placeHolderValue = responseFromServer.filename
     FormStateTransitions.updateFieldValueInState(fieldId, placeHolderValue, state)
+    LocalStorage.save(formOperations.createUiStateIdentifier, state, {})
 
     state.saveStatus.attachmentUploadsInProgress[fieldId] = false
     this.refreshStateFromServer(this, state)
@@ -176,10 +178,12 @@ export default class FormStateTransitions {
   }
 
   onAttachmentRemovalCompleted(state, fieldOfRemovedFile) {
+    const formOperations = state.extensionApi.formOperations
     const fieldId = fieldOfRemovedFile.id
     state.saveStatus.attachments[fieldId] = undefined
     FormStateTransitions.updateFieldValueInState(fieldId, "", state)
     state.saveStatus.attachmentUploadsInProgress[fieldId] = false
+    LocalStorage.save(formOperations.createUiStateIdentifier, state, {})
     this.refreshStateFromServer(this, state)
     return state
   }
