@@ -1,9 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
 
-import styles from '../style/preview.less'
-import printStyles from '../style/print.less'
-
 import {BasicFieldEdit,BasicEditWrapper,AppendableEditWrapper,InfoElementEditWrapper} from './EditComponent.jsx'
 import CSSTransitionGroup from '../component/wrapper/CSSTransitionGroup.jsx'
 import FormEditComponent from './FormEditComponent.jsx'

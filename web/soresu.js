@@ -6,7 +6,6 @@ const component = require.context("./form/component", /*useSubdirectories*/ true
 const edit = require.context("./form/edit", /*useSubdirectories*/ true)
 const img = require.context("./form/img", /*useSubdirectories*/ true)
 const preview = require.context("./form/preview", /*useSubdirectories*/ true)
-const style = require.context("./form/style", /*useSubdirectories*/ true)
 
 const asName = (name) =>
       _.chain(/\.\/(.*)\.jsx?/.exec(name))
@@ -29,6 +28,5 @@ module.exports = {
   component: f(component),
   edit: f(edit),
   img: f(img),
-  preview: f(preview),
-  style: f(style)
+  preview: f(preview)
 }
