@@ -64,8 +64,7 @@
     (s/defschema WrapperElement {:fieldClass              (s/eq "wrapperElement")
                                  :id                      s/Str
                                  :fieldType               (apply s/enum wrapper-element-types )
-                                 :children                [(s/either BasicElement
-                                                           (s/recursive #'WrapperElement))]
+                                 :children                [(s/conditional map? (s/recursive #'WrapperElement) :else BasicElement)]
                                  (s/optional-key :params) s/Any
                                  (s/optional-key :label)  LocalizedString
                                  (s/optional-key :helpText) LocalizedString})
