@@ -16,8 +16,7 @@ export default class FieldUpdateHandler {
   }
 
   static updateStateFromFieldUpdate(state, fieldUpdate) {
-    const growingParentIfFound = InputValueStorage.writeValue(state.form.content, state.saveStatus.values, fieldUpdate)
-    fieldUpdate.growingParent = growingParentIfFound
+    fieldUpdate.growingParent = InputValueStorage.writeValue(state.form.content, state.saveStatus.values, fieldUpdate)
     if (fieldUpdate.validationErrors) {
       if(_.isEmpty(state.form.validationErrors)) {
         state.form.validationErrors = Immutable({})

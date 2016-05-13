@@ -122,11 +122,10 @@ export class MultipleOptionFieldOnChangePropertyMapper extends FieldPropertyMapp
         props.onChange(field, _.union(value, [targetValue]))
       }
     }
-    const extendedProperties =  _.extend(optionProps, {
+    return _.extend(optionProps, {
       value: value,
       onChange: onChange
     })
-    return extendedProperties
   }
 }
 
