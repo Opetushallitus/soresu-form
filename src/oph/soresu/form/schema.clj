@@ -67,9 +67,9 @@
                                  :id                      s/Str
                                  :fieldType               (apply s/enum wrapper-element-types )
                                  :children                [(s/conditional #(= "wrapperElement" (:fieldClass %))
-                                                                          (s/recursive #'soresu/WrapperElement)
+                                                                          (s/recursive #'WrapperElement)
                                                                           :else
-                                                                          soresu/BasicElement)]
+                                                                          BasicElement)]
                                  (s/optional-key :params) s/Any
                                  (s/optional-key :label)  LocalizedString
                                  (s/optional-key :helpText) LocalizedString})
@@ -83,9 +83,9 @@
 
 
   (s/defschema Content [(s/conditional #(= "wrapperElement" (:fieldClass %))
-                                       (s/recursive #'soresu/WrapperElement)
+                                       (s/recursive #'WrapperElement)
                                        :else
-                                       soresu/BasicElement)])
+                                       BasicElement)])
 
   (s/defschema Rule {:type s/Str
                      :triggerId s/Str
