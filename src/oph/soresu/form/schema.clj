@@ -1,18 +1,19 @@
 (ns oph.soresu.form.schema
   (:require [schema.core :as s]))
 
+(s/defschema LocalizedString {:fi s/Str
+                              :sv s/Str})
+
+(s/defschema Option {:value                  s/Str
+                     (s/optional-key :label) LocalizedString})
+
+(s/defschema Button {:fieldClass              (s/eq "button")
+                     :id                      s/Str
+                     (s/optional-key :label)  LocalizedString
+                     (s/optional-key :params) s/Any
+                     :fieldType               s/Keyword})
+
 (defn create-form-schema [custom-wrapper-element-types custom-form-element-types custom-info-element-types]
-  (s/defschema LocalizedString {:fi s/Str
-                                :sv s/Str})
-
-  (s/defschema Option {:value s/Str
-                       (s/optional-key :label) LocalizedString})
-
-  (s/defschema Button {:fieldClass (s/eq "button")
-                       :id s/Str
-                       (s/optional-key :label) LocalizedString
-                       (s/optional-key :params) s/Any
-                       :fieldType s/Keyword})
 
   (let [default-form-element-types ["textField"
                                     "textArea"
@@ -44,8 +45,8 @@
                             :required s/Bool
                             (s/optional-key :label) LocalizedString
                             :helpText LocalizedString
-                            (s/optional-key :initialValue) (s/either LocalizedString
-                                                                     s/Int)
+                            (s/optional-key :initialValue) (s/cond-pre LocalizedString
+                                                                       s/Int)
                             (s/optional-key :params) s/Any
                             (s/optional-key :options) [Option]
                             :fieldType (apply s/enum form-element-types)})
@@ -57,14 +58,18 @@
                               (s/optional-key :label) LocalizedString
                               (s/optional-key :text) LocalizedString})
 
-    (s/defschema BasicElement (s/either FormField
-                                        Button
-                                        InfoElement))
+    (s/defschema BasicElement (s/conditional
+                                #(= "formField" (:fieldClass %)) FormField
+                                #(= "button" (:fieldClass %)) Button
+                                :else InfoElement))
 
     (s/defschema WrapperElement {:fieldClass              (s/eq "wrapperElement")
                                  :id                      s/Str
                                  :fieldType               (apply s/enum wrapper-element-types )
-                                 :children                [(s/conditional map? (s/recursive #'WrapperElement) :else BasicElement)]
+                                 :children                [(s/conditional #(= "wrapperElement" (:fieldClass %))
+                                                                          (s/recursive #'soresu/WrapperElement)
+                                                                          :else
+                                                                          soresu/BasicElement)]
                                  (s/optional-key :params) s/Any
                                  (s/optional-key :label)  LocalizedString
                                  (s/optional-key :helpText) LocalizedString})
@@ -77,8 +82,10 @@
                            :fieldType (apply s/enum all-answer-element-types)}))
 
 
-  (s/defschema Content [(s/either BasicElement
-                                  WrapperElement)])
+  (s/defschema Content [(s/conditional #(= "wrapperElement" (:fieldClass %))
+                                       (s/recursive #'soresu/WrapperElement)
+                                       :else
+                                       soresu/BasicElement)])
 
   (s/defschema Rule {:type s/Str
                      :triggerId s/Str
