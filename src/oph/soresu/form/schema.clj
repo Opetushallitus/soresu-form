@@ -44,7 +44,7 @@
                             :id s/Str
                             :required s/Bool
                             (s/optional-key :label) LocalizedString
-                            :helpText LocalizedString
+                            (s/optional-key :helpText) LocalizedString
                             (s/optional-key :initialValue) (s/cond-pre LocalizedString
                                                                        s/Int)
                             (s/optional-key :params) s/Any
