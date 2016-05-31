@@ -61,7 +61,7 @@ export default class SyntaxValidator {
       return parts[parts.length -1].length > 1
     }
     // Pretty basic regexp, allows anything@anything.anything
-    const validEmailRegexp = /^\S+@(([a-zA-Z\-0-9])+\.)+([a-zA-Z\-0-9])+$/
+    const validEmailRegexp = /^[^\s@]+@(([a-zA-Z\-0-9])+\.)+([a-zA-Z\-0-9])+$/
     const invalidEmailRegexp = /.*([^\x00-\x7F]|%0[aA]).*/
     const validEmail = validEmailRegexp.test(input) && lastPartIsLongerThanOne(input) && !invalidEmailRegexp.test(input)
     return validEmail ? undefined : { error: "email" }

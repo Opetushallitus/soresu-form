@@ -42,6 +42,11 @@ describe('Syntax validator', function() {
     expect(result).to.have.property("error")
     expect(result.error).to.equal("email")
   })
+  it('notices invalid email with two valid emails given', function() {
+    const result = SyntaxValidator.validateEmail("valid.email1@example.com,valid.email2@example.com")
+    expect(result).to.have.property("error")
+    expect(result.error).to.equal("email")
+  })
   it('does not allow escaped linefeed characters in emails', function() {
     const result = SyntaxValidator.validateEmail("invalid.em%0Ail@example.com")
     expect(result).to.have.property("error")
