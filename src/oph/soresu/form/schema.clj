@@ -90,7 +90,8 @@
 
   (s/defschema Form {:content Content,
                      :rules Rules,
-                     :created_at s/Inst})
+                     :created_at s/Inst
+                     :updated_at s/Inst})
 
   (s/defschema Answers
     "Answers consists of a key (String) value pairs, where value may be String or an array of more answers"
