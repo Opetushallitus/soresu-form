@@ -26,7 +26,8 @@ export default class Form extends React.Component {
         key: htmlId,
         htmlId: htmlId,
         field: field,
-        translations: state.configuration.translations
+        translations: state.configuration.translations,
+        customProperties: controller.getCustomComponentProperties(state)
       }
 
       if (field.fieldClass == "infoElement") {
