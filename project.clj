@@ -3,7 +3,9 @@
   :url "https://github.com/Opetushallitus/valtionavustus"
   :license {:name "EUPL licence"
             :url "http://opensource.org/licenses/EUPL-1.1"}
-  :repositories {"Laughing Panda" "http://maven.laughingpanda.org/maven2"}
+  :repositories [["Laughing Panda" {:url       "http://maven.laughingpanda.org/maven2"
+                                    :snapshots false}]
+                 ["snapshots"      {:url "https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local"}]]
   :dependencies [[org.clojure/clojure "1.7.0"]
 
                  ;; HTTP server
