@@ -64,7 +64,8 @@
 (defn- koodi-value->soresu-option [koodi-value]
   {:value (:koodiArvo koodi-value)
    :label {:fi (->> koodi-value :metadata (extract-name-with-language "FI"))
-           :sv (->> koodi-value :metadata (extract-name-with-language "SV"))}})
+           :sv (->> koodi-value :metadata (extract-name-with-language "SV"))
+           :en (->> koodi-value :metadata (extract-name-with-language "EN"))}})
 
 (defn list-koodistos []
   (->> (fetch-all-koodisto-groups)
