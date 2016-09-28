@@ -20,7 +20,7 @@
   (let [{:keys [status headers body error] :as resp} @(http/get url)]
     (if (= 200 status)
       (let [body (json->map body)]
-        (log/info (str "Fetched koodisto from URL: " url ": " body))
+        (log/info (str "Fetched koodisto from URL: " url))
         body)
       (throw (ex-info "Error when fetching doing HTTP GET" {:status status
                                                              :url url
