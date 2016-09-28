@@ -78,21 +78,26 @@
        (sort compare-case-insensitively)))
 
 (defn- log-invalid-koodisto [koodisto-uri version koodisto]
-  (when
-    (some (fn [{:keys [value label]}]
-            (or (clojure.string/blank? value)
-                (clojure.string/blank? (:fi label))
-                (clojure.string/blank? (:sv label))
-                (clojure.string/blank? (:en label))))
-          koodisto)
-    (log/warn (str "Koodisto has blank values, URI: " koodisto-uri ", version: " version ", koodisto: " koodisto)))
+  (let [invalid-values (reduce
+                         (fn [result {:keys [value label] :as koodi}]
+                           (if (or
+                                 (clojure.string/blank? value)
+                                 (clojure.string/blank? (:fi label))
+                                 (clojure.string/blank? (:sv label))
+                                 (clojure.string/blank? (:en label)))
+                             (conj result koodi)
+                             result))
+                         []
+                         koodisto)]
+    (when (> (count invalid-values) 0)
+      (log/warn (str "Koodisto has blank values, URI: " koodisto-uri ", version: " version ", invalid values: " invalid-values))))
   koodisto)
 
 (defn get-koodi-options [koodisto-uri version]
   (let [koodisto-version-url (str koodisto-base-url koodisto-version-path koodisto-uri "/" version)]
     (->> (do-get koodisto-version-url)
          (mapv koodi-value->soresu-option)
-         (partial log-invalid-koodisto koodisto-uri version)
+         (log-invalid-koodisto koodisto-uri version)
          (sort-by (fn [x] (-> x :label :fi)) compare-case-insensitively))))
 
 (defn- get-cached-koodisto [db-key koodisto-uri version checksum]
