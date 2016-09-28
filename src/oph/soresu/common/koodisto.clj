@@ -3,6 +3,7 @@
   (:require [org.httpkit.client :as http]
             [cheshire.core :as cheshire]
             [clojure.string :as str]
+            [clojure.tools.logging :as log]
             [pandect.algo.sha256 :refer :all]
             [oph.soresu.common.db :as db]
             [oph.soresu.common.db.queries :as queries]))
@@ -18,7 +19,9 @@
 (defn- do-get [url]
   (let [{:keys [status headers body error] :as resp} @(http/get url)]
     (if (= 200 status)
-      (json->map body)
+      (let [body (json->map body)]
+        (log/info (str "Fetched koodisto from URL: " url ": " body))
+        body)
       (throw (ex-info "Error when fetching doing HTTP GET" {:status status
                                                              :url url
                                                              :body body
@@ -67,16 +70,29 @@
            :sv (->> koodi-value :metadata (extract-name-with-language "SV"))
            :en (->> koodi-value :metadata (extract-name-with-language "EN"))}})
 
+
 (defn list-koodistos []
   (->> (fetch-all-koodisto-groups)
        (koodisto-groups->uris-and-latest)
        (mapv koodisto-version->uri-and-name)
        (sort compare-case-insensitively)))
 
+(defn- log-invalid-koodisto [koodisto-uri version koodisto]
+  (when
+    (some (fn [{:keys [value label]}]
+            (or (clojure.string/blank? value)
+                (clojure.string/blank? (:fi label))
+                (clojure.string/blank? (:sv label))
+                (clojure.string/blank? (:en label))))
+          koodisto)
+    (log/warn (str "Koodisto has blank values, URI: " koodisto-uri ", version: " version ", koodisto: " koodisto)))
+  koodisto)
+
 (defn get-koodi-options [koodisto-uri version]
   (let [koodisto-version-url (str koodisto-base-url koodisto-version-path koodisto-uri "/" version)]
     (->> (do-get koodisto-version-url)
          (mapv koodi-value->soresu-option)
+         (partial log-invalid-koodisto koodisto-uri version)
          (sort-by (fn [x] (-> x :label :fi)) compare-case-insensitively))))
 
 (defn- get-cached-koodisto [db-key koodisto-uri version checksum]
