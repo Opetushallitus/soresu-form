@@ -55,7 +55,7 @@
 (defn clear-db! [ds-key schema-name]
   (let [ds-key (keyword ds-key)]
     (if (:allow-db-clear? (:server config))
-      (try (apply (partial jdbc/db-do-commands {:datasource (get-datasource ds-key)})
+      (try (apply (partial jdbc/db-do-commands {:datasource (get-datasource ds-key)} true)
                   [(str "drop schema if exists " schema-name " cascade")
                    (str "create schema " schema-name) ])
            (catch Exception e (log/error (get-next-exception-or-original e) (.toString e))))
