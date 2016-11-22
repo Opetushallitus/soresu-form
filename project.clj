@@ -1,4 +1,4 @@
-(defproject oph/soresu "0.1.9-SNAPSHOT"
+(defproject oph/soresu "0.1.10-SNAPSHOT"
   :description "OPH Soresu forms"
   :url "https://github.com/Opetushallitus/valtionavustus"
   :license {:name "EUPL licence"
@@ -33,11 +33,11 @@
                  [prismatic/schema "0.4.4"]
 
                  ;; SQL + migrations
-                 [yesql "0.5.3"]
+                 [yesql "0.5.2"]
                  [org.postgresql/postgresql "9.4.1212"]
                  [hikari-cp "1.3.0" :exclusions [prismatic/schema]]
                  [org.flywaydb/flyway-core "3.2.1"]
-                 [org.clojure/java.jdbc "0.6.1"]
+                 [org.clojure/java.jdbc "0.4.2"]
 
                  ;; Testing
                  [speclj "3.3.1"]
