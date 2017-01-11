@@ -2,6 +2,7 @@
   (:use [oph.soresu.common.config :only [config config-name]]
         [clojure.tools.trace :only [trace]])
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.string :as string]
             [clojure.tools.logging :as log]
             [hikari-cp.core :refer :all]
             [oph.soresu.common.jdbc.extensions]
@@ -12,6 +13,9 @@
 
 (defn generate-hash-id []
   (sha256 (.generateSeed random (/ 512 8))))
+
+(defn escape-like-pattern [pattern]
+  (string/replace pattern #"(\\|%|_)" "\\\\$1"))
 
 (defn- datasource-spec [ds-key]
   "Merge configuration defaults and db config. Latter overrides the defaults"
