@@ -14,7 +14,7 @@
   padding: 4px 20px 4px 11px;
   border: 1px solid @lighterer-gray;
   cursor: pointer;
-  color: @selected-blue;
+  color: @light-blue;
 
   transition-property: all;
   transition-duration: 0.2s;
@@ -96,12 +96,12 @@
       padding: 5px;
 
       &[aria-selected="true"] {
-        background-color: @selected-blue;
+        background-color: @light-blue;
         color: white;
         border-radius: 2px;
       }
       &[aria-selected="false"]:hover {
-        background-color: lighten(@selected-blue, 42%);
+        background-color: @lighter-blue;
       }
       &.rw-list-empty {
         color: @darkish-gray;
