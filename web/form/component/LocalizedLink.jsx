@@ -1,7 +1,7 @@
 import React from 'react'
 import Translator from '../Translator'
 
-export default class LocalizedString extends React.Component {
+export default class LocalizedLink extends React.Component {
   constructor(props) {
     super(props)
   }
