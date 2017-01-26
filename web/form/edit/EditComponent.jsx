@@ -278,7 +278,9 @@ export class TextFieldEdit extends FieldEditComponent {
     const sizeEdit = (
       <span className="soresu-edit-property shift-left" key={htmlId+"size-edit-property"}>
         <label>{this.sizeLabel()}</label>
-        {sizeAlternenativeButtons}
+        <fieldset className="soresu-sizebutton-group">
+          {sizeAlternenativeButtons}
+        </fieldset>
       </span>
     )
     const fieldSpecificEditors = [ sizeEdit, maxLengthEdit ]

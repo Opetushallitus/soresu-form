@@ -60,10 +60,14 @@ export default class KoodistoFieldEdit extends FieldEditComponent {
         </label>
       )
     }
-    return <span className="soresu-edit-property shift-left" key={htmlId+"input-type-edit-property"}>
-             <label>Syöttökentän tyyppi</label>
-             {inputTypeAlternativeButtons}
-           </span>
+    return (
+      <span className="soresu-edit-property shift-left" key={htmlId+"input-type-edit-property"}>
+        <label>Syöttökentän tyyppi</label>
+        <fieldset className="soresu-radiobutton-group soresu-radiobutton-group--vertical">
+          {inputTypeAlternativeButtons}
+        </fieldset>
+      </span>
+    )
   }
 }
 
