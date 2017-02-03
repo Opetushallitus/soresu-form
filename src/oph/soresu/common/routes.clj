@@ -8,11 +8,11 @@
 
 (defn return-from-classpath [filename-under-public contenttype]
   (-> (resp/resource-response filename-under-public {:root "public"})
-        (content-type contenttype)
-        (charset  "utf-8")))
+        (content-type contenttype)))
 
 (defn return-html [filename]
-  (return-from-classpath filename "text/html"))
+  (-> (return-from-classpath filename "text/html")
+      (charset "utf-8")))
 
 (defn exception-handler [^Exception ex data request]
   (log/error ex ex)
