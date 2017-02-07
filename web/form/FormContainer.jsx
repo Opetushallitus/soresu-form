@@ -14,7 +14,7 @@ export default class FormContainer extends React.Component {
       state: state,
       infoElementValues: this.props.infoElementValues
     }
-    const formElement = React.createElement(formContainerClass, {...formElementProps})
+    const formElement = React.createElement(formContainerClass, formElementProps)
 
     return (
       <section id={containerId}>
