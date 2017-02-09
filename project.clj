@@ -30,10 +30,10 @@
                  [prismatic/schema "0.4.4"]
 
                  ;; SQL + migrations
-                 [yesql "0.5.0"]
-                 [org.postgresql/postgresql "9.4-1201-jdbc41"]
-                 [hikari-cp "1.3.0" :exclusions [prismatic/schema]]
-                 [org.flywaydb/flyway-core "3.2.1"]
+                 [yesql "0.5.3"]
+                 [org.postgresql/postgresql "9.4.1212"]
+                 [hikari-cp "1.7.5" :exclusions [prismatic/schema]]
+                 [org.flywaydb/flyway-core "4.0.3"]
 
                  ;; Testing
                  [speclj "3.3.1"]
