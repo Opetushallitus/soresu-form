@@ -74,32 +74,32 @@ export default class Form extends React.Component {
     }
 
     function createWrapperElement(field, fieldProperties, renderingParameters) {
+      function resolveChildRenderingParameters(childIndex) {
+        const result = _.isObject(renderingParameters) ? _.cloneDeep(renderingParameters) : {}
+        result.childIndex = childIndex
+        result.removeMe = function () {
+          controller.removeField(field.children[childIndex])
+        }
+        const isFirstChild = childIndex === 0
+        if (field.params && field.params.showOnlyFirstLabels === true && !isFirstChild) {
+          result.hideLabels = true
+        }
+        const isSecondToLastChild = childIndex === field.children.length - 2
+        if (isSecondToLastChild) {
+          const nextChild = field.children[childIndex + 1]
+          const nextChildIsDisabled = _.isObject(nextChild) ? nextChild.forceDisabled : false
+          if (nextChildIsDisabled) {
+            result.rowMustNotBeRemoved = true
+          }
+        }
+        return result
+      }
+
       const children = []
       for (var i = 0; i < field.children.length; i++) {
-        function resolveChildRenderingParameters(childIndex) {
-          const result = _.isObject(renderingParameters) ? _.cloneDeep(renderingParameters) : {}
-          result.childIndex = childIndex
-          result.removeMe = function () {
-            controller.removeField(field.children[childIndex])
-          }
-          const isFirstChild = childIndex === 0
-          if (field.params && field.params.showOnlyFirstLabels === true && !isFirstChild) {
-            result.hideLabels = true
-          }
-          const isSecondToLastChild = childIndex === field.children.length - 2
-          if (isSecondToLastChild) {
-            const nextChild = field.children[childIndex + 1]
-            const nextChildIsDisabled = _.isObject(nextChild) ? nextChild.forceDisabled : false
-            if (nextChildIsDisabled) {
-              result.rowMustNotBeRemoved = true
-            }
-          }
-          return result
-        }
-
-        const childRenderingParameters = resolveChildRenderingParameters(i)
-        children.push(renderField(field.children[i], childRenderingParameters))
+        children.push(renderField(field.children[i], resolveChildRenderingParameters(i)))
       }
+
       const customProperties = controller.getCustomComponentProperties(state);
       return <WrapperComponent {...fieldProperties}
                                children={children}
