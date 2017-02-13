@@ -2,12 +2,16 @@ import React from 'react'
 import ReactWidgets from 'react-widgets'
 
 import Translator from '../Translator'
+import ClassNames from 'classnames'
 import BasicFieldComponent from './BasicFieldComponent.jsx'
 
 export default class Dropdown extends BasicFieldComponent {
   render() {
     const props = this.props
     const optionToText = option => {
+      if (!option.value) {
+        return ""
+      }
       return new Translator(option).translate("label", props.lang, option.value)
     }
     const messages = {
@@ -20,8 +24,9 @@ export default class Dropdown extends BasicFieldComponent {
         return <span>{optionToText(this.props.item)}</span>
       }
     })
+    const classStr = ClassNames("soresu-dropdown", { "soresu-dropdown-unselected": !props.value && !props.disabled })
 
-    return (<div className="soresu-dropdown">
+    return (<div className={classStr}>
       {this.label()}
       <ReactWidgets.DropdownList id={props.htmlId}
                                  name={props.htmlId}
