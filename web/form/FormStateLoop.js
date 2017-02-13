@@ -21,8 +21,6 @@ export default class FormStateLoop {
     function determineInitialValue(field) {
       if (field.id in initialValues) {
         return initialValues[field.id]
-      } else if (!_.isEmpty(field.options)) {
-        return field.options[0].value
       } else if (!_.isUndefined(field.initialValue)) {
         if (_.isObject(field.initialValue)) {
           const translator = new Translator(field)
