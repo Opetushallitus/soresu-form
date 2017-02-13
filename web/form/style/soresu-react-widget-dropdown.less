@@ -4,10 +4,9 @@
 @popup-internal-width: 96%;
 
 .rw-dropdownlist {
-  position: absolute;
+  position: relative;
   display: inline-block;
 
-  height: 22px;
   min-width: @preview-width;
   background-color: @lighterer-gray;
   margin: 5px 4px 4px 0;
@@ -30,7 +29,6 @@
 
     div.rw-input {
       padding-bottom: 4px;
-      margin-bottom: 12px;
       border-bottom: 1px solid @light-gray;
     }
   }
@@ -67,6 +65,7 @@
 
   .rw-popup-container {
     position: absolute;
+    top: 50px;
     background-color: @off-white;
     max-height: 198px;
     width: @popup-internal-width + 1%;
