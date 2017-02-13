@@ -24,7 +24,7 @@ export default class Dropdown extends BasicFieldComponent {
         return <span>{optionToText(this.props.item)}</span>
       }
     })
-    const classStr = ClassNames("soresu-dropdown", { "soresu-dropdown-unselected": !props.value && !props.disabled })
+    const classStr = ClassNames("soresu-dropdown", { "soresu-dropdown-unselected": !props.value && !props.disabled && !props.hasError}, { error: props.hasError })
 
     return (<div className={classStr}>
       {this.label()}

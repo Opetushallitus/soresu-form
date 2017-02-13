@@ -363,6 +363,10 @@ section.soresu-theme {
     cursor: pointer;
   }
 
+  input[type=radio] + label.error, input[type=checkbox] + label.error {
+    border: solid 1px @bright-red;
+  }
+
   input[type=checkbox] + label  {
     width: @section-width - 68px;
   }
@@ -536,6 +540,9 @@ button[disabled].soresu-text-button {
 }
 .soresu-dropdown.soresu-dropdown-unselected .rw-dropdownlist div.rw-input {
   border: solid 1px @dark-gray;
+}
+.soresu-dropdown.error .rw-dropdownlist div.rw-input {
+  border: solid 1px @bright-red;
 }
 .soresu-tooltip {
   position: relative;

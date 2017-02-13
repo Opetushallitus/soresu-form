@@ -9,7 +9,7 @@ export default class CheckboxButton extends BasicFieldComponent {
   render() {
     const props = this.props;
     const selectionButtons = [];
-
+    const classStr = this.resolveClassName()
     if (props.options) {
       for (var i=0; i < props.options.length; i++) {
         const optionValue = props.options[i].value
@@ -24,6 +24,7 @@ export default class CheckboxButton extends BasicFieldComponent {
                                  checked={checked} />)
         selectionButtons.push(
           <label key={props.htmlId + "." + optionValue + ".label"}
+                 className={classStr}
                  htmlFor={props.htmlId + ".checkbox." + i}>
             {label}
           </label>

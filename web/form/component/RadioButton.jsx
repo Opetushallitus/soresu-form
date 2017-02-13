@@ -6,6 +6,7 @@ export default class RadioButton extends BasicFieldComponent {
   render() {
     const props = this.props;
     const radiobuttons = [];
+    const classStr = this.resolveClassName()
 
     if (props.options) {
       for (var i=0; i < props.options.length; i++) {
@@ -19,6 +20,7 @@ export default class RadioButton extends BasicFieldComponent {
                                  checked={props.options[i].value === props.value ? true: null} />)
         radiobuttons.push(
           <label key={props.htmlId + "." + props.options[i].value + ".label"}
+                 className={classStr}
                  htmlFor={props.htmlId + ".radio." + i}>
             {label}
           </label>
