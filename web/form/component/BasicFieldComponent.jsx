@@ -60,6 +60,11 @@ export default class BasicFieldComponent extends React.Component {
     return !_.isEmpty(classNames) ? classNames : undefined
   }
 
+  resolveClassName(className) {
+    const classNames = ClassNames(className, { error: this.props.hasError })
+    return !_.isEmpty(classNames) ? classNames : undefined
+  }
+
   hideLabel() {
     return this.props.renderingParameters && this.props.renderingParameters.hideLabels === true
   }
