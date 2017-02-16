@@ -111,4 +111,43 @@ export default class FormUtil {
   static isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n)
   }
+
+  static mergeDeepFieldTrees(tree, ...restTrees) {
+    const copiedTree = _.cloneDeep(tree)
+
+    _.forEach(restTrees, anotherTree => {
+      traverse(copiedTree, anotherTree)
+    })
+
+    return copiedTree
+
+    function traverse(dstTree, srcTree) {
+      const dstChildren = dstTree.children
+
+      if (dstChildren && dstChildren.length > 0) {
+        // lookup optimization
+        const dstChildrenById = _.reduce(dstChildren, (acc, field) => {
+          acc[field.id] = field
+          return acc
+        }, {})
+
+        const srcChildren = srcTree.children || []
+
+        for (let index = 0; index < srcChildren.length; index += 1) {
+          const srcChild = srcChildren[index]
+          const dstChild = dstChildrenById[srcChild.id]
+
+          if (dstChild) {  // dst child exists, check subchildren of dst and src recursively
+            traverse(dstChild, srcChild)
+          } else {         // dst child does not exist, copy src as is
+            const copied = _.cloneDeep(srcChild)
+            dstChildren.push(copied)
+            dstChildrenById[copied.id] = copied
+          }
+        }
+      } else if (srcTree.children && srcTree.children.length > 0) {
+        dstTree.children = _.cloneDeep(srcTree.children)
+      }
+    }
+  }
 }
