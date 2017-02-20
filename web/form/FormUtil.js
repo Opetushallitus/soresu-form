@@ -59,7 +59,7 @@ export default class FormUtil {
     return JsUtil.flatFilter(formContent, n => { return n.fieldType === fieldType })
   }
 
-  static findFirstFieldIgnoringIndex(formContent, fieldId) {
+  static findFieldIgnoringIndex(formContent, fieldId) {
     return JsUtil.findFirst(formContent, FormUtil.idIsSameOrSameIfIndexIgnoredPredicate(fieldId))
   }
 

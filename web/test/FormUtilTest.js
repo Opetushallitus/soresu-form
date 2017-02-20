@@ -46,7 +46,7 @@ describe('Form util', function() {
           {id: "foo3"}
         ]
       }
-      expect(FormUtil.findFirstFieldIgnoringIndex(tree, "foo2")).to.eql({id: "foo2", content: "cont"})
+      expect(FormUtil.findFieldIgnoringIndex(tree, "foo2")).to.eql({id: "foo2", content: "cont"})
     })
 
     it('returns object when ids match, sans index suffix', function() {
@@ -61,7 +61,7 @@ describe('Form util', function() {
           {id: "foo3"}
         ]
       }
-      expect(FormUtil.findFirstFieldIgnoringIndex(tree, "foo2")).to.eql({id: "foo2-2", content: "cont"})
+      expect(FormUtil.findFieldIgnoringIndex(tree, "foo2")).to.eql({id: "foo2-2", content: "cont"})
     })
   })
 

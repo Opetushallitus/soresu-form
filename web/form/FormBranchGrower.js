@@ -87,7 +87,7 @@ export default class FormBranchGrower {
     function expandGrowingFieldset(state) {
       const childPrototype = FormBranchGrower.getGrowingFieldSetChildPrototype(state.configuration.form.content, growingParent.id)
       _.forEach(JsUtil.flatFilter(growingParent.children, n => { return !_.isUndefined(n.id) }), n => {
-        const requiredInPrototype = FormUtil.findFirstFieldIgnoringIndex(childPrototype, n.id).required
+        const requiredInPrototype = FormUtil.findFieldIgnoringIndex(childPrototype, n.id).required
         if(requiredInPrototype && !n.forceDisabled) {
           n.required = true
         }
