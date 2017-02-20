@@ -11,22 +11,26 @@ export default class JsUtil {
       if (nodePredicate(element)) {
         results.push(operation(element))
       }
+      return true
     })
     return results
   }
 
   static findIndexOfFirst(objectOrArray, nodePredicate) {
-    const result = {found: false, index: 0}
+    let index = 0
+    let found = false
     JsUtil.fastTraverse(objectOrArray, element => {
-      if (!result.found) {
+      if (!found) {
         if (nodePredicate(element)) {
-          result.found = true
+          found = true
+          return false
         } else {
-          result.index++
+          index += 1
         }
       }
+      return true  // keep searching
     })
-    return result.index
+    return index
   }
 
   static findJsonNodeContainingId(objectOrArray, idToFind) {
@@ -41,11 +45,14 @@ export default class JsUtil {
   }
 
   static fastTraverse(x, func) {
-    func(x)
-    if (isObject(x)) {
-      traverseObject(x)
-    } else if (isArray(x)) {
-      traverseArray(x)
+    const shouldContinue = func(x)
+
+    if (shouldContinue) {
+      if (isObject(x)) {
+        traverseObject(x)
+      } else if (isArray(x)) {
+        traverseArray(x)
+      }
     }
 
     function traverseObject(o) {
@@ -56,6 +63,7 @@ export default class JsUtil {
         }
       }
     }
+
     function traverseArray(arr) {
       for (var i = 0; i < arr.length; i++) {
         JsUtil.fastTraverse(arr[i])
@@ -65,6 +73,7 @@ export default class JsUtil {
     function isObject(element) {
       return typeof(element) === "object"
     }
+
     function isArray(element) {
       return typeof(element) === "array"
     }
