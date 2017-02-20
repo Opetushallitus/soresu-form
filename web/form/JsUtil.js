@@ -16,6 +16,20 @@ export default class JsUtil {
     return results
   }
 
+  static findFirst(objectOrArray, nodePredicate) {
+    let found = false
+    let object = null
+    JsUtil.fastTraverse(objectOrArray, element => {
+      if (!found && nodePredicate(element)) {
+        found = true
+        object = element
+        return false
+      }
+      return true  // keep searching
+    })
+    return object
+  }
+
   static findIndexOfFirst(objectOrArray, nodePredicate) {
     let index = 0
     let found = false

@@ -13,6 +13,11 @@ describe('Js util', function() {
     ])
   })
 
+  it('finds first matching object', function() {
+    const object = JsUtil.findFirst(Tree, el => el.token === Token)
+    expect(object).to.eql({id: 'id-3', token: Token})
+  })
+
   it('finds index of first matching object', function() {
     const index = JsUtil.findIndexOfFirst(Tree, el => el.token === Token)
     expect(index).to.equal(TraversingStepsToToken - 1)
