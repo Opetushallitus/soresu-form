@@ -3,6 +3,110 @@ import _ from 'lodash'
 import FormUtil from '../form/FormUtil'
 
 describe('Form util', function() {
+  it('returns first field matching id', function() {
+    const tree = {
+      children: [
+        {
+          id: "foo1",
+          children: [
+            {id: "foo2", content: "cont"}
+          ]
+        },
+        {id: "foo3"}
+      ]
+    }
+    expect(FormUtil.findField(tree, "foo2")).to.eql({id: "foo2", content: "cont"})
+  })
+
+  describe("Finding first matching field, ignoring id's index suffix", function() {
+    it('returns object when ids match exactly', function() {
+      const tree = {
+        children: [
+          {
+            id: "foo1",
+            children: [
+              {id: "foo2", content: "cont"}
+            ]
+          },
+          {id: "foo3"}
+        ]
+      }
+      expect(FormUtil.findFirstFieldIgnoringIndex(tree, "foo2")).to.eql({id: "foo2", content: "cont"})
+    })
+
+    it('returns object when ids match, sans index suffix', function() {
+      const tree = {
+        children: [
+          {
+            id: "foo1",
+            children: [
+              {id: "foo2-2", content: "cont"}
+            ]
+          },
+          {id: "foo3"}
+        ]
+      }
+      expect(FormUtil.findFirstFieldIgnoringIndex(tree, "foo2")).to.eql({id: "foo2-2", content: "cont"})
+    })
+  })
+
+  describe("Finding index of first matching field, ignoring id's index suffix", function() {
+    it('returns object when ids match exactly', function() {
+      const tree = {
+        children: [
+          {
+            id: "foo1",
+            children: [
+              {id: "foo2", content: "cont"}
+            ]
+          },
+          {id: "foo3"}
+        ]
+      }
+      expect(FormUtil.findFieldIndex(tree, "foo2")).to.equal(4)
+    })
+
+    it('returns index when ids match, sans index suffix', function() {
+      const tree = {
+        children: [
+          {
+            id: "foo1",
+            children: [
+              {id: "foo2-2", content: "cont"}
+            ]
+          },
+          {id: "foo3"}
+        ]
+      }
+      expect(FormUtil.findFieldIndex(tree, "foo2")).to.equal(4)
+    })
+  })
+
+  it('returns first field having child with matching id', function() {
+    const tree = {
+      children: [
+        {
+          id: "foo1",
+          children: [
+            {id: "foo21", content: "cont"},
+            {id: "foo22", content: "cont"}
+          ]
+        }
+      ]
+    }
+    expect(FormUtil.findFieldWithDirectChild(tree, "foo22")).to.eql({
+      id: "foo1",
+      children: [
+        {id: "foo21", content: "cont"},
+        {id: "foo22", content: "cont"}
+      ]
+    })
+  })
+
+  it('returns id without index', function() {
+    expect(FormUtil.withOutIndex('foo.man-1.bar_zap-2')).to.equal('foo.man.bar_zap')
+  })
+
   describe('Deep-merging field trees', function() {
     it('merges two trees', function() {
       const a = {
