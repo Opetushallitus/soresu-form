@@ -20,12 +20,16 @@ export default class JsUtil {
     let found = false
     let object = null
     JsUtil.fastTraverse(objectOrArray, element => {
-      if (!found && nodePredicate(element)) {
-        found = true
-        object = element
-        return false
+      if (found) {
+        return false  // no need to search further
+      } else {
+        if (nodePredicate(element)) {
+          found = true
+          object = element
+          return false
+        }
+        return true  // keep searching
       }
-      return true  // keep searching
     })
     return object
   }
@@ -34,15 +38,16 @@ export default class JsUtil {
     let index = 0
     let found = false
     JsUtil.fastTraverse(objectOrArray, element => {
-      if (!found) {
+      if (found) {
+        return false  // no need to search further
+      } else {
         if (nodePredicate(element)) {
           found = true
           return false
-        } else {
-          index += 1
         }
+        index += 1
+        return true  // keep searching
       }
-      return true  // keep searching
     })
     return index
   }
