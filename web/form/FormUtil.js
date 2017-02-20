@@ -48,8 +48,7 @@ export default class FormUtil {
   }
 
   static findField(formContent, fieldId) {
-    const foundArray = JsUtil.flatFilter(formContent, n => { return n.id === fieldId })
-    return _.first(foundArray)
+    return JsUtil.findFirst(formContent, n => { return n.id === fieldId })
   }
 
   static findFieldsByFieldType(formContent, fieldType) {
@@ -57,8 +56,7 @@ export default class FormUtil {
   }
 
   static findFirstFieldIgnoringIndex(formContent, fieldId) {
-    const foundArray = JsUtil.flatFilter(formContent, FormUtil.idIsSameOrSameIfIndexIgnoredPredicate(fieldId))
-    return _.first(foundArray)
+    return JsUtil.findFirst(formContent, FormUtil.idIsSameOrSameIfIndexIgnoredPredicate(fieldId))
   }
 
   static findSubFieldIds(field) {
@@ -70,8 +68,7 @@ export default class FormUtil {
   }
 
   static findFieldWithDirectChild(formContent, childId) {
-    const parentsArray = JsUtil.flatFilter(formContent, n => { return _.some(n.children, c => { return c.id === childId })})
-    return _.first(parentsArray)
+    return JsUtil.findFirst(formContent, n => { return _.some(n.children, c => { return c.id === childId })})
   }
 
   static findGrowingParent(formContent, fieldId) {
