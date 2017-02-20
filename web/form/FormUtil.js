@@ -51,6 +51,10 @@ export default class FormUtil {
     return JsUtil.findFirst(formContent, n => { return n.id === fieldId })
   }
 
+  static findFieldByFieldType(formContent, fieldType) {
+    return JsUtil.findFirst(formContent, n => { return n.fieldType === fieldType })
+  }
+
   static findFieldsByFieldType(formContent, fieldType) {
     return JsUtil.flatFilter(formContent, n => { return n.fieldType === fieldType })
   }

@@ -18,6 +18,21 @@ describe('Form util', function() {
     expect(FormUtil.findField(tree, "foo2")).to.eql({id: "foo2", content: "cont"})
   })
 
+  it('returns first field matching type', function() {
+    const tree = {
+      children: [
+        {
+          id: "foo1",
+          children: [
+            {id: "foo2", fieldType: "vaBudget"}
+          ]
+        },
+        {id: "foo3"}
+      ]
+    }
+    expect(FormUtil.findFieldByFieldType(tree, "vaBudget")).to.eql({id: "foo2", fieldType: "vaBudget"})
+  })
+
   describe("Finding first matching field, ignoring id's index suffix", function() {
     it('returns object when ids match exactly', function() {
       const tree = {
