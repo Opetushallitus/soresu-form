@@ -25,9 +25,10 @@
       (compojure-ex/stringify-error data)))
 
 (defn describe-error [^Exception ex message request]
-  {:request-url (req/request-url request)
-   :message     message
-   :exception   ex})
+  {:request-method (:request-method request)
+   :request-url    (req/request-url request)
+   :message        message
+   :exception      ex})
 
 (defn exception-handler [^Exception ex data request]
   (log/error (describe-error ex (stringify-error ex data) request))
