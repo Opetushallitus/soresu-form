@@ -36,7 +36,7 @@ export default class FormStateLoop {
     _.forEach(fields, f => {
       const currentValueFromState = InputValueStorage.readValue(formSpecificationContent, values, f.id)
       if (currentValueFromState === "") {
-        const initialValueForField = determineInitialValue(f, initialValues)
+        const initialValueForField = determineInitialValue(f)
         if (!_.isUndefined(initialValueForField)) {
           InputValueStorage.writeValue(formSpecificationContent, values,
               { id: f.id,
