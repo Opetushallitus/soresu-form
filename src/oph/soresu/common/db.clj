@@ -56,16 +56,22 @@
        (catch IllegalArgumentException iae
          original-exception)))
 
-(defn clear-db! [ds-key schema-name]
+(defn clear-db-and-grant! [ds-key schema-name grant-user]
   (let [ds-key (keyword ds-key)]
     (if (:allow-db-clear? (:server config))
       (try (apply (partial jdbc/db-do-commands {:datasource (get-datasource ds-key)} true)
-                  [(str "drop schema if exists " schema-name " cascade")
-                   (str "create schema " schema-name) ])
+                  (concat [(str "drop schema if exists " schema-name " cascade")
+                           (str "create schema " schema-name)]
+                          (if grant-user
+                            [(str "grant usage on schema " schema-name " to " grant-user)
+                             (str "alter default privileges in schema " schema-name " grant select on tables to " grant-user)])))
            (catch Exception e (log/error (get-next-exception-or-original e) (.toString e))))
       (throw (RuntimeException. (str "Clearing database is not allowed! "
                                      "check that you run with correct mode. "
                                      "Current config name is " (config-name)))))))
+
+(defn clear-db! [ds-key schema-name]
+  (clear-db-and-grant! ds-key schema-name []))
 
 (defmacro exec [ds-key query params]
   `(jdbc/with-db-transaction [connection# {:datasource (get-datasource ~ds-key)}]
