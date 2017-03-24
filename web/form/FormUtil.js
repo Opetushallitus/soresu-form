@@ -113,6 +113,10 @@ export default class FormUtil {
     return !isNaN(parseFloat(n)) && isFinite(n)
   }
 
+  static roundDecimal(number, digits, roundingMode = "round") {
+    return Number(Math[roundingMode](Number(number + "e" + digits)) + "e-" + digits)
+  }
+
   static mergeDeepFieldTrees(tree, ...restTrees) {
     const copiedTree = _.cloneDeep(tree)
 
