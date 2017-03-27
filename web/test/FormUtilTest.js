@@ -158,6 +158,10 @@ describe('Form util', function() {
     })
   })
 
+  it('formats decimal', function() {
+    expect(FormUtil.formatDecimal(1.01)).to.equal('1,01')
+  })
+
   describe('Deep-merging field trees', function() {
     it('merges two trees', function() {
       const a = {

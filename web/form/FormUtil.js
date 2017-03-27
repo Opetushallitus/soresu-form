@@ -117,6 +117,10 @@ export default class FormUtil {
     return Number(Math[roundingMode](Number(number + "e" + digits)) + "e-" + digits)
   }
 
+  static formatDecimal(number, separator = ",") {
+    return ("" + number).replace(".", separator)
+  }
+
   static mergeDeepFieldTrees(tree, ...restTrees) {
     const copiedTree = _.cloneDeep(tree)
 
