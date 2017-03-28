@@ -23,7 +23,10 @@ export default class SyntaxValidator {
         }
         break;
       case 'moneyField':
-        MoneyValidator.validateMoneyField(value, validationErrors);
+        var moneyError = MoneyValidator.validateMoney(value);
+        if (moneyError) {
+          validationErrors.push(moneyError)
+        }
         break;
       case 'finnishBusinessIdField':
         const finnishBusinessIdError = SyntaxValidator.validateBusinessId(value)
