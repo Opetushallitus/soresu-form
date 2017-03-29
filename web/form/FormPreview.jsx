@@ -57,25 +57,27 @@ export default class FormPreview extends React.Component {
   static createWrapperComponent(renderFieldFunction, controller, editorController, state, infoElementValues, field, fieldProperties, renderingParameters) {
     const values = state.saveStatus.values
     const fields = state.form.content
+
+    const resolveChildRenderingParameters = childIndex => {
+      const result = _.isObject(renderingParameters) ? _.cloneDeep(renderingParameters) : {}
+      result.childIndex = childIndex
+      const isFirstChild = childIndex === 0
+      if (field.params && field.params.showOnlyFirstLabels === true && !isFirstChild) {
+        result.hideLabels = true
+      }
+      const existingInputValue = InputValueStorage.readValue(fields, values, field.children[childIndex].id)
+      if (_.isEmpty(existingInputValue)) {
+        result.valueIsEmpty = true
+      }
+      return result
+    }
+
     const children = []
     for (var i = 0; i < field.children.length; i++) {
-      function resolveChildRenderingParameters(childIndex) {
-        const result = _.isObject(renderingParameters) ? _.cloneDeep(renderingParameters) : {}
-        result.childIndex = childIndex
-        const isFirstChild = childIndex === 0
-        if (field.params && field.params.showOnlyFirstLabels === true && !isFirstChild) {
-          result.hideLabels = true
-        }
-        const existingInputValue = InputValueStorage.readValue(fields, values, field.children[childIndex].id)
-        if (_.isEmpty(existingInputValue)) {
-          result.valueIsEmpty = true
-        }
-        return result
-      }
-
       const childRenderingParameters = resolveChildRenderingParameters(i)
       children.push(renderFieldFunction(controller, editorController, state, infoElementValues, field.children[i], childRenderingParameters))
     }
+
     return <WrapperPreviewComponent {...fieldProperties}
         children={children}
         renderingParameters={renderingParameters}
