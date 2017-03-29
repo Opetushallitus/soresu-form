@@ -27,7 +27,7 @@ export default class Form extends React.Component {
         htmlId: htmlId,
         field: field,
         translations: state.configuration.translations,
-        customProperties: controller.getCustomComponentProperties(state)
+        customProps: controller.getCustomComponentProperties(state)
       }
 
       if (field.fieldClass == "infoElement") {
@@ -63,9 +63,7 @@ export default class Form extends React.Component {
       const existingInputValue = InputValueStorage.readValue(fields, values, field.id)
       const value = _.isUndefined(existingInputValue) ? "" : existingInputValue
       const fieldErrors = _.get(validationErrors, field.id, [])
-      const customProperties = controller.getCustomComponentProperties(state);
       return <FormComponent {...extendedProperties}
-                            customProps={customProperties}
                             validationErrors={fieldErrors}
                             value={value}
                             onChange={controller.componentOnChangeListener}
@@ -100,10 +98,8 @@ export default class Form extends React.Component {
         children.push(renderField(field.children[i], resolveChildRenderingParameters(i)))
       }
 
-      const customProperties = controller.getCustomComponentProperties(state);
       return <WrapperComponent {...fieldProperties}
                                children={children}
-                               customProps={customProperties}
                                answersObject={values} />
     }
   }
