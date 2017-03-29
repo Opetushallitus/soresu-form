@@ -36,11 +36,10 @@ export default class FormPreview extends React.Component {
     const fields = state.form.content
     var existingInputValue = (renderingParameters && !_.isUndefined(renderingParameters.overridingInputValue)) ? renderingParameters.overridingInputValue : InputValueStorage.readValue(fields, values, field.id)
     const value = _.isUndefined(existingInputValue) ? "" : existingInputValue
-    const customProperties = controller.getCustomComponentProperties(state)
     return <FormPreviewComponent {...fieldProperties}
         value={value}
         renderingParameters={renderingParameters}
-        customProps={customProperties}
+        customProps={controller.getCustomComponentProperties(state)}
         attachment={attachment}
         attachmentDownloadUrl={attachmentDownloadUrl}/>
   }
@@ -77,12 +76,11 @@ export default class FormPreview extends React.Component {
       const childRenderingParameters = resolveChildRenderingParameters(i)
       children.push(renderFieldFunction(controller, editorController, state, infoElementValues, field.children[i], childRenderingParameters))
     }
-    const customProperties = controller.getCustomComponentProperties(state)
     return <WrapperPreviewComponent {...fieldProperties}
         children={children}
         renderingParameters={renderingParameters}
         controller={controller}
-        customProps={customProperties}
+        customProps={controller.getCustomComponentProperties(state)}
         answersObject={values} />
   }
 

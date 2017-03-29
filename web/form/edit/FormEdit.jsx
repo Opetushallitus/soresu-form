@@ -14,13 +14,12 @@ export default class FormEdit extends React.Component {
 
   static createFormEditComponent(controller, formEditorController, state, field, fieldProperties, renderingParameters) {
     const translations = state.configuration.translations
-    const customProperties = controller.getCustomComponentProperties(state)
     return <FormEditComponent {...fieldProperties}
         renderingParameters={renderingParameters}
         translations={translations}
         controller={controller}
         formEditorController={formEditorController}
-        customProps={customProperties}
+        customProps={controller.getCustomComponentProperties(state)}
         attachment={state.saveStatus.attachments[field.id]}
         attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field) }
         koodistos={state.koodistos}
