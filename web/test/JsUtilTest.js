@@ -22,6 +22,21 @@ describe('Js util', function() {
     const index = JsUtil.findIndexOfFirst(Tree, el => el.token === Token)
     expect(index).to.equal(TraversingStepsToToken - 1)
   })
+
+  describe('finding json node containing id', function() {
+    it('finds node', function() {
+      const toBeFound = {id: 'id-b', children: [{id: 'id-b1'}, {id: 'id-b2'}]}
+      const tree = {a: {id: 'id-a'}, b: toBeFound}
+      const node = JsUtil.findJsonNodeContainingId(tree, 'id-b2')
+      expect(node).to.equal(toBeFound)
+    })
+
+    it('throws exception if json tree contains searched id in different subtrees', function() {
+      const tree = {a: {id: 'id'}, b: {id: 'id'}}
+      const expectedMsg = 'Cannot handle case with 2 parents ([{"id":"id"},{"id":"id"}]), expected a single one. fieldId=id'
+      expect(function() { JsUtil.findJsonNodeContainingId(tree, 'id') }).to.throw(expectedMsg)
+    })
+  })
 })
 
 const Token = 'find me'
