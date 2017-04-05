@@ -1,4 +1,4 @@
-(ns oph.soresu.form.validation_spec
+(ns oph.soresu.form.validation-spec
   (:require
     [speclj.core :refer :all]
     [oph.soresu.form.validation :refer :all]))

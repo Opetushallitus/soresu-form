@@ -1,4 +1,4 @@
-(ns oph.soresu.common_mocha-spec
+(ns oph.soresu.form.common-mocha-spec
   (:use [clojure.tools.trace]
         [clojure.java.shell :only [sh]]
         [clojure.string :only [split join]])

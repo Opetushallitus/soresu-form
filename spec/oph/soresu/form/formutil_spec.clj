@@ -1,4 +1,4 @@
-(ns oph.soresu.form.formutil_spec
+(ns oph.soresu.form.formutil-spec
   (:require
     [speclj.core :refer :all]
     [oph.soresu.form.formutil :refer :all]))

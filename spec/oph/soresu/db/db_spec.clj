@@ -1,4 +1,4 @@
-(ns oph.soresu.db.db_spec
+(ns oph.soresu.db.db-spec
   (:require [speclj.core :refer :all]
             [oph.soresu.common.db :refer :all]))
 
