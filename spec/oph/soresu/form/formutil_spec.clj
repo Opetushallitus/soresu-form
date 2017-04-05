@@ -90,6 +90,10 @@
         (should= nil (find-result "coordination-costs-row.description" found-mappings))
         (should= "Field with initial value of zero" (find-result "coordination-costs-row.amount" found-mappings))
         (should= "Something to do with EU" (find-result "eu-programs-income-row.amount" found-mappings))
-        (should= 8 (count found-mappings)))))
+        (should= 8 (count found-mappings))))
+
+  (it "Finds fields with predicate"
+      (let [found (map :id (find-fields* (:content test-form) #(re-matches #".*-income.*\.amount" (:id %))))]
+        (should= '("project-incomes-row.amount" "eu-programs-income-row.amount") found))))
 
 (run-specs)
