@@ -71,7 +71,7 @@
                                      "Current config name is " (config-name)))))))
 
 (defn clear-db! [ds-key schema-name]
-  (clear-db-and-grant! ds-key schema-name []))
+  (clear-db-and-grant! ds-key schema-name nil))
 
 (defmacro exec [ds-key query params]
   `(jdbc/with-db-transaction [connection# {:datasource (get-datasource ~ds-key)}]
