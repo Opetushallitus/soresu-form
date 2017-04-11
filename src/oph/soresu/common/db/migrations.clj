@@ -9,8 +9,9 @@
           [org.flywaydb.core.api.migration MigrationInfoProvider]
           [org.flywaydb.core.api MigrationVersion]))
 
-(defn migrate [ds-key & migration-paths]
-  (let [schema-name (-> config ds-key :schema)
+(defn migrate [ds-key-name & migration-paths]
+  (let [ds-key (keyword ds-key-name)
+        schema-name (-> config ds-key :schema)
         flyway (doto (Flyway.)
                  (.setSchemas (into-array String [schema-name]))
                  (.setDataSource (db/get-datasource ds-key))
