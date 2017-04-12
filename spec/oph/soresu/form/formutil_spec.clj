@@ -93,7 +93,7 @@
         (should= 8 (count found-mappings))))
 
   (it "Finds fields with predicate"
-      (let [found (map :id (find-fields* (:content test-form) #(re-matches #".*-income.*\.amount" (:id %))))]
+      (let [found (map :id (find-fields* #(re-matches #".*-income.*\.amount" (:id %)) (:content test-form)))]
         (should= '("project-incomes-row.amount" "eu-programs-income-row.amount") found))))
 
 (run-specs)
