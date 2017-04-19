@@ -1,18 +1,13 @@
-(ns oph.soresu.form.common-mocha-spec
+(ns oph.soresu.form.mocha-spec
   (:use [clojure.tools.trace]
-        [clojure.java.shell :only [sh]]
-        [clojure.string :only [split join]])
+        [clojure.java.shell :only [sh]])
   (:require [speclj.core :refer :all]
             [environ.core :refer [env]]))
 
-(defn is-test-output? [line]
-  (or (.contains line "testcase") (.contains line "testsuite")))
+(describe "soresu Mocha unit tests"
+  (tags :mocha)
 
-(describe "soresu Mocha unit tests /"
-
-  (tags :js-unit)
-
-  (it "are successful"
+  (it "succeeds"
       (let [path    (env :path)
             results (sh "./node_modules/mocha/bin/mocha"
                         "--compilers" "js:babel/register"
@@ -20,7 +15,6 @@
                         "web/test/*Test.js"
                         :env {"MOCHA_FILE" "target/junit-mocha-js-unit.xml"
                               "PATH" path})]
-        (println (:out results))
-        (.println System/err (:err results))
         (should= 0 (:exit results)))))
+
 (run-specs)
