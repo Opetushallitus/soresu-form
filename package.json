@@ -44,7 +44,7 @@
   "private": true,
   "scripts": {
     "test": "mocha --compilers js:babel/register -R spec ./web/test/*.js",
-    "test-junit": "export MOCHA_FILE=target/junit-mocha-js-unit.xml && mocha --compilers js:babel/register -R spec ./web/test/*.js --reporter mocha-junit-reporter",
-    "watch-unittest": "mocha --watch --compilers js:babel/register web/test/*Test.js"
+    "test-junit": "export MOCHA_FILE=target/junit-mocha-js-unit.xml && mocha --compilers js:babel/register -R spec --reporter mocha-junit-reporter ./web/test/*.js",
+    "watch-test": "mocha --watch --compilers js:babel/register web/test/*Test.js"
   }
 }
