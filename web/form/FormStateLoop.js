@@ -6,7 +6,7 @@ import HttpUtil from 'va-common/web/HttpUtil'
 
 import InputValueStorage from './InputValueStorage'
 import JsUtil from './JsUtil'
-import FormUtil from './FormUtil'
+import MathUtil from './MathUtil'
 import FormStateTransitions from './FormStateTransitions'
 import FormRules from './FormRules'
 import Translator from './Translator'
@@ -25,7 +25,7 @@ export default class FormStateLoop {
         if (_.isObject(field.initialValue)) {
           const translator = new Translator(field)
           return translator.translate("initialValue", lang)
-        } else if (FormUtil.isNumeric(field.initialValue)) {
+        } else if (MathUtil.isNumeric(field.initialValue)) {
           return field.initialValue.toString()
         }
         return undefined

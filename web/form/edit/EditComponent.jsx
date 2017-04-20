@@ -3,9 +3,9 @@ import ClassNames from 'classnames'
 import slug from 'speakingurl'
 import _ from 'lodash'
 
-import FormEditorController from './FormEditController.js'
-import FormUtil from '../FormUtil.js'
-import SyntaxValidator from '../SyntaxValidator.js'
+import FormEditorController from './FormEditController'
+import MathUtil from '../MathUtil'
+import SyntaxValidator from '../SyntaxValidator'
 
 export class EditComponent extends React.Component {
 
@@ -244,7 +244,7 @@ export class TextFieldEdit extends FieldEditComponent {
     const formEditorController = this.props.formEditorController
     const editMaxLength = e => {
       const getter = f => f.params
-      const value = FormUtil.isNumeric(e.target.value) ? parseInt(e.target.value) : undefined
+      const value = MathUtil.isNumeric(e.target.value) ? parseInt(e.target.value) : undefined
       formEditorController.editField(field.id, getter, "maxlength", value)
     }
     const maxLengthEdit = (

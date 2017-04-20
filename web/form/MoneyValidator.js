@@ -1,7 +1,7 @@
-import FormUtil from './FormUtil.js'
+import MathUtil from './MathUtil'
 
 export default class MoneyValidator {
   static validateMoney(input) {
-    return /^[0-9]*$/.test(input) && FormUtil.isNumeric(input) ? undefined : { error: "money" }
+    return /^[0-9]*$/.test(input) && MathUtil.isNumeric(input) ? undefined : { error: "money" }
   }
 }
