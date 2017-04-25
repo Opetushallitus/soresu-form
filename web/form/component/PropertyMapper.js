@@ -14,7 +14,7 @@ export class DefaultPropertyMapper {
   }
 }
 
-class CommonPropertyMapper extends DefaultPropertyMapper {
+class CommonPropertyMapper {
   static map(props) {
     const field = props.field
     return {
@@ -27,7 +27,7 @@ class CommonPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-class FieldPropertyMapper extends DefaultPropertyMapper {
+class FieldPropertyMapper {
   static map(props) {
     const commonProps = CommonPropertyMapper.map(props)
     const field = props.field
@@ -40,7 +40,7 @@ class FieldPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-export class FieldOnChangePropertyMapper extends DefaultPropertyMapper {
+export class FieldOnChangePropertyMapper {
   static map(props) {
     const commonProps = FieldPropertyMapper.map(props)
     const field = props.field
@@ -54,7 +54,7 @@ export class FieldOnChangePropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-export class TextFieldPropertyMapper extends CommonPropertyMapper {
+export class TextFieldPropertyMapper {
   static map(props) {
     const field = props.field
     const commonProps = FieldOnChangePropertyMapper.map(props)
@@ -67,7 +67,7 @@ export class TextFieldPropertyMapper extends CommonPropertyMapper {
   }
 }
 
-export class UpperCaseTextFieldPropertyMapper extends CommonPropertyMapper {
+export class UpperCaseTextFieldPropertyMapper {
   static map(props) {
     const field = props.field
     const commonProps = TextFieldPropertyMapper.map(props)
@@ -78,7 +78,7 @@ export class UpperCaseTextFieldPropertyMapper extends CommonPropertyMapper {
   }
 }
 
-export class TrimmingTextFieldPropertyMapper extends TextFieldPropertyMapper {
+export class TrimmingTextFieldPropertyMapper {
   static map(props) {
     const field = props.field
     const commonProps = TextFieldPropertyMapper.map(props)
@@ -89,7 +89,7 @@ export class TrimmingTextFieldPropertyMapper extends TextFieldPropertyMapper {
   }
 }
 
-export class OptionFieldPropertyMapper extends DefaultPropertyMapper {
+export class OptionFieldPropertyMapper {
   static map(props) {
     const commonProps = FieldOnChangePropertyMapper.map(props)
     return _.extend(commonProps, {
@@ -98,7 +98,7 @@ export class OptionFieldPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-export class DropdownFieldPropertyMapper extends OptionFieldPropertyMapper {
+export class DropdownFieldPropertyMapper {
   static map(props) {
     const commonProps = OptionFieldPropertyMapper.map(props)
     return _.extend(commonProps, {
@@ -107,7 +107,7 @@ export class DropdownFieldPropertyMapper extends OptionFieldPropertyMapper {
   }
 }
 
-export class MultipleOptionFieldOnChangePropertyMapper extends FieldPropertyMapper {
+export class MultipleOptionFieldOnChangePropertyMapper {
   static map(props) {
     const optionProps = OptionFieldPropertyMapper.map(props)
     const field = props.field
@@ -128,7 +128,7 @@ export class MultipleOptionFieldOnChangePropertyMapper extends FieldPropertyMapp
   }
 }
 
-export class ButtonPropertyMapper extends DefaultPropertyMapper {
+export class ButtonPropertyMapper {
   static map(props) {
     const commonProps = FieldPropertyMapper.map(props)
     const controller = props.controller
@@ -139,7 +139,7 @@ export class ButtonPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-export class AttachmentDisplayPropertyMapper extends DefaultPropertyMapper {
+export class AttachmentDisplayPropertyMapper {
   static map(props) {
     const commonProps = FieldPropertyMapper.map(props)
     const downloadUrl = props.attachmentDownloadUrl
@@ -170,7 +170,7 @@ export class AttachmentFieldPropertyMapper {
   }
 }
 
-export class InfoElementPropertyMapper extends DefaultPropertyMapper {
+export class InfoElementPropertyMapper {
   static map(props) {
     const commonProps = CommonPropertyMapper.map(props)
     return _.extend(commonProps, {
@@ -179,7 +179,7 @@ export class InfoElementPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-export class LinkPropertyMapper extends InfoElementPropertyMapper {
+export class LinkPropertyMapper {
   static map(props) {
     const field = props.field
     const commonProps = InfoElementPropertyMapper.map(props)
@@ -189,7 +189,7 @@ export class LinkPropertyMapper extends InfoElementPropertyMapper {
   }
 }
 
-export class AccordionElementPropertyMapper extends DefaultPropertyMapper {
+export class AccordionElementPropertyMapper {
   static map(props) {
     const commonProps = InfoElementPropertyMapper.map(props)
     const field = props.field
@@ -200,7 +200,7 @@ export class AccordionElementPropertyMapper extends DefaultPropertyMapper {
   }
 }
 
-export class KoodistoFieldPropertyMapper extends TextFieldPropertyMapper {
+export class KoodistoFieldPropertyMapper {
   static map(props) {
     return TextFieldPropertyMapper.map(props)
   }
