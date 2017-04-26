@@ -2,7 +2,13 @@ import Big from 'big.js'
 
 export default class MathUtil {
   static decimalShareRoundedUpOf(fraction, total) {
-    return Number(Big(fraction).times(total).round(0, 3))
+    const multiplied = Big(fraction).times(total)
+
+    // detect rounding error: is the value in `multiplied` coercable to an integer?
+    const n1 = Number(multiplied)
+    const n2 = parseInt(multiplied, 10)
+
+    return n1 === n2 ? n1 : Number(multiplied.round(0, 3))
   }
 
   static ratioShareRoundedUpOf(ratio, total) {

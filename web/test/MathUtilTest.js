@@ -6,8 +6,18 @@ describe('Math utilities', function() {
     expect(MathUtil.decimalShareRoundedUpOf(0.17, 10900)).to.eql(1853)
   })
 
-  it('keeps precision when calculating ratio shares, rounding up', function() {
-    expect(MathUtil.ratioShareRoundedUpOf({nominator: 17, denominator: 100}, 10900)).to.eql(1853)
+  describe('Calculating ratio shares', function() {
+    it('rounds up to nearest integer', function() {
+      expect(MathUtil.ratioShareRoundedUpOf({nominator: 17, denominator: 100}, 6034)).to.eql(1026)
+    })
+
+    it('keeps precision when calculating ratio shares', function() {
+      expect(MathUtil.ratioShareRoundedUpOf({nominator: 17, denominator: 100}, 10900)).to.eql(1853)
+    })
+
+    it('returns nominator when total is the same as the denominator', function() {
+      expect(MathUtil.ratioShareRoundedUpOf({nominator: 21, denominator: 3400}, 3400)).to.eql(21)
+    })
   })
 
   it('keeps precision when calculating percentage shares, rounding up', function() {
