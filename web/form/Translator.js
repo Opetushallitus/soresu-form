@@ -5,19 +5,27 @@ export default class Translator {
 
   getValue(key, lang, defaultValue) {
     const values = this.translations[key]
+
     if (values instanceof Object) {
-      var value = values[lang]
+      const value = values[lang]
+
       if (typeof value !== 'undefined') {
         return value
       }
-      console.error("No translations found for '" + key + "' in lang '" + lang + "' from:" + JSON.stringify(values))
-      for (var key in values) {
-        if (values[key] !== 'undefined') {
-          return values[key]
+
+      for (const altkey in values) {
+        const altvalue = values[altkey]
+
+        if (typeof altvalue !== 'undefined') {
+          console.error(`No translations found for "${key}" (used fallback "${altkey}") in lang "${lang}" from:\n` + JSON.stringify(values))
+
+          return altvalue
         }
       }
     }
-    console.error("No translations found for '" + key + "' from:" + JSON.stringify(this.translations))
+
+    console.error(`No translations found for "${key}" in lang "${lang}" from:\n` + JSON.stringify(this.translations))
+
     return defaultValue ? defaultValue : key
   }
 
