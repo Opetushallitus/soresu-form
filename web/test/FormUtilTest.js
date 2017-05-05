@@ -118,6 +118,38 @@ describe('Form util', function() {
     })
   })
 
+  it('returns the growing fieldset by the id of a child element', function() {
+    const calcId = "alphakoulutusosiot.alphakoulutusosio-1.koulutettavapaivat"
+    const growingFieldSet = {
+      id: "koulutusosiot",
+      children: [
+        {
+          id: "koulutusosio-1",
+          children: [
+            {
+              id: calcId,
+              fieldType: "vaTraineeDayCalculator",
+              fieldClass: "formField"
+            }
+          ],
+          fieldType: "growingFieldsetChild",
+          fieldClass: "wrapperElement"
+        }
+      ],
+      fieldType: "growingFieldset",
+      fieldClass: "wrapperElement"
+    }
+
+    const tree = [
+      {
+        id: "koulutusosiot-theme",
+        children: [growingFieldSet]
+      }
+    ]
+
+    expect(FormUtil.findGrowingParent(tree, calcId)).to.equal(growingFieldSet)
+  })
+
   it('returns id without index', function() {
     expect(FormUtil.withOutIndex('foo.man-1.bar_zap-2')).to.equal('foo.man.bar_zap')
   })
