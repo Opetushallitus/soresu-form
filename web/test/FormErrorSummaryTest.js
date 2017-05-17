@@ -19,7 +19,7 @@ describe('Form full of errors', function() {
 
   it('gets its summary calculated', function() {
     const fieldsErrorsAndClosestParents = FormErrorSummary.resolveFieldsErrorsAndClosestParents(validationErrors, formContent)
-    assert.lengthOf(fieldsErrorsAndClosestParents, 53)
+    assert.lengthOf(fieldsErrorsAndClosestParents, 54)
     const privateFinancingIncomeEntry = JsUtil.flatFilter(fieldsErrorsAndClosestParents, n => { return n && n.field && n.field.id === 'private-financing-income-row.amount' })[0]
     assert.equal(privateFinancingIncomeEntry.closestParent.id, 'private-financing-income-row', JSON.stringify(privateFinancingIncomeEntry))
     assert.equal(privateFinancingIncomeEntry.errors[0].error, 'required', JSON.stringify(privateFinancingIncomeEntry))

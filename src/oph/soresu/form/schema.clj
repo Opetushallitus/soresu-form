@@ -26,7 +26,8 @@
                                     "radioButton"
                                     "checkboxButton"
                                     "namedAttachment"
-                                    "koodistoField"]
+                                    "koodistoField"
+                                    "tableField"]
         form-element-types (into custom-form-element-types default-form-element-types)
         default-wrapper-element-types ["theme" "fieldset" "growingFieldset" "growingFieldsetChild" ]
         wrapper-element-types (into custom-wrapper-element-types default-wrapper-element-types)
@@ -74,6 +75,7 @@
                            :value (s/either s/Str
                                             s/Int
                                             [s/Str]
+                                            [[s/Str]]
                                             [(s/recursive #'Answer)])
                            :fieldType (apply s/enum all-answer-element-types)}))
 

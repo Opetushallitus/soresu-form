@@ -6,11 +6,15 @@ import MoneyValue from './MoneyValue.jsx'
 import OptionValue from './OptionValue.jsx'
 import MultipleOptionValue from './MultipleOptionValue.jsx'
 import AttachmentPreview from './AttachmentPreview.jsx'
-import { TextFieldPropertyMapper,
-         OptionFieldPropertyMapper,
-         MultipleOptionFieldOnChangePropertyMapper,
-         ButtonPropertyMapper,
-  AttachmentDisplayPropertyMapper} from '../component/PropertyMapper.js'
+import TableValue from './TableValue.jsx'
+import {
+  TextFieldPropertyMapper,
+  OptionFieldPropertyMapper,
+  MultipleOptionFieldOnChangePropertyMapper,
+  ButtonPropertyMapper,
+  AttachmentDisplayPropertyMapper,
+} from '../component/PropertyMapper'
+import TableValuePropertyMapper from './TableValuePropertyMapper'
 
 export default class FormPreviewComponent extends React.Component {
   constructor(props) {
@@ -27,10 +31,11 @@ export default class FormPreviewComponent extends React.Component {
       "dropdown": OptionValue,
       "radioButton": OptionValue,
       "checkboxButton": MultipleOptionValue,
-      "namedAttachment": AttachmentPreview
+      "namedAttachment": AttachmentPreview,
+      "tableField": TableValue
     }
 
-     const fieldPropertyMapping = {
+    const fieldPropertyMapping = {
       "textField": TextFieldPropertyMapper,
       "textArea": TextFieldPropertyMapper,
       "nameField": TextFieldPropertyMapper,
@@ -42,7 +47,8 @@ export default class FormPreviewComponent extends React.Component {
       "dropdown": OptionFieldPropertyMapper,
       "radioButton": OptionFieldPropertyMapper,
       "checkboxButton": MultipleOptionFieldOnChangePropertyMapper,
-      "namedAttachment": AttachmentDisplayPropertyMapper
+      "namedAttachment": AttachmentDisplayPropertyMapper,
+      "tableField": TableValuePropertyMapper
     }
 
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: fieldTypeMapping, fieldPropertyMapperMapping: fieldPropertyMapping})

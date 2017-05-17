@@ -238,4 +238,21 @@ describe('Input value storage', function() {
       verboseAssert.deepEqual(firstOtherOrganizationValue.value[1].fieldType, "emailField")
     })
   })
+
+  describe('table field value', function() {
+    const tableValue = [['b', '20', '200'], ['a', '10', '100'], ['c', '30', '300']]
+
+    it('writes and reads', function() {
+      writeValue(formContent, answersObject, 'art-courses-plan', tableValue)
+
+      const expectedAnswer = {
+        key: 'art-courses-plan',
+        value: [['b', '20', '200'], ['a', '10', '100'], ['c', '30', '300']],
+        fieldType: 'tableField'
+      }
+
+      assert.deepEqual(answersObject, {value: [expectedAnswer]})
+      assert.deepEqual(InputValueStorage.readValue(null, answersObject, 'art-courses-plan'), expectedAnswer.value)
+    })
+  })
 })

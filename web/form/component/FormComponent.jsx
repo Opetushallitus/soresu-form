@@ -14,15 +14,19 @@ import RadioButton from './RadioButton.jsx'
 import CheckboxButton from './CheckboxButton.jsx'
 import AttachmentField from './AttachmentField.jsx'
 import KoodistoField from './KoodistoField.jsx'
-import { TextFieldPropertyMapper,
-         TrimmingTextFieldPropertyMapper,
-         UpperCaseTextFieldPropertyMapper,
-         OptionFieldPropertyMapper,
-         DropdownFieldPropertyMapper,
-         MultipleOptionFieldOnChangePropertyMapper,
-         ButtonPropertyMapper,
-         AttachmentFieldPropertyMapper,
-         KoodistoFieldPropertyMapper} from './PropertyMapper'
+import TableField from './TableField.jsx'
+import {
+  TextFieldPropertyMapper,
+  TrimmingTextFieldPropertyMapper,
+  UpperCaseTextFieldPropertyMapper,
+  OptionFieldPropertyMapper,
+  DropdownFieldPropertyMapper,
+  MultipleOptionFieldOnChangePropertyMapper,
+  ButtonPropertyMapper,
+  AttachmentFieldPropertyMapper,
+  KoodistoFieldPropertyMapper,
+} from './PropertyMapper'
+import TableFieldPropertyMapper from './TableFieldPropertyMapper'
 
 export default class FormComponent extends React.Component {
   constructor(props) {
@@ -40,7 +44,8 @@ export default class FormComponent extends React.Component {
       "radioButton": RadioButton,
       "checkboxButton": CheckboxButton,
       "namedAttachment": AttachmentField,
-      "koodistoField": KoodistoField
+      "koodistoField": KoodistoField,
+      "tableField": TableField
     }
     const fieldPropertyMapperMapping = {
       "textField": TextFieldPropertyMapper,
@@ -55,7 +60,8 @@ export default class FormComponent extends React.Component {
       "radioButton": OptionFieldPropertyMapper,
       "checkboxButton": MultipleOptionFieldOnChangePropertyMapper,
       "namedAttachment": AttachmentFieldPropertyMapper,
-      "koodistoField": KoodistoFieldPropertyMapper
+      "koodistoField": KoodistoFieldPropertyMapper,
+      "tableField": TableFieldPropertyMapper
     }
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: fieldTypeMapping, fieldPropertyMapperMapping: fieldPropertyMapperMapping })
   }

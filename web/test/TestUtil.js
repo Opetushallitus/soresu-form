@@ -182,6 +182,74 @@ export default class TestUtil {
       },
       {
         "fieldClass": "wrapperElement",
+        "id": "courses-plan-info",
+        "fieldType": "theme",
+        "children": [
+          {
+            "fieldClass": "wrapperElement",
+            "id": "art-courses-plan-fieldset",
+            "fieldType": "fieldset",
+            "children": [
+              {
+                "fieldClass": "infoElement",
+                "id": "art-courses-plan-info",
+                "fieldType": "p",
+                "text": {
+                  "fi": "Täytä suunnitellut taidekurssit",
+                  "sv": "TODO: Täytä suunnitellut taidekurssit"
+                }
+              },
+              {
+                "fieldClass": "formField",
+                "helpText": {
+                  "fi": "art-taulukkoapu",
+                  "sv": "TODO: art-taulukkoapu"
+                },
+                "params": {
+                  "columns": [
+                    {
+                      "title": {
+                        "fi": "Oppilaitos",
+                        "sv": "TODO: Oppilaitos"
+                      },
+                      "valueType": "string"
+                    },
+                    {
+                      "title": {
+                        "fi": "Opiskelijoita",
+                        "sv": "TODO: Opiskelijoita"
+                      },
+                      "valueType": "integer",
+                      "calculateSum": true
+                    },
+                    {
+                      "title": {
+                        "fi": "Tuntimäärä",
+                        "sv": "TODO: Tuntimäärä"
+                      },
+                      "valueType": "decimal",
+                      "calculateSum": true
+                    }
+                  ]
+                },
+                "label": {
+                  "fi": "Kurssit",
+                  "sv": "Kursen"
+                },
+                "id": "art-courses-plan",
+                "required": true,
+                "fieldType": "tableField"
+              }
+            ]
+          }
+        ],
+        "label": {
+          "fi": "Suunnittelut kurssit",
+          "sv": "TODO: Suunnittellut kurssit"
+        }
+      },
+      {
+        "fieldClass": "wrapperElement",
         "id":"project-info",
         "fieldType":"theme",
         "label":{

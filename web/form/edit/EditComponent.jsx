@@ -33,6 +33,7 @@ export class EditComponent extends React.Component {
       "growingFieldset": "Kasvava kenttälista",
       "growingFieldsetChild": "Kasvavan kenttälistan rivi",
       "koodistoField": "Koodistokenttä",
+      "tableField": "Taulukkokenttä",
       "vaFocusAreas": "Painopistealueet",
       "vaEmailNotification": "Sähköposti, johon lähetetään tiedoksi",
       "vaProjectDescription": "Tavoite-Toiminta-Tulos",

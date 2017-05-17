@@ -1,9 +1,20 @@
 import _ from 'lodash'
 import React from 'react'
 import ComponentFactory from '../ComponentFactory.js'
-import {TextFieldEdit,TextAreaEdit,MultipleChoiceEdit,LinkEdit} from './EditComponent.jsx'
+import {
+  TextFieldEdit,
+  TextAreaEdit,
+  MultipleChoiceEdit,
+  LinkEdit
+} from './EditComponent.jsx'
 import KoodistoFieldEdit from './KoodistoFieldEdit.jsx'
-import {TextFieldPropertyMapper, LinkPropertyMapper, KoodistoFieldPropertyMapper} from '../component/PropertyMapper.js'
+import TableValue from '../preview/TableValue.jsx'
+import {
+  TextFieldPropertyMapper,
+  LinkPropertyMapper,
+  KoodistoFieldPropertyMapper,
+} from '../component/PropertyMapper'
+import TableValuePropertyMapper from '../preview/TableValuePropertyMapper'
 
 export default class FormEditComponent extends React.Component {
 
@@ -15,7 +26,8 @@ export default class FormEditComponent extends React.Component {
       "radioButton": MultipleChoiceEdit,
       "checkboxButton": MultipleChoiceEdit,
       "dropdown": MultipleChoiceEdit,
-      "koodistoField": KoodistoFieldEdit
+      "koodistoField": KoodistoFieldEdit,
+      "tableField": TableValue
     }
   }
 
@@ -25,7 +37,8 @@ export default class FormEditComponent extends React.Component {
       "textField": TextFieldEditPropertyMapper,
       "textArea": TextFieldEditPropertyMapper,
       "link": LinkEditPropertyMapper,
-      "koodistoField": KoodistoFieldEditPropertyMapper
+      "koodistoField": KoodistoFieldEditPropertyMapper,
+      "tableField": TableValuePropertyMapper
     }
 
     this.componentFactory = new ComponentFactory({ fieldTypeMapping: FormEditComponent.fieldTypeMapping(), fieldPropertyMapperMapping: fieldPropertyMapping})

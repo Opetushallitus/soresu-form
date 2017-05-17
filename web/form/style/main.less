@@ -392,6 +392,83 @@ section.soresu-theme {
   }
 }
 
+.soresu-table {
+  @content-padding: 4px 10px;
+
+  border-collapse: separate;
+  border-spacing: 20px;
+
+  div {
+    display: block;  // override leaking `.soresu-fieldset div` rule
+  }
+
+  &--preview {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  &__column-title-cell {
+    text-align: left;
+    &--number {
+      text-align: right;
+    }
+    &--preview {
+      padding: @content-padding;
+    }
+  }
+
+  &__row-title-cell {
+    text-align: right;
+    &--preview {
+      padding: @content-padding;
+    }
+  }
+
+  &__value-cell {
+    input {
+      width: 140px;
+      text-align: left;
+      padding: 5px 9px;
+      border: 1px solid @middle-gray;
+    }
+    &--number {
+      text-align: right;
+      input {
+        text-align: right;
+      }
+    }
+    &--placeholder input {
+      border-color: @lightish-gray;
+    }
+    &--preview {
+      padding: @content-padding;
+      border-bottom: 1px solid @middle-gray;
+    }
+  }
+
+  &__sum-cell {
+    padding: @content-padding;
+    &--number {
+      border-bottom: 1px solid @middle-gray;
+      text-align: right;
+    }
+    &--preview {
+      border-bottom: 1px solid @middle-gray;
+    }
+  }
+
+  &__cell-positioner {
+    width: 100%;
+    position: relative;
+  }
+
+  &__remove-row-button {
+    position: absolute;
+    right: -30px;
+    top: 8px;
+  }
+}
+
 div.soresu-attachment-input-field {
   button.soresu-remove {
     position: relative;
