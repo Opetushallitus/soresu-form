@@ -16,13 +16,17 @@ function writeValue(form, answers, fieldId, value) {
   })
 }
 
-describe('Form input that is', function() {
-  beforeEach(() => {
+describe('Input value storage', function() {
+  beforeEach(function() {
     answersObject = {}
   })
 
-  describe('flat values', function() {
-    it('can be read and written', function() {
+  it('reading returns empty string for value not found', function() {
+    assert.equal(InputValueStorage.readValue(null, answersObject, 'nosuchid'), '')
+  })
+
+  describe('flat value', function() {
+    it('writes and reads', function() {
       writeValue(formContent, answersObject, "organization", "Rovaniemen koulutuskuntayhtymä")
       const v = InputValueStorage.readValue(formContent, answersObject, "organization")
       assert.equal(v, 'Rovaniemen koulutuskuntayhtymä')
@@ -36,14 +40,78 @@ describe('Form input that is', function() {
     })
   })
 
-  describe('growing fieldset values', function() {
-    it('can be read and written', function() {
-      writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki, Itä-Lapin ammattiopisto")
-      const v = InputValueStorage.readValue(formContent, answersObject, "other-organizations.other-organizations-1.name")
-      assert.equal(v, "Kemijärven kaupunki, Itä-Lapin ammattiopisto")
+  describe('checkbox with multiple values', function() {
+    it('writes and reads', function() {
+      writeValue(formContent, answersObject, 'checkboxButton-0', ['sininen', 'punainen'])
+      assert.deepEqual(answersObject, {value: [{
+        key: 'checkboxButton-0',
+        value: ['sininen', 'punainen'],
+        fieldType: 'checkboxButton'
+      }]})
+      assert.deepEqual(
+        InputValueStorage.readValue(formContent, answersObject, 'checkboxButton-0'),
+        ['punainen', 'sininen'])
     })
 
-    it('can be updated', function() {
+    it('does not mutate answers object when reading and sorting', function() {
+      writeValue(formContent, answersObject, 'checkboxButton-0', ['sininen', 'punainen'])
+      const expectedAnswersObject = {value: [{
+        key: 'checkboxButton-0',
+        value: ['sininen', 'punainen'],
+        fieldType: 'checkboxButton'
+      }]}
+      assert.deepEqual(answersObject, expectedAnswersObject)
+      InputValueStorage.readValue(formContent, answersObject, 'checkboxButton-0')
+      assert.deepEqual(answersObject, expectedAnswersObject)
+    })
+  })
+
+  describe('growing fieldset values', function() {
+    it('writes and reads', function() {
+      writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
+      assert.deepEqual(answersObject, {value: [{
+        key: 'other-organizations',
+        value: [{
+          key: 'other-organizations-1',
+          value: [{
+            key: 'other-organizations.other-organizations-1.name',
+            value: 'Kemijärven kaupunki',
+            fieldType: 'textField'
+          }],
+          fieldType: 'growingFieldsetChild'
+        }],
+        fieldType: 'growingFieldset'
+      }]})
+
+      assert.deepEqual(
+        InputValueStorage.readValue(formContent, answersObject, "other-organizations"),
+        [{
+          key: 'other-organizations-1',
+          value: [{
+            key: 'other-organizations.other-organizations-1.name',
+            value: 'Kemijärven kaupunki',
+            fieldType: 'textField'
+          }],
+          fieldType: 'growingFieldsetChild'
+        }]
+      )
+
+      assert.deepEqual(
+        InputValueStorage.readValue(formContent, answersObject, "other-organizations-1"),
+        [{
+          key: 'other-organizations.other-organizations-1.name',
+          value: 'Kemijärven kaupunki',
+          fieldType: 'textField'
+        }]
+      )
+
+      assert.equal(
+        InputValueStorage.readValue(formContent, answersObject, "other-organizations.other-organizations-1.name"),
+        "Kemijärven kaupunki"
+      )
+    })
+
+    it('updates', function() {
       writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
       assert.equal(InputValueStorage.readValue(formContent, answersObject, "other-organizations.other-organizations-1.name"), "Kemijärven kaupunki")
 
@@ -51,14 +119,77 @@ describe('Form input that is', function() {
       assert.equal(InputValueStorage.readValue(formContent, answersObject, "other-organizations.other-organizations-1.name"), "Kemijärven kaupunki, Itä-Lapin ammattiopisto")
     })
 
-    it('work with several fields in same group', function() {
+    it('work with several fields in the same group', function() {
       writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
       writeValue(formContent, answersObject, "other-organizations.other-organizations-1.email", "kemijarven.kaupunki@example.com")
       assert.equal(InputValueStorage.readValue(formContent, answersObject, "other-organizations.other-organizations-1.name"), "Kemijärven kaupunki")
       assert.equal(InputValueStorage.readValue(formContent, answersObject, "other-organizations.other-organizations-1.email"), "kemijarven.kaupunki@example.com")
     })
 
-    it('can delete a row', function() {
+    it('sorts subfields in the same group when reading', function() {
+      writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
+      writeValue(formContent, answersObject, "other-organizations.other-organizations-1.email", "kemijarven.kaupunki@example.com")
+      assert.deepEqual(answersObject, {value: [{
+        key: 'other-organizations',
+        value: [{
+          key: 'other-organizations-1',
+          value: [{
+            key: 'other-organizations.other-organizations-1.name',
+            value: 'Kemijärven kaupunki',
+            fieldType: 'textField'
+          },
+          {
+            key: 'other-organizations.other-organizations-1.email',
+            value: 'kemijarven.kaupunki@example.com',
+            fieldType: 'emailField'
+          }],
+          fieldType: 'growingFieldsetChild'
+        }],
+        fieldType: 'growingFieldset'
+      }]})
+      assert.deepEqual(InputValueStorage.readValue(null, answersObject, "other-organizations-1"), [
+        {
+          key: 'other-organizations.other-organizations-1.email',
+          value: 'kemijarven.kaupunki@example.com',
+          fieldType: 'emailField'
+        },
+        {
+          key: 'other-organizations.other-organizations-1.name',
+          value: 'Kemijärven kaupunki',
+          fieldType: 'textField'
+        }
+      ])
+    })
+
+    it('does not mutate answers object when reading and sorting subfields in the same group', function() {
+      writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
+      writeValue(formContent, answersObject, "other-organizations.other-organizations-1.email", "kemijarven.kaupunki@example.com")
+      const expectedAnswersObject = {
+        value: [{
+          key: 'other-organizations',
+          value: [{
+            key: 'other-organizations-1',
+            value: [{
+              key: 'other-organizations.other-organizations-1.name',
+              value: 'Kemijärven kaupunki',
+              fieldType: 'textField'
+            },
+            {
+              key: 'other-organizations.other-organizations-1.email',
+              value: 'kemijarven.kaupunki@example.com',
+              fieldType: 'emailField'
+            }],
+            fieldType: 'growingFieldsetChild'
+          }],
+          fieldType: 'growingFieldset'
+        }]
+      }
+      assert.deepEqual(answersObject, expectedAnswersObject)
+      InputValueStorage.readValue(null, answersObject, "other-organizations-1")
+      assert.deepEqual(answersObject, expectedAnswersObject)
+    })
+
+    it('deletes', function() {
       writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
       writeValue(formContent, answersObject, "other-organizations.other-organizations-2.name", "Jokilaaksojen koulutuskuntayhtymä")
 
@@ -71,7 +202,7 @@ describe('Form input that is', function() {
       assert.lengthOf(otherOrganizationsValue, 1, JSON.stringify(otherOrganizationsValue))
     })
 
-    it("do not produce extra content in answers", function() {
+    it("does not produce extra content in answers", function() {
       assert.deepEqual(answersObject, {})
       writeValue(formContent, answersObject, "other-organizations.other-organizations-1.name", "Kemijärven kaupunki")
       assert.deepEqual(_.keys(answersObject), ["value"])
@@ -108,4 +239,3 @@ describe('Form input that is', function() {
     })
   })
 })
-

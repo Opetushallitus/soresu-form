@@ -133,6 +133,55 @@ export default class TestUtil {
       },
       {
         "fieldClass": "wrapperElement",
+        "id": "favorite-colors-info",
+        "fieldType": "theme",
+        "children": [
+          {
+            "id": "checkboxButton-0",
+            "label": {
+              "fi": "Suosikkivärit",
+              "sv": "TODO: Suosikkivärit"
+            },
+            "params": {},
+            "options": [
+              {
+                "label": {
+                  "fi": "vihreä",
+                  "sv": "vihreä"
+                },
+                "value": "vihreä"
+              },
+              {
+                "label": {
+                  "fi": "punainen",
+                  "sv": "punainen"
+                },
+                "value": "punainen"
+              },
+              {
+                "label": {
+                  "fi": "sininen",
+                  "sv": "sininen"
+                },
+                "value": "sininen"
+              }
+            ],
+            "helpText": {
+              "fi": "Valitse lempivärisi",
+              "sv": "Valitse lempivärisi"
+            },
+            "required": true,
+            "fieldType": "checkboxButton",
+            "fieldClass": "formField"
+          }
+        ],
+        "label": {
+          "fi": "Suosikkivärit",
+          "sv": "TODO: Suosikkivärit"
+        }
+      },
+      {
+        "fieldClass": "wrapperElement",
         "id":"project-info",
         "fieldType":"theme",
         "label":{

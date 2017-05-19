@@ -44,24 +44,44 @@ export default class InputValueStorage {
   }
 
   static readValues(answersObject, fieldType) {
-    return JsUtil.flatFilter(answersObject, n => { return !_.isUndefined(n) && !_.isNull(n) && n.fieldType === fieldType })
+    return JsUtil.flatFilter(
+      answersObject,
+      n => !_.isUndefined(n) && !_.isNull(n) && n.fieldType === fieldType
+    )
   }
 
-  static readValue(formSpecificationContent, answersObject, fieldId) {
-    const existingValueObject = JsUtil.flatFilter(answersObject, n => { return !_.isUndefined(n) && !_.isNull(n) && n.key === fieldId })
-    if (existingValueObject && existingValueObject[0] && _.isArray(existingValueObject[0].value)) {
-      existingValueObject[0].value.sort((first, second) => {
-        return JsUtil.naturalCompare(valueForComparison(first), valueForComparison(second))
+  static readValue(_ignoredFormSpecificationContent, answersObject, fieldId) {
+    const found = JsUtil.findFirst(
+      answersObject,
+      n => !_.isUndefined(n) && !_.isNull(n) && n.key === fieldId
+    )
 
-        function valueForComparison(valueArrayItem) {
-          if (_.isUndefined(valueArrayItem.key)) {
-            return valueArrayItem
-          }
-          return valueArrayItem.key
-        }
-      })
+    if (found === null) {
+      return ""
     }
-    return !_.isEmpty(existingValueObject) ? existingValueObject[0].value : ""
+
+    if (!_.isArray(found.value)) {
+      // flat value
+      return found.value
+    }
+
+    const firstElem = found.value[0]
+
+    if (_.isArray(firstElem)) {
+      // two-dimensional array
+      return found.value
+    }
+
+    // one-dimensional array (e.g. growing fieldset child or checkbox with multiple values)
+
+    const ary = found.value.slice(0)
+    const comparisonFun = _.isObject(firstElem) && firstElem.key
+      ? (a, b) => JsUtil.naturalCompare(a.key, b.key)
+      : JsUtil.naturalCompare
+
+     ary.sort(comparisonFun)
+
+     return ary
   }
 
   static deleteValue(growingParent, answersObject, idOfFieldToRemove) {
