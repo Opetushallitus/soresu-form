@@ -64,7 +64,24 @@ describe('Math utilities', function() {
     })
   })
 
+  it('parses decimal', function() {
+    expect(MathUtil.parseDecimal(0)).to.equal(0)
+    expect(MathUtil.parseDecimal(101)).to.equal(101)
+    expect(MathUtil.parseDecimal(1.01)).to.equal(1.01)
+    expect(MathUtil.parseDecimal('0')).to.equal(0)
+    expect(MathUtil.parseDecimal('101')).to.equal(101)
+    expect(MathUtil.parseDecimal('1.01')).to.equal(1.01)
+    expect(MathUtil.parseDecimal('1,01')).to.equal(1.01)
+    expect(MathUtil.parseDecimal('')).to.be.NaN
+    expect(MathUtil.parseDecimal('a')).to.be.NaN
+    expect(MathUtil.parseDecimal(null)).to.be.NaN
+    expect(MathUtil.parseDecimal(false)).to.be.NaN
+    expect(MathUtil.parseDecimal(true)).to.be.NaN
+  })
+
   it('formats decimal', function() {
     expect(MathUtil.formatDecimal(1.01)).to.equal('1,01')
+    expect(MathUtil.formatDecimal('1,01')).to.equal('1,01')
+    expect(MathUtil.formatDecimal('1.01')).to.equal('1,01')
   })
 })

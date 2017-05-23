@@ -31,6 +31,12 @@ export default class MathUtil {
     return Number(Math[roundingMode](Number(number + "e" + digits)) + "e-" + digits)
   }
 
+  static parseDecimal(value) {
+    return _.isNumber(value)
+      ? value
+      : parseFloat(("" + value).replace(",", "."))
+  }
+
   static formatDecimal(number, separator = ",") {
     return ("" + number).replace(".", separator)
   }
