@@ -64,6 +64,21 @@ describe('Math utilities', function() {
     })
   })
 
+  it('determines if value is numeric', function() {
+    expect(MathUtil.isNumeric(0)).to.be.true
+    expect(MathUtil.isNumeric(101)).to.be.true
+    expect(MathUtil.isNumeric(1.01)).to.be.true
+    expect(MathUtil.isNumeric('0')).to.be.true
+    expect(MathUtil.isNumeric('101')).to.be.true
+    expect(MathUtil.isNumeric('1.01')).to.be.true
+    expect(MathUtil.isNumeric('1,01')).to.be.true
+    expect(MathUtil.isNumeric('')).to.be.false
+    expect(MathUtil.isNumeric('a')).to.be.false
+    expect(MathUtil.isNumeric(null)).to.be.false
+    expect(MathUtil.isNumeric(false)).to.be.false
+    expect(MathUtil.isNumeric(true)).to.be.false
+  })
+
   it('parses decimal', function() {
     expect(MathUtil.parseDecimal(0)).to.equal(0)
     expect(MathUtil.parseDecimal(101)).to.equal(101)

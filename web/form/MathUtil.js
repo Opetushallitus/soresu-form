@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import Big from 'big.js'
 
 export default class MathUtil {
@@ -24,7 +25,8 @@ export default class MathUtil {
   }
 
   static isNumeric(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n)
+    const num = MathUtil.parseDecimal(n)
+    return !isNaN(num) && isFinite(num)
   }
 
   static roundDecimal(number, digits, roundingMode = "round") {
