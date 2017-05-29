@@ -43,7 +43,7 @@ export default class FormEditComponent extends React.Component {
   }
 }
 
-class EditPropertyMapperExtender{
+class EditPropertyMapperExtender {
   static extendedMap(baseMapper, props) {
     const baseProps = baseMapper.map(props)
     return _.extend(baseProps, {
@@ -52,13 +52,13 @@ class EditPropertyMapperExtender{
   }
 }
 
-class TextFieldEditPropertyMapper extends TextFieldPropertyMapper {
+class TextFieldEditPropertyMapper {
   static map(props) {
     return EditPropertyMapperExtender.extendedMap(TextFieldPropertyMapper, props)
   }
 }
 
-class LinkEditPropertyMapper extends LinkPropertyMapper {
+class LinkEditPropertyMapper {
   static map(props) {
     const baseProps = EditPropertyMapperExtender.extendedMap(LinkPropertyMapper, props)
     return _.extend(baseProps, {
@@ -67,7 +67,7 @@ class LinkEditPropertyMapper extends LinkPropertyMapper {
   }
 }
 
-class KoodistoFieldEditPropertyMapper extends KoodistoFieldPropertyMapper {
+class KoodistoFieldEditPropertyMapper {
   static map(props) {
     const baseProps = EditPropertyMapperExtender.extendedMap(KoodistoFieldPropertyMapper, props)
     return _.extend(baseProps, {
