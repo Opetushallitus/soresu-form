@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import ComponentFactory from '../ComponentFactory.js'
 import {TextFieldEdit,TextAreaEdit,MultipleChoiceEdit,LinkEdit} from './EditComponent.jsx'
