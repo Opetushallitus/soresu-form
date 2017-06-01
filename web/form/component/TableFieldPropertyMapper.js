@@ -32,8 +32,6 @@ export default class TableFieldPropertyMapper {
         return rowCopy
       })
 
-      console.log(`cellOnChange (${cellRowIndex}, ${cellColIndex})`, cellValue, newValues)
-
       onChange(field, newValues)
     }
 
@@ -48,7 +46,7 @@ export default class TableFieldPropertyMapper {
     const rowOnRemove = disabled ? null : rowIndexToRemove => {
       const numRows = values.length - (isGrowingTable ? 1 : 0) // for growing table, remove last row with empty values
       const newValues = _.filter(values, (_row, rowIndex) => rowIndex !== rowIndexToRemove && rowIndex < numRows)
-      console.log(`rowOnRemove (${rowIndexToRemove})`, newValues)
+
       onChange(field, newValues)
     }
 
