@@ -397,6 +397,7 @@ section.soresu-theme {
 
   border-collapse: separate;
   border-spacing: 20px;
+  border: 1px solid transparent;
 
   div {
     display: block;  // override leaking `.soresu-fieldset div` rule
@@ -407,7 +408,32 @@ section.soresu-theme {
     border-spacing: 0;
   }
 
+  &--error {
+    border: 1px solid @bright-red;
+  }
+
+  &--disabled {
+    .soresu-table__caption,
+    .soresu-table__column-title-cell,
+    .soresu-table__row-title-cell,
+    .soresu-table__value-cell,
+    .soresu-table__sum-cell {
+      color: @darker-gray;
+    }
+
+    .soresu-table__value-cell-input {
+      background-color: @lightest-gray;
+      border-color: @light-gray;
+    }
+  }
+
+  &__caption {
+    color: @form-label-black;
+    text-align: left;
+  }
+
   &__column-title-cell {
+    color: @form-label-black;
     text-align: left;
     &--number {
       text-align: right;
@@ -418,6 +444,7 @@ section.soresu-theme {
   }
 
   &__row-title-cell {
+    color: @form-label-black;
     text-align: right;
     &--preview {
       padding: @content-padding;
@@ -425,19 +452,13 @@ section.soresu-theme {
   }
 
   &__value-cell {
-    input {
-      width: 140px;
-      text-align: left;
-      padding: 5px 9px;
-      border: 1px solid @middle-gray;
-    }
     &--number {
       text-align: right;
-      input {
+      .soresu-table__value-cell-input {
         text-align: right;
       }
     }
-    &--placeholder input {
+    &--placeholder .soresu-table__value-cell-input {
       border-color: @lightish-gray;
     }
     &--preview {
@@ -446,7 +467,17 @@ section.soresu-theme {
     }
   }
 
+  &__value-cell-input {
+    text-align: left;
+    padding: 5px 9px;
+    border: 1px solid @middle-gray;
+    &--error {
+      border: 1px solid @bright-red;
+    }
+  }
+
   &__sum-cell {
+    color: @form-label-black;
     padding: @content-padding;
     &--number {
       border-bottom: 1px solid @middle-gray;

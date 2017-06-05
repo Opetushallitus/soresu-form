@@ -3,25 +3,39 @@ import React from 'react'
 import ClassNames from 'classnames'
 
 import TableFieldUtil from './TableFieldUtil.jsx'
+import TableValidator from '../TableValidator'
+import HelpTooltip from './HelpTooltip.jsx'
+import LocalizedString from './LocalizedString.jsx'
 
 export default class TableField extends React.Component {
+  componentDidMount() {
+    const {field, cellValues, controller} = this.props
+    controller.componentDidMount(field, cellValues)
+  }
+
   render() {
     const {
+      htmlId,
       cellOnChange,
       cellOnBlur,
       rowOnRemove,
       rowParams,
       columnParams,
       columnSums,
-      values,
+      cellValues,
+      cellsWithErrors,
+      hasTableRequiredError,
       disabled,
-      translations,
+      required,
+      renderingParameters,
+      fieldTranslations,
+      miscTranslations,
       lang
     } = this.props
 
     const isGrowingTable = _.isEmpty(rowParams)
+    const numRows = cellValues.length
     const lastColIndex = columnParams.length - 1
-    const lastRowIndex = values.length - 1
 
     const makeInputOnBlur = (rowIndex, colIndex) => event => {
       event.stopPropagation()
@@ -38,41 +52,91 @@ export default class TableField extends React.Component {
       rowOnRemove(rowIndex)
     }
 
+    const makeTableClassNames = () =>
+      ClassNames({
+        "soresu-table--error": hasTableRequiredError,
+        "soresu-table--disabled": disabled
+      })
+
     const makeValueCellClassNames = (rowIndex, colIndex) =>
       ClassNames("soresu-table__value-cell", {
         "soresu-table__value-cell--number": columnParams[colIndex].calculateSum,
-        "soresu-table__value-cell--placeholder": isGrowingTable && rowIndex === lastRowIndex
+        "soresu-table__value-cell--placeholder": rowIndex === numRows
       })
 
-    const makeValueCell = (cell, rowIndex, colIndex) =>
-      <td className={makeValueCellClassNames(rowIndex, colIndex)}
-          key={`cell-${rowIndex}-${colIndex}`}>
-        <div className="soresu-table__cell-positioner">
-          <input type="text"
-                 size="20"
-                 value={cell}
-                 disabled={disabled}
-                 onBlur={!disabled && makeInputOnBlur(rowIndex, colIndex)}
-                 onChange={!disabled && makeInputOnChange(rowIndex, colIndex)}
-                 />
-          {isGrowingTable && colIndex === lastColIndex && rowIndex !== lastRowIndex && (
-            <button type="button"
-                    className="soresu-table__remove-row-button soresu-remove"
-                    tabIndex="-1"
-                    onClick={!disabled && makeRowOnRemove(rowIndex)}
-                    />
-          )}
-        </div>
-      </td>
+    const makeHelpTooltip = () => {
+      const content = fieldTranslations.helpText
+      return content
+        ? <HelpTooltip content={content} lang={lang}/>
+        : null
+    }
+
+    const makeCaption = () => {
+      if (renderingParameters.hideLabels || !fieldTranslations["label"]) {
+        return null
+      }
+
+      return (
+        <caption className="soresu-table__caption">
+          <LocalizedString className={required ? "required" : null}
+                           translations={fieldTranslations}
+                           translationKey="label"
+                           lang={lang} />
+          {makeHelpTooltip()}
+        </caption>
+      )
+    }
+
+    const makeValueCell = (cellValue, rowIndex, colIndex) => {
+      const maxLength = columnParams[colIndex].maxlength
+      const size = !maxLength || maxLength > 20 ? 20 : maxLength
+
+      return (
+        <td className={makeValueCellClassNames(rowIndex, colIndex)}
+            key={`cell-${rowIndex}-${colIndex}`}>
+          <div className="soresu-table__cell-positioner">
+            <input type="text"
+                   size={size}
+                   maxLength={maxLength}
+                   className={makeValueCellInputClassNames(cellsWithErrors[TableValidator.cellErrorIdFor(rowIndex, colIndex)])}
+                   value={cellValue}
+                   disabled={disabled}
+                   onBlur={makeInputOnBlur(rowIndex, colIndex)}
+                   onChange={makeInputOnChange(rowIndex, colIndex)}
+                   />
+            {isGrowingTable && colIndex === lastColIndex && rowIndex < numRows && (
+              <button type="button"
+                      className="soresu-table__remove-row-button soresu-remove"
+                      tabIndex="-1"
+                      onClick={makeRowOnRemove(rowIndex)}
+                      />
+            )}
+          </div>
+        </td>
+      )
+    }
+
+    const cells = isGrowingTable
+      ? cellValues.concat([_.fill(Array(columnParams.length), "")])
+      : cellValues
 
     return TableFieldUtil.makeTable({
+      htmlId,
       rowParams,
       columnParams,
       columnSums,
-      values,
-      translations,
+      cellValues: cells,
+      fieldTranslations,
+      miscTranslations,
       lang,
-      makeValueCell
+      makeCaption,
+      makeValueCell,
+      tableClassNames: makeTableClassNames()
     })
   }
 }
+
+const makeValueCellInputClassNames = cellHasError =>
+  ClassNames("soresu-table__value-cell-input", {
+    "soresu-table__value-cell-input--error": cellHasError
+  })

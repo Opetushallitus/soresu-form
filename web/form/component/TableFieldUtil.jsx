@@ -6,12 +6,14 @@ import LocalizedString from './LocalizedString.jsx'
 
 export default class TableFieldUtil {
   static makeTable({
+    htmlId,
     rowParams,
     columnParams,
     columnSums,
-    values,
-    translations,
+    cellValues,
+    miscTranslations,
     lang,
+    makeCaption,
     makeValueCell,
     tableClassNames = "",
     columnTitleCellClassNames = "",
@@ -21,7 +23,7 @@ export default class TableFieldUtil {
     const isGrowingTable = _.isEmpty(rowParams)
     const usesSumCalculation = _.some(columnParams, col => col.calculateSum)
     const lastColIndex = columnParams.length - 1
-    const lastRowIndex = values.length - 1
+    const lastRowIndex = cellValues.length - 1
 
     const makeTableClassNames = () =>
       ClassNames("soresu-table", tableClassNames, {
@@ -43,7 +45,7 @@ export default class TableFieldUtil {
 
     const makeCornerCell = () =>
       !isGrowingTable || usesSumCalculation
-        ? <th rowSpan={isGrowingTable ? values.length + 1 : 1}/>
+        ? <th rowSpan={isGrowingTable ? cellValues.length + 2 : 1}/>
         : null
 
     const makeColumnTitleCell = (col, index) =>
@@ -66,16 +68,17 @@ export default class TableFieldUtil {
       </td>
 
     return (
-      <table className={makeTableClassNames()}>
+      <table id={htmlId} className={makeTableClassNames()}>
+        {makeCaption()}
         <tbody>
           <tr>
             {makeCornerCell()}
             {_.map(columnParams, makeColumnTitleCell)}
           </tr>
-          {_.map(values, (rowValue, rowIndex) => (
+          {_.map(cellValues, (cellValueRows, rowIndex) => (
             <tr key={"row-" + rowIndex}>
               {makeRowTitleCell(rowIndex)}
-              {_.map(rowValue, (cell, colIndex) => makeValueCell(cell, rowIndex, colIndex))}
+              {_.map(cellValueRows, (cellValue, colIndex) => makeValueCell(cellValue, rowIndex, colIndex))}
             </tr>
           ))}
         </tbody>
@@ -83,7 +86,7 @@ export default class TableFieldUtil {
           <tfoot>
             <tr>
               <th className={makeRowTitleCellClassNames()}>
-                <LocalizedString translations={translations} translationKey="sum-title" lang={lang} />
+                <LocalizedString translations={miscTranslations} translationKey="sum-title" lang={lang} />
               </th>
               {_.map(columnParams, makeColumnSumCell)}
             </tr>

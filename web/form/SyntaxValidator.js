@@ -2,10 +2,12 @@ import _ from 'lodash'
 import FormUtil from './FormUtil.js'
 import BankAccountValidator from './BankAccountValidator.js'
 import MoneyValidator from './MoneyValidator'
+import TableValidator from './TableValidator'
 
 export default class SyntaxValidator {
   static validateSyntax(field, value, customFieldSyntaxValidator) {
     var validationErrors = []
+
     if (field.required && (!value || _.trim(value).length < 1)) {
       validationErrors = [{error: "required"}]
     }
@@ -46,6 +48,11 @@ export default class SyntaxValidator {
           validationErrors.push(bicError)
         }
         break;
+      case 'tableField':
+        _.forEach(TableValidator.validateTable(field, value), err => {
+          validationErrors.push(err)
+        })
+        break
       default:
         if(customFieldSyntaxValidator) {
           const customError = customFieldSyntaxValidator.validateSyntax(field, value)
