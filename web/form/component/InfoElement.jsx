@@ -78,8 +78,8 @@ export class AccordionInfoElement extends BasicInfoComponent {
     const key = this.props.htmlId
     const lang = this.props.lang
     const items = []
-    var infoObject = values[this.props.htmlId]
-    for (var i=0; i < infoObject.items.length; i++) {
+    const infoObject = values[this.props.htmlId]
+    for (let i = 0; i < infoObject.items.length; i++) {
       const textContent = infoObject.items[i][lang]
       items.push((<li key={key + "." + i}>{textContent}</li>))
     }
