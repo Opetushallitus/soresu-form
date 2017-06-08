@@ -69,10 +69,6 @@ export class AccordionInfoElement extends BasicInfoComponent {
     })
   }
 
-  static determineCssClass(isOpen) {
-    return isOpen ? "open" : "closed"
-  }
-
   render() {
     const values = this.props.values
     const key = this.props.htmlId
@@ -83,11 +79,22 @@ export class AccordionInfoElement extends BasicInfoComponent {
       const textContent = infoObject.items[i][lang]
       items.push((<li key={key + "." + i}>{textContent}</li>))
     }
-    const accordionStateClassName = AccordionInfoElement.determineCssClass(this.state.open)
+    const isOpen = this.state.open
     return (
         <div>
-          <span onClick={this.handleClick} className={"accordion-title opener-handle " + accordionStateClassName}>{super.translatedValue('label')}</span>
-          <div className={"accordion " + accordionStateClassName}>
+          <span onClick={this.handleClick}
+                className="opener-handle">
+            {super.translatedValue('label')}
+          </span>
+          <div className="accordion"
+               ref={el => {
+                 if (el) {
+                   // Explicitly set max-height so that hiding/showing element
+                   // can be animated with css transitions. Setting max-height
+                   // is slightly faster than setting height on IE11.
+                   el.style.maxHeight = isOpen ? el.scrollHeight + "px" : 0
+                 }
+            }}>
             <ul id={key}>
                 {items}
             </ul>
