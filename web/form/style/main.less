@@ -669,3 +669,29 @@ button[disabled].soresu-text-button {
 :hover.soresu-tooltip-down > span {
   top: 42px;
 }
+
+.soresu-opener-handle {
+  color: @light-blue;
+  cursor: pointer;
+
+  &.closed:after {
+    vertical-align: bottom;
+    content: " \02C5";
+    font-family: Arial, sans-serif;
+  }
+
+  &.open:after {
+    vertical-align: bottom;
+    content: " \02C4";
+    font-family: Arial, sans-serif;
+  }
+}
+
+.soresu-accordion {
+  overflow-y: hidden;
+  margin-bottom: 40px;
+  transition-property: max-height;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  width: @section-width;
+}

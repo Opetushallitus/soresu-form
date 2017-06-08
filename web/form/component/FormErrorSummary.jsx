@@ -52,7 +52,7 @@ export default class FormErrorSummary extends React.Component {
     const openStateClassName = FormErrorSummary.determineCssClass(this.state.open)
     return (
       <div id="form-error-summary">
-        <a onClick={this.toggleOpen} role="button" className={"error opener-handle " + openStateClassName} id="validation-errors-summary" hidden={invalidFieldsCount === 0}>
+        <a onClick={this.toggleOpen} role="button" className={"error soresu-opener-handle " + openStateClassName} id="validation-errors-summary" hidden={invalidFieldsCount === 0}>
           {translator.translate("validation-errors", lang, null, {kpl: invalidFieldsCount})}
         </a>
         <div className="popup" hidden={!this.state.open || invalidFieldsCount === 0} id="validation-errors">

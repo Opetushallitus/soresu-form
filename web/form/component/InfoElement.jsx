@@ -83,10 +83,10 @@ export class AccordionInfoElement extends BasicInfoComponent {
     return (
         <div>
           <span onClick={this.handleClick}
-                className="opener-handle">
+                className="soresu-opener-handle">
             {super.translatedValue('label')}
           </span>
-          <div className="accordion"
+          <div className="soresu-accordion"
                ref={el => {
                  if (el) {
                    // Explicitly set max-height so that hiding/showing element
