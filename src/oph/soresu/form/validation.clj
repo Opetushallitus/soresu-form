@@ -80,6 +80,43 @@
     [{:error "required"}]
     []))
 
+(defn- validate-table-field-dimensions [field answer]
+  (if (and (coll? answer)
+           (every? #(and (coll? %) (every? string? %)) answer))
+    (let [num-columns    (-> field :params :columns count)
+          num-fixed-rows (or (-> field :params :rows count) 0)]
+      (if (or (= num-fixed-rows 0)
+              (= num-fixed-rows (count answer)))
+        (if (every? #(= num-columns (count %)) answer)
+          []
+          [{:error "table-has-row-with-unexpected-number-of-columns"}])
+        [{:error "table-has-unexpected-number-of-rows"}]))
+    [{:error "table-is-not-two-dimensional"}]))
+
+(defn- validate-table-field-cell-sizes [field answer]
+  (let [max-sizes-by-column (->> field
+                                 :params
+                                 :columns
+                                 (mapv :maxlength))
+        validate-cell       (fn [col-idx value]
+                              (if-some [max-size (get max-sizes-by-column col-idx)]
+                                (<= (count value) max-size)
+                                true))]
+    (if (every? #(every? true? (map-indexed validate-cell %)) answer)
+      []
+      [{:error "table-has-cell-exceeding-max-length"}])))
+
+(defn- validate-table-field [answers field]
+  (let [answer (find-answer-value answers (:id field))
+        required-validation (validate-required field answer)]
+    (if (empty? required-validation)
+      (let [dimensions-validation (validate-table-field-dimensions field answer)]
+        (if (and (empty? dimensions-validation)
+                 (seq answers))
+          (validate-table-field-cell-sizes field answer)
+          dimensions-validation))
+      required-validation)))
+
 (defn- validate-generic-field [answers field]
   (let [answer (find-answer-value answers (:id field))]
     (concat
@@ -93,6 +130,7 @@
 (defn- validate-field-by-type [answers attachments field]
   (condp = (:fieldType field)
     "namedAttachment" (validate-attachment attachments field)
+    "tableField"      (validate-table-field answers field)
     (validate-generic-field answers field)))
 
 (defn validate-field [answers attachments field]

@@ -46,7 +46,44 @@
    :fieldType  "namedAttachment"
    :required   true})
 
+(def table-field-fixed-rows
+  {:id         "art-courses"
+   :fieldClass "formField"
+   :fieldType  "tableField"
+   :required   true
+   :params     {:columns [{:title        {:fi "Oppilaitos"
+                                          :sv "TODO: Oppilaitos"}
+                           :valueType    "string"
+                           :maxlength    30}
+                          {:title        {:fi "Opiskelijoita"
+                                          :sv "TODO: Opiskelijoita"}
+                           :valueType    "integer"
+                           :maxlength    6
+                           :calculateSum true}
+                          {:title        {:fi "Tuntimäärä"
+                                          :sv "TODO: Tuntimäärä"}
+                           :valueType    "decimal"
+                           :maxlength    4
+                           :calculateSum true}]
+                :rows     [{:title       {:fi "Perspektiivi 101"
+                                          :sv "SV: Perspektiivi 101"}}
+                           {:title       {:fi "Vesivärit"
+                                          :sv "SV: Vesivärit"}}
+                           {:title       {:fi "Liidut"
+                                          :sv "SV: Liidut"}}]}})
+
+(def table-field-free-rows
+  {:id         "favorite-colors"
+   :fieldClass "formField"
+   :fieldType  "tableField"
+   :required   true
+   :params     {:columns [{:title    {:fi "Väri"
+                                      :sv "TODO: Väri"}
+                           :valueType "string"}]}})
+
 (describe "validation"
+  (tags :validation)
+
   (it "validates optional empty field as valid"
       (let [field  (assoc email-field :required false)
             result (validate-field (answers-for field "") [] field)]
@@ -106,6 +143,70 @@
 
   (it "validates missing attachment as required"
       (let [result (validate-field empty-answers [] attachment-field)]
-        (should= {:income-statement [{:error "required"}]} result))))
+        (should= {:income-statement [{:error "required"}]} result)))
+
+  (it "validates table with fixed rows"
+      (let [value  [["Lukio", "30", "31"]
+                    ["Peruskoulu", "40", "41"]
+                    ["Lastentarha", "50", "51"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses []} result)))
+
+  (it "validates table with free rows"
+      (let [value  [["Keltainen"], ["Vihreä"], ["Ruskea"]]
+            result (validate-field (answers-for table-field-free-rows value) [] table-field-free-rows)]
+        (should= {:favorite-colors []} result)))
+
+  (it "validates empty table as required"
+      (let [result (validate-field (answers-for table-field-fixed-rows "") [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "required"}]} result)))
+
+  (it "validates empty optional table as invalid"
+      (let [field  (assoc table-field-free-rows :required false)
+            result (validate-field (answers-for field "") [] field)]
+        (should= {:favorite-colors [{:error "table-is-not-two-dimensional"}]} result)))
+
+  (it "validates table with string value as invalid"
+      (let [result (validate-field (answers-for table-field-fixed-rows "abc") [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-is-not-two-dimensional"}]} result)))
+
+  (it "validates table with one-dimensional collection as invalid"
+      (let [result (validate-field (answers-for table-field-fixed-rows ["a" "b" "c"]) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-is-not-two-dimensional"}]} result)))
+
+  (it "validates table with three-dimensional collection as invalid"
+      (let [result (validate-field (answers-for table-field-free-rows [[["Vihreä"]]]) [] table-field-free-rows)]
+        (should= {:favorite-colors [{:error "table-is-not-two-dimensional"}]} result)))
+
+  (it "validates table with fixed rows and too few rows as invalid"
+      (let [value  [["Lukio", "30", "31"]
+                    ["Lastentarha", "50", "51"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-has-unexpected-number-of-rows"}]} result)))
+
+  (it "validates table with fixed rows and too many rows as invalid"
+      (let [value  [["Lukio", "30", "31"]
+                    ["Peruskoulu", "40", "41"]
+                    ["Lastentarha", "50", "51"]
+                    ["Aikuisoppilaitois", "60", "61"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-has-unexpected-number-of-rows"}]} result)))
+
+  (it "validates table with fixed rows and empty rows as invalid"
+      (let [field  (assoc table-field-fixed-rows :required false)
+            result (validate-field (answers-for field []) [] field)]
+        (should= {:art-courses [{:error "table-has-unexpected-number-of-rows"}]} result)))
+
+  (it "validates table with free rows and empty rows as valid"
+      (let [field  (assoc table-field-free-rows :required false)
+            result (validate-field (answers-for field []) [] field)]
+        (should= {:favorite-colors []} result)))
+
+  (it "validates table with too long value as invalid"
+      (let [value  [["Lukio", "30", "31000"]
+                    ["Peruskoulu", "40", "41"]
+                    ["Lastentarha", "50", "51"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-has-cell-exceeding-max-length"}]} result))))
 
 (run-specs)
