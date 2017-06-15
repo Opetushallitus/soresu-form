@@ -4,7 +4,7 @@
             [oph.soresu.form.formutil :refer :all]
             [oph.soresu.form.rules :as rules]))
 
-(defn validate-required [field answer]
+(defn- validate-required [field answer]
   (if (and (:required field)
            (empty? answer))
     [{:error "required"}]
@@ -18,28 +18,28 @@
     (every? (partial is-valid-option-value? options) values)
     (is-valid-option-value? options values)))
 
-(defn validate-options [field answer]
+(defn- validate-options [field answer]
   (if (and (> (count (field :options)) 0)
            (not (empty? answer))
            (not (is-valid-option? (field :options) answer)))
     [{:error "invalid-option"}]
     []))
 
-(defn validate-textarea-maxlength [field answer]
+(defn- validate-textarea-maxlength [field answer]
   (let [maxlength ((get field :params {}) :maxlength)]
     (if (and (has-field-type? "textArea" field)
              (> (count answer) maxlength))
       [{:error "maxlength", :info {:max maxlength}}]
       [])))
 
-(defn validate-texfield-maxlength [field answer]
+(defn- validate-texfield-maxlength [field answer]
   (let [maxlength ((get field :params {}) :maxlength)]
     (if (and (has-field-type? "textField" field)
              (> (count answer) maxlength))
       [{:error "maxlength", :info {:max maxlength}}]
       [])))
 
-(defn validate-email-security [field answer]
+(defn- validate-email-security [field answer]
   (if (and (has-field-type? "emailField" field)
            (not (nil? answer))
            (or (re-matches #".*%0[aA].*" answer)
@@ -47,7 +47,7 @@
     [{:error "email"}]
     []))
 
-(defn validate-email-field [field answer]
+(defn- validate-email-field [field answer]
   (if (or (not (has-field-type? "emailField" field))
           (empty? answer))
     []
@@ -58,7 +58,7 @@
         []
         [{:error "email"}])))
 
-(defn validate-finnish-business-id-field [field answer]
+(defn- validate-finnish-business-id-field [field answer]
   (if (or (not (has-field-type? "finnishBusinessIdField" field))
           (empty? answer))
     []
@@ -74,6 +74,39 @@
           [{:error "finnishBusinessId"}]))
       [{:error "finnishBusinessId"}])))
 
+(defn- validate-attachment [attachments field]
+  (if (and (not (contains? attachments (:id field)))
+           (:required field))
+    [{:error "required"}]
+    []))
+
+(defn- validate-generic-field [answers field]
+  (let [answer (find-answer-value answers (:id field))]
+    (concat
+     (validate-required field answer)
+     (validate-options field answer)
+     (validate-textarea-maxlength field answer)
+     (validate-texfield-maxlength field answer)
+     (validate-email-field field answer)
+     (validate-finnish-business-id-field field answer))))
+
+(defn- validate-field-by-type [answers attachments field]
+  (condp = (:fieldType field)
+    "namedAttachment" (validate-attachment attachments field)
+    (validate-generic-field answers field)))
+
+(defn validate-field [answers attachments field]
+  (let [field-id    (keyword (:id field))
+        validations (validate-field-by-type answers attachments field)]
+    {field-id validations}))
+
+(defn validate-form [form answers attachments]
+  (let [applied-form (rules/apply-rules form answers attachments)
+        validator (partial validate-field answers attachments)]
+    (->> (find-fields (:content applied-form))
+         (map validator)
+         (into {}))))
+
 (defn validate-field-security [answers field]
   (let [answer (find-answer-value answers (:id field))]
     {(keyword (:id field)) (concat
@@ -82,35 +115,9 @@
        (validate-texfield-maxlength field answer)
        (validate-email-security field answer))}))
 
-(defn validate-attachment [attachments field]
-  (if (and (not (contains? attachments (:id field)))
-           (:required field))
-    [{:error "required"}]
-    []))
-
-(defn validate-field [answers attachments field]
-  (if (has-field-type? "namedAttachment" field)
-    {(keyword (:id field)) (concat
-      (validate-attachment attachments field))}
-    (let [answer (find-answer-value answers (:id field))]
-      {(keyword (:id field)) (concat
-         (validate-required field answer)
-         (validate-options field answer)
-         (validate-textarea-maxlength field answer)
-         (validate-texfield-maxlength field answer)
-         (validate-email-field field answer)
-         (validate-finnish-business-id-field field answer))})))
-
 (defn validate-form-security [form answers]
   (let [applied-form (rules/apply-rules form answers {})
         validator (partial validate-field-security answers)]
     (->> (find-fields (:content applied-form))
          (map validator)
          (into {}))))
-
-(defn validate-form [form answers attachments]
-  (let [applied-form (rules/apply-rules form answers attachments)
-        validator (partial validate-field answers attachments)]
-    (->> (find-fields (:content applied-form))
-       (map validator)
-       (into {}))))
