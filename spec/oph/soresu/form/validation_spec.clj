@@ -47,6 +47,11 @@
    :required   true})
 
 (describe "validation"
+  (it "validates optional empty field as valid"
+      (let [field  (assoc email-field :required false)
+            result (validate-field (answers-for field "") [] field)]
+        (should= {:email []} result)))
+
   (it "validates email"
       (let [result (validate-field (answers-for email-field "testi@test.org") [] email-field)]
         (should= {:email []} result)))
