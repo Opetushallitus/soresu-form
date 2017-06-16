@@ -56,10 +56,9 @@ const isCellEmptyOrWs = value => !_.trim(value).length
 const isCellValueValidType = (type, value) => {
   switch (type) {
   case "integer":
-    return parseInt(value, 10).toString() === value
+    return MathUtil.representsInteger(value)
   case "decimal":
-    const normalized = value.replace(/,/g, ".")
-    return MathUtil.parseDecimal(normalized).toString() === normalized
+    return MathUtil.representsDecimal(value)
   default:
     return true
   }
