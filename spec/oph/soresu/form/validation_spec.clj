@@ -161,7 +161,12 @@
       (let [result (validate-field (answers-for table-field-fixed-rows "") [] table-field-fixed-rows)]
         (should= {:art-courses [{:error "required"}]} result)))
 
-  (it "validates empty optional table as valid"
+  (it "validates empty optional table with fixed rows as valid"
+      (let [field  (assoc table-field-fixed-rows :required false)
+            result (validate-field (answers-for field nil) [] field)]
+        (should= {:art-courses []} result)))
+
+  (it "validates empty optional table with free rows as valid"
       (let [field  (assoc table-field-free-rows :required false)
             result (validate-field (answers-for field nil) [] field)]
         (should= {:favorite-colors []} result)))
@@ -192,12 +197,12 @@
             result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
         (should= {:art-courses [{:error "table-has-unexpected-number-of-rows"}]} result)))
 
-  (it "validates table with fixed rows and empty rows as invalid"
+  (it "validates optional table with fixed rows and empty rows as invalid"
       (let [field  (assoc table-field-fixed-rows :required false)
             result (validate-field (answers-for field []) [] field)]
         (should= {:art-courses [{:error "table-has-unexpected-number-of-rows"}]} result)))
 
-  (it "validates table with free rows and empty rows as valid"
+  (it "validates optional table with free rows and empty rows as valid"
       (let [field  (assoc table-field-free-rows :required false)
             result (validate-field (answers-for field []) [] field)]
         (should= {:favorite-colors []} result)))
