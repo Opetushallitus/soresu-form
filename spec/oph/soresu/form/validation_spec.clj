@@ -146,9 +146,9 @@
         (should= {:income-statement [{:error "required"}]} result)))
 
   (it "validates table with fixed rows"
-      (let [value  [["Lukio", "30", "31"]
+      (let [value  [["Lukio", "30", "31,5"]
                     ["Peruskoulu", "40", "41"]
-                    ["Lastentarha", "50", "51"]]
+                    ["Lastentarha", "50", "51,0"]]
             result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
         (should= {:art-courses []} result)))
 
@@ -207,6 +207,27 @@
                     ["Peruskoulu", "40", "41"]
                     ["Lastentarha", "50", "51"]]
             result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
-        (should= {:art-courses [{:error "table-has-cell-exceeding-max-length"}]} result))))
+        (should= {:art-courses [{:error "table-has-cell-exceeding-max-length"}]} result)))
+
+  (it "validates table with empty values as invalid"
+      (let [value  [["Lukio", "30", "31"]
+                    ["Peruskoulu", "", "41"]
+                    ["", "50", "51"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-has-cell-with-invalid-value"}]} result)))
+
+  (it "validates table with invalid integer values as invalid"
+      (let [value  [["Lukio", "30", "31"]
+                    ["Peruskoulu", "20,5", "41"]
+                    ["Lastentarha", "50", "51"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-has-cell-with-invalid-value"}]} result)))
+
+    (it "validates table with invalid decimal values as invalid"
+      (let [value  [["Lukio", "30", "31,a"]
+                    ["Peruskoulu", "20", "41"]
+                    ["Lastentarha", "50", "-"]]
+            result (validate-field (answers-for table-field-fixed-rows value) [] table-field-fixed-rows)]
+        (should= {:art-courses [{:error "table-has-cell-with-invalid-value"}]} result))))
 
 (run-specs)

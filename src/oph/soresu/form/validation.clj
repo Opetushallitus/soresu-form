@@ -1,6 +1,7 @@
 (ns oph.soresu.form.validation
   (:use [clojure.tools.trace :only [trace]])
   (:require [clojure.string :as string]
+            [oph.soresu.common.math :as math]
             [oph.soresu.form.formutil :refer :all]
             [oph.soresu.form.rules :as rules]))
 
@@ -93,18 +94,43 @@
         [{:error "table-has-unexpected-number-of-rows"}]))
     [{:error "table-is-not-two-dimensional"}]))
 
-(defn- validate-table-field-cell-sizes [field answer]
+(defn- validate-table-field-cell-max-size [max-size value]
+  (if (some? max-size)
+    (<= (count value) max-size)
+    true))
+
+(defn- validate-table-field-cell-is-nonempty [^String value]
+  (-> value string/trim seq))
+
+(defn- validate-table-field-cell-is-valid-type [type ^String value]
+  (condp = type
+    "integer" (math/represents-integer? value)
+    "decimal" (math/represents-decimal? value)
+    true))
+
+(defn- validate-table-field-cell-value [type value]
+  (let [as-str (str value)]
+    (and (validate-table-field-cell-is-nonempty as-str)
+         (validate-table-field-cell-is-valid-type type as-str))))
+
+(defn- validate-table-field-cell [field answer]
   (let [max-sizes-by-column (->> field
                                  :params
                                  :columns
                                  (mapv :maxlength))
+        types-by-column     (->> field
+                                 :params
+                                 :columns
+                                 (mapv :valueType))
         validate-cell       (fn [col-idx value]
-                              (if-some [max-size (get max-sizes-by-column col-idx)]
-                                (<= (count value) max-size)
-                                true))]
-    (if (every? #(every? true? (map-indexed validate-cell %)) answer)
-      []
-      [{:error "table-has-cell-exceeding-max-length"}])))
+                              (if (validate-table-field-cell-max-size (get max-sizes-by-column col-idx) value)
+                                (if (validate-table-field-cell-value (get types-by-column col-idx) value)
+                                  nil
+                                  "table-has-cell-with-invalid-value")
+                                "table-has-cell-exceeding-max-length"))]
+    (if-some [cell-error (some #(some identity (map-indexed validate-cell %)) answer)]
+      [{:error cell-error}]
+      [])))
 
 (defn- validate-table-field [answers field]
   (let [answer (find-answer-value answers (:id field))
@@ -113,7 +139,7 @@
       (let [dimensions-validation (validate-table-field-dimensions field answer)]
         (if (and (empty? dimensions-validation)
                  (seq answers))
-          (validate-table-field-cell-sizes field answer)
+          (validate-table-field-cell field answer)
           dimensions-validation))
       required-validation)))
 
