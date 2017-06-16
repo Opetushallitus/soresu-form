@@ -161,10 +161,10 @@
       (let [result (validate-field (answers-for table-field-fixed-rows "") [] table-field-fixed-rows)]
         (should= {:art-courses [{:error "required"}]} result)))
 
-  (it "validates empty optional table as invalid"
+  (it "validates empty optional table as valid"
       (let [field  (assoc table-field-free-rows :required false)
-            result (validate-field (answers-for field "") [] field)]
-        (should= {:favorite-colors [{:error "table-is-not-two-dimensional"}]} result)))
+            result (validate-field (answers-for field nil) [] field)]
+        (should= {:favorite-colors []} result)))
 
   (it "validates table with string value as invalid"
       (let [result (validate-field (answers-for table-field-fixed-rows "abc") [] table-field-fixed-rows)]

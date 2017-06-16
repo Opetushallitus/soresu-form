@@ -82,17 +82,20 @@
     []))
 
 (defn- validate-table-field-dimensions [field answer]
-  (if (and (coll? answer)
-           (every? #(and (coll? %) (every? string? %)) answer))
-    (let [num-columns    (-> field :params :columns count)
-          num-fixed-rows (or (-> field :params :rows count) 0)]
-      (if (or (= num-fixed-rows 0)
-              (= num-fixed-rows (count answer)))
-        (if (every? #(= num-columns (count %)) answer)
-          []
-          [{:error "table-has-row-with-unexpected-number-of-columns"}])
-        [{:error "table-has-unexpected-number-of-rows"}]))
-    [{:error "table-is-not-two-dimensional"}]))
+  (let [num-columns    (-> field :params :columns count)
+        num-fixed-rows (or (-> field :params :rows count) 0)]
+    (if (and (= num-fixed-rows 0)
+             (empty? answer))
+      []
+      (if (and (coll? answer)
+               (every? #(and (coll? %) (every? string? %)) answer))
+        (if (or (= num-fixed-rows 0)
+                (= num-fixed-rows (count answer)))
+          (if (every? #(= num-columns (count %)) answer)
+            []
+            [{:error "table-has-row-with-unexpected-number-of-columns"}])
+          [{:error "table-has-unexpected-number-of-rows"}])
+        [{:error "table-is-not-two-dimensional"}]))))
 
 (defn- validate-table-field-cell-max-size [max-size value]
   (if (some? max-size)
