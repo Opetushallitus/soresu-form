@@ -64,39 +64,54 @@ describe('Math utilities', function() {
     })
   })
 
-  it('determines if value is numeric', function() {
-    expect(MathUtil.isNumeric(0)).to.be.true
-    expect(MathUtil.isNumeric(101)).to.be.true
-    expect(MathUtil.isNumeric(1.01)).to.be.true
-    expect(MathUtil.isNumeric('0')).to.be.true
-    expect(MathUtil.isNumeric('101')).to.be.true
-    expect(MathUtil.isNumeric('1.01')).to.be.true
-    expect(MathUtil.isNumeric('1,01')).to.be.true
-    expect(MathUtil.isNumeric('')).to.be.false
-    expect(MathUtil.isNumeric('a')).to.be.false
-    expect(MathUtil.isNumeric(null)).to.be.false
-    expect(MathUtil.isNumeric(false)).to.be.false
-    expect(MathUtil.isNumeric(true)).to.be.false
-  })
-
-  it('parses decimal', function() {
-    expect(MathUtil.parseDecimal(0)).to.equal(0)
-    expect(MathUtil.parseDecimal(101)).to.equal(101)
-    expect(MathUtil.parseDecimal(1.01)).to.equal(1.01)
-    expect(MathUtil.parseDecimal('0')).to.equal(0)
-    expect(MathUtil.parseDecimal('101')).to.equal(101)
-    expect(MathUtil.parseDecimal('1.01')).to.equal(1.01)
-    expect(MathUtil.parseDecimal('1,01')).to.equal(1.01)
-    expect(MathUtil.parseDecimal('')).to.be.NaN
-    expect(MathUtil.parseDecimal('a')).to.be.NaN
-    expect(MathUtil.parseDecimal(null)).to.be.NaN
-    expect(MathUtil.parseDecimal(false)).to.be.NaN
-    expect(MathUtil.parseDecimal(true)).to.be.NaN
-  })
-
   it('formats decimal', function() {
     expect(MathUtil.formatDecimal(1.01)).to.equal('1,01')
     expect(MathUtil.formatDecimal('1,01')).to.equal('1,01')
     expect(MathUtil.formatDecimal('1.01')).to.equal('1,01')
+  })
+
+  it('parses integers and decimals', function() {
+    expect(testParse(0)).to.deep.equal([true, 0, true, 0, true])
+    expect(testParse(-0)).to.deep.equal([true, 0, true, 0, true])
+    expect(testParse(101)).to.deep.equal([true, 101, true, 101, true])
+    expect(testParse(-101)).to.deep.equal([true, -101, true, -101, true])
+    expect(testParse(1.0)).to.deep.equal([true, 1, true, 1, true])
+    expect(testParse(-1.0)).to.deep.equal([true, -1, true, -1, true])
+    expect(testParse(1.01)).to.deep.equal([true, 1, false, 1.01, true])
+    expect(testParse(-1.01)).to.deep.equal([true, -1, false, -1.01, true])
+    expect(testParse("0")).to.deep.equal([true, 0, true, 0, true])
+    expect(testParse("-0")).to.deep.equal([true, -0, false, -0, false])
+    expect(testParse("101")).to.deep.equal([true, 101, true, 101, true])
+    expect(testParse("-101")).to.deep.equal([true, -101, true, -101, true])
+    expect(testParse("1.0")).to.deep.equal([true, 1, false, 1, true])
+    expect(testParse("-1.0")).to.deep.equal([true, -1, false, -1, true])
+    expect(testParse("1.01")).to.deep.equal([true, 1, false, 1.01, true])
+    expect(testParse("-1.01")).to.deep.equal([true, -1, false, -1.01, true])
+    expect(testParse("1,01")).to.deep.equal([true, 1, false, 1.01, true])
+    expect(testParse("-1,01")).to.deep.equal([true, -1, false, -1.01, true])
+    expect(testParse("")).to.deep.equal([false, NaN, false, NaN, false])
+    expect(testParse("-")).to.deep.equal([false, NaN, false, NaN, false])
+    expect(testParse("a")).to.deep.equal([false, NaN, false, NaN, false])
+    expect(testParse(" 10")).to.deep.equal([true, 10, false, 10, false])
+    expect(testParse(" 10\t\n")).to.deep.equal([true, 10, false, 10, false])
+    expect(testParse(" 10.0")).to.deep.equal([true, 10, false, 10, false])
+    expect(testParse(" 10,0")).to.deep.equal([true, 10, false, 10, false])
+    expect(testParse(" -10.0")).to.deep.equal([true, -10, false, -10, false])
+    expect(testParse(" -10,0")).to.deep.equal([true, -10, false, -10, false])
+    expect(testParse(" 1.01 ")).to.deep.equal([true, 1, false, 1.01, false])
+    expect(testParse(" -1,01 ")).to.deep.equal([true, -1, false, -1.01, false])
+    expect(testParse(false)).to.deep.equal([false, NaN, false, NaN, false])
+    expect(testParse(true)).to.deep.equal([false, NaN, false, NaN, false])
+    expect(testParse(null)).to.deep.equal([false, NaN, false, NaN, false])
+
+    function testParse(value) {
+      return [
+        MathUtil.isNumeric(value),
+        parseInt(value, 10),
+        MathUtil.representsInteger(value),
+        MathUtil.parseDecimal(value),
+        MathUtil.representsDecimal(value)
+      ]
+    }
   })
 })

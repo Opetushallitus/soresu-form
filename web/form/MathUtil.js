@@ -35,11 +35,25 @@ export default class MathUtil {
 
   static parseDecimal(value) {
     return _.isNumber(value)
-      ? value
-      : parseFloat(("" + value).replace(",", "."))
+      ? (value === -0 ? 0 : value)
+      : parseFloat(normalizeDecimalStr("" + value))
   }
 
   static formatDecimal(number, separator = ",") {
     return ("" + number).replace(".", separator)
   }
+
+  static representsInteger(value) {
+    const asString = "" + value
+    return parseInt(asString, 10).toString() === asString
+  }
+
+  static representsDecimal(value) {
+    const normalized = normalizeDecimalStr("" + value)
+    const dotZeroTrimmed = normalized.replace(/\.0+$/, "")
+    return MathUtil.parseDecimal(normalized).toString() === dotZeroTrimmed
+  }
 }
+
+const normalizeDecimalStr = str =>
+  str.replace(/,/g, ".")
