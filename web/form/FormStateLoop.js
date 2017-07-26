@@ -75,7 +75,6 @@ export default class FormStateLoop {
       saveStatus: {
         changes: false,
         saveInProgress: false,
-        saveTime: null,
         serverError: "",
         values: initialValuesP,
         savedObject: savedObjectP,

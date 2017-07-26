@@ -297,7 +297,6 @@ export default class FormStateTransitions {
     var locallyStoredValues = LocalStorage.load(formOperations.createUiStateIdentifier, stateWithServerChanges)
     stateFromUiLoop.saveStatus.changes = !_.isEqual(stateFromUiLoop.saveStatus.values, stateWithServerChanges.saveStatus.values)
     stateFromUiLoop.saveStatus.saveInProgress = false
-    stateFromUiLoop.saveStatus.saveTime = new Date()
     stateFromUiLoop.saveStatus.serverError = ""
     stateFromUiLoop.saveStatus.savedObject = stateWithServerChanges.saveStatus.savedObject
     if (!locallyStoredValues) {
