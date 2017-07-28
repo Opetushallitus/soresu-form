@@ -46,16 +46,23 @@ export default class FormErrorSummary extends React.Component {
     const translator = new Translator(this.translations)
     const fieldsWithErrorsAndClosestParents = FormErrorSummary.resolveFieldsErrorsAndClosestParents(validationErrors, formContent)
     const invalidFieldsCount = fieldsWithErrorsAndClosestParents.length
+
+    if (invalidFieldsCount === 0) {
+      return null
+    }
+
     const fieldErrorMessageElements = _.map(fieldsWithErrorsAndClosestParents, x => {
       return this.renderFieldErrors(formContent, x.field, x.closestParent, x.errors, lang)
     })
+
     const openStateClassName = FormErrorSummary.determineCssClass(this.state.open)
+
     return (
       <div id="form-error-summary">
-        <a onClick={this.toggleOpen} role="button" className={"error soresu-opener-handle " + openStateClassName} id="validation-errors-summary" hidden={invalidFieldsCount === 0}>
+        <a onClick={this.toggleOpen} role="button" className={"error soresu-opener-handle validation-errors-summary " + openStateClassName}>
           {translator.translate("validation-errors", lang, null, {kpl: invalidFieldsCount})}
         </a>
-        <div className="popup" hidden={!this.state.open || invalidFieldsCount === 0} id="validation-errors">
+        <div className="popup validation-errors" hidden={!this.state.open}>
           {fieldErrorMessageElements}
         </div>
       </div>
