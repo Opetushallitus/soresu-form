@@ -65,6 +65,10 @@ div.soresu-attachment-display {
     }
     &.large {
       width: ceil(@section-width / 1.5);
+
+      @media print {
+        width: 400px;
+      }
     }
     &.extra-large {
       width: @section-width;

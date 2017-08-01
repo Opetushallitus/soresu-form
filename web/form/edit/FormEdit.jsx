@@ -2,7 +2,6 @@ import React from 'react'
 import _ from 'lodash'
 
 import styles from '../style/preview.less'
-import printStyles from '../style/print.less'
 
 import {BasicFieldEdit,BasicEditWrapper,AppendableEditWrapper,InfoElementEditWrapper} from 'soresu-form/web/form/edit/EditComponent.jsx'
 import CSSTransitionGroup from 'soresu-form/web/form/component/wrapper/CSSTransitionGroup.jsx'

@@ -7,6 +7,11 @@ body {
   background-color: @lightest-gray;
   color: @text-black;
   font-size: 16px;
+
+  @media print {
+    background-color: white;
+    color: black;
+  }
 }
 
 a {
@@ -61,10 +66,18 @@ ul {
     color: @darker-gray;
     font-weight: 300;
     font-size: 18px;
+
+    @media print {
+      color: black;
+    }
   }
 
   h2 > span {
     text-transform: uppercase;
+  }
+
+  @media print {
+    margin: 0;
   }
 }
 
@@ -119,6 +132,10 @@ section.soresu-theme {
     >div, >fieldset, >p.soresu-info-element {
       margin: 15px 0 20px 0;
     }
+  }
+
+  @media print {
+    border-top: 0;
   }
 }
 
@@ -336,6 +353,10 @@ section.soresu-theme {
     font-size: 12px;
     width: @section-width - 10px;
     text-align: right;
+  }
+
+  @media print {
+    width: 100%;
   }
 }
 
@@ -725,4 +746,10 @@ button[disabled].soresu-text-button {
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
   width: @section-width;
+}
+
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
 }
