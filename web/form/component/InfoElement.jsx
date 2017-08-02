@@ -80,10 +80,11 @@ export class AccordionInfoElement extends BasicInfoComponent {
       items.push((<li key={key + "." + i}>{textContent}</li>))
     }
     const isOpen = this.state.open
+    const openStateClassName = isOpen ? "open" : "closed"
     return (
         <div>
           <span onClick={this.handleClick}
-                className="soresu-opener-handle">
+                className={"soresu-opener-handle " + openStateClassName}>
             {super.translatedValue('label')}
           </span>
           <div className="soresu-accordion"
