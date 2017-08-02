@@ -13,14 +13,16 @@ export default class FormSaveStatus extends React.Component {
     const notSentMessage = makeNotSentMessage({savedObject: saveStatus.savedObject, translations, lang})
     const saveMessage = makeSaveMessage({saveStatus, translations, lang})
 
+    if (!saveMessage && !notSentMessage) {
+      return null
+    }
+
     return (
       <div id="form-save-status">
-        {(saveMessage || notSentMessage) && (
-          <div className="messages">
-            {notSentMessage && <div className="not-sent-message">{notSentMessage}</div>}
-            {saveMessage && <div className="save-message">{saveMessage}</div>}
-          </div>
-        )}
+        <div className="messages">
+          {notSentMessage && <div className="not-sent-message">{notSentMessage}</div>}
+          {saveMessage && <div className="save-message">{saveMessage}</div>}
+        </div>
       </div>
     )
   }
