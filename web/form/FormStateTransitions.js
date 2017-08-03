@@ -336,7 +336,12 @@ export default class FormStateTransitions {
 
   onServerError(state, serverErrors) {
     if(serverErrors.error === "save-not-allowed") {
-      window.location.href = state.extensionApi.formOperations.urlCreator.existingSubmissionPreviewUrl(state)
+      window.location.href = state.extensionApi.formOperations.urlCreator.existingSubmissionPreviewUrl(
+        state.avustushaku.id,
+        state.saveStatus.hakemusId,
+        state.configuration.lang,
+        state.configuration.develMode
+      )
       return state
     }
     state.saveStatus.saveInProgress = false
