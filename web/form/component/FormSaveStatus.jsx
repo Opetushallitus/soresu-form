@@ -9,8 +9,9 @@ export default class FormSaveStatus extends React.Component {
     const saveStatus = this.props.saveStatus
     const translations = this.props.translations.form
     const lang = this.props.lang
+    const hakemusType = this.props.hakemusType
 
-    const notSentMessage = makeNotSentMessage({savedObject: saveStatus.savedObject, translations, lang})
+    const notSentMessage = makeNotSentMessage({savedObject: saveStatus.savedObject, translations, lang, hakemusType})
     const saveMessage = makeSaveMessage({saveStatus, translations, lang})
 
     if (!saveMessage && !notSentMessage) {
@@ -28,11 +29,11 @@ export default class FormSaveStatus extends React.Component {
   }
 }
 
-const makeNotSentMessage = ({savedObject, translations, lang}) => {
+const makeNotSentMessage = ({savedObject, translations, lang, hakemusType}) => {
   if (savedObject &&
       savedObject.status === "draft" &&
       savedObject.version > 1) {
-    return <LocalizedString translations={translations} translationKey="hakemus-not-submitted" lang={lang}/>
+    return <LocalizedString translations={translations} translationKey={hakemusType + "-not-submitted"} lang={lang}/>
   }
 
   return null
