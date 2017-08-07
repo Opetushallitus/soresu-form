@@ -17,7 +17,7 @@ export default class RadioButton extends BasicFieldComponent {
                                  disabled={props.disabled}
                                  value={props.options[i].value}
                                  onChange={props.onChange}
-                                 checked={props.options[i].value === props.value ? true: null} />)
+                                 checked={props.options[i].value === props.value} />)
         radiobuttons.push(
           <label key={props.htmlId + "." + props.options[i].value + ".label"}
                  className={classStr}
