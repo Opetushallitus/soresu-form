@@ -20,7 +20,7 @@
     "lodash": "^3.9.3",
     "moment-timezone": "0.4.0",
     "react": "^15.6.1",
-    "react-transition-group": "^1.2.0",
+    "react-transition-group": "^2.2.0",
     "react-dom": "^15.6.1",
     "react-dropzone": "3.13.4",
     "react-widgets": "^3.4.8",
