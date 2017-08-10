@@ -101,7 +101,7 @@ export default class FormErrorSummary extends React.Component {
       fieldErrors.push(<LocalizedString key={key} translations={this.translations} translationKey={error.error}
                                         lang={lang}/>)
     }
-    return <div className="error" key={htmlId + "-validation-error"}>
+    return <div className="error" key={htmlId + "-validation-error"} data-field-id={htmlId}>
       <a role="button" onClick={this.jumpToField(htmlId)}><LocalizedString translations={labelHolder} translationKey="label" defaultValue={field.id} lang={lang} /></a><span>: </span>
       {fieldErrors}
     </div>
