@@ -18,13 +18,20 @@ export default class AttachmentField extends BasicSizedComponent {
     const classStr = ClassNames(this.resolveClassName("soresu-file-upload"), { disabled: props.disabled })
     const uploadButtonClassStr = ClassNames(this.resolveClassName("soresu-upload-button"))
     const existingAttachment = this.props.allAttachments[this.props.field.id]
-
     const propertiesWithAttachment = _.extend({ attachment: existingAttachment }, props)
-    const attachmentElement = existingAttachment ? <ExistingAttachmentComponent {...propertiesWithAttachment}  /> :
-      <Dropzone className={classStr} id={props.htmlId} name={props.htmlId} onDrop={props.onDrop}
-                             disableClick={props.disabled} multiple={false}>
-                     <LocalizedString className={uploadButtonClassStr} translations={translations.form.attachment} translationKey="uploadhere" lang={lang}/>
-                   </Dropzone>
+    const attachmentElement = existingAttachment
+      ? <ExistingAttachmentComponent {...propertiesWithAttachment} />
+      : <Dropzone className={classStr}
+                  id={props.htmlId}
+                  name={props.htmlId}
+                  onDrop={props.onDrop}
+                  disableClick={props.disabled}
+                  multiple={false}>
+          <LocalizedString className={uploadButtonClassStr}
+                           translations={translations.form.attachment}
+                           translationKey="uploadhere"
+                           lang={lang}/>
+        </Dropzone>
 
     return <div className="soresu-attachment-block soresu-attachment-input-field" id={props.htmlId}>
              {this.label(classStr)}
