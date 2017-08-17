@@ -1,9 +1,9 @@
-const _ = require('lodash')
-const verboseAssert = require('assert')
+import _ from 'lodash'
+import verboseAssert from 'assert'
 import { assert } from 'chai'
-const JsUtil = require('../form/JsUtil.js')
-const FormErrorSummary = require('../form/component/FormErrorSummary.jsx')
-const TestUtil = require('./TestUtil.js')
+import JsUtil from '../form/JsUtil'
+import FormErrorSummary from '../form/component/FormErrorSummary.jsx'
+import TestUtil from './TestUtil'
 
 const formContent = TestUtil.testFormJson()
 var validationErrors = {}

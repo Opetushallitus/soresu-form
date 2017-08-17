@@ -10,7 +10,7 @@
   (it "succeeds"
       (let [path    (env :path)
             results (sh "./node_modules/mocha/bin/mocha"
-                        "--compilers" "js:babel/register"
+                        "--require" "babel-register"
                         "--reporter" "mocha-junit-reporter"
                         "web/test/*Test.js"
                         :env {"MOCHA_FILE" "target/junit-mocha-js-unit.xml"

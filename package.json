@@ -16,7 +16,6 @@
     "big.js": "^3.1.3",
     "bluebird": "2.9.34",
     "classnames": "^2.1.3",
-    "json-loader": "^0.5.2",
     "lodash": "^3.9.3",
     "moment-timezone": "0.4.0",
     "react": "^15.6.1",
@@ -27,21 +26,18 @@
     "speakingurl": "7.0.0"
   },
   "devDependencies": {
-    "babel": "^5.6.14",
-    "babel-core": "^5.8.20",
-    "babel-loader": "^5.3.2",
-    "chai": "^3.0.0",
-    "less": "^2.5.1",
-    "less-plugin-npm-import": "2.1.0",
-    "mocha": "^2.5.1",
-    "mocha-junit-reporter": "^1.5.0",
-    "watch-spawn": "^1.0.5",
-    "webpack": "^1.10.5"
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0",
+    "mocha-junit-reporter": "^1.5.0"
   },
   "private": true,
   "scripts": {
-    "test": "mocha --compilers js:babel/register -R spec ./web/test/*.js",
-    "test-junit": "export MOCHA_FILE=target/junit-mocha-js-unit.xml && mocha --compilers js:babel/register -R spec --reporter mocha-junit-reporter ./web/test/*.js",
-    "watch-test": "mocha --watch --compilers js:babel/register web/test/*Test.js"
+    "test": "mocha --require babel-register -R spec ./web/test/*.js",
+    "watch-test": "mocha --watch --require babel-register web/test/*Test.js"
   }
 }
