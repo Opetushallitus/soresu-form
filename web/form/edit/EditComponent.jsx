@@ -298,25 +298,20 @@ export class TextAreaEdit extends TextFieldEdit {
 
 export class MultipleChoiceEdit extends FieldEditComponent {
   render() {
-    const field = this.props.field
-    const formEditorController = this.props.formEditorController
-    const optionElements = _.map(field.options, renderOption)
-    const appendOption = e => { formEditorController.appendOption(field) }
-    return super.renderEditable(
-      <div className="soresu-radio-button-edit">
-        {optionElements}
-        <button type="button" className="soresu-edit" onClick={appendOption}>Lisää vastausvaihtoehto {field.options.length + 1}</button>
-      </div>)
+    const {
+      field,
+      formEditorController
+    } = this.props
 
-    function renderOption(option) {
+    const renderOption = option => {
       const indexOfOption = _.indexOf(field.options, option)
-      const labelGetter = f => { return f.options[indexOfOption].label }
-      const valueGetter = f => { return f.options[indexOfOption] }
-      function createOnChange(lang) {
+      const labelGetter = f => f.options[indexOfOption].label
+      const valueGetter = f => f.options[indexOfOption]
+      const createOnChange = lang => {
         return e => {
-          super.fieldValueUpdater(labelGetter, lang)(e)
-          if(lang === "fi") {
-            super.fieldValueUpdater(valueGetter, "value", slug(e.target.value))(e)
+          this.fieldValueUpdater(labelGetter, lang)(e)
+          if (lang === "fi") {
+            this.fieldValueUpdater(valueGetter, "value", slug(e.target.value))(e)
           }
         }
       }
@@ -324,12 +319,24 @@ export class MultipleChoiceEdit extends FieldEditComponent {
         formEditorController.removeOption(field, option)
       }
       const title = "Vastausvaihtoehto " + (indexOfOption + 1)
-      return <div className="soresu-radio-option-edit" key={field.id + "-option-" + indexOfOption}>
-               <span className="soresu-radio-option-edit-title">{title}</span>
-               <input type="text" placeholder="Vastausvaihtoehto" onChange={createOnChange("fi")} value={labelGetter(field).fi}/>
-               <input type="text" placeholder="Vastausvaihtoehto ruotsiksi" onChange={createOnChange("sv")} value={labelGetter(field).sv}/>
-               <span onClick={removeOption} className="soresu-edit soresu-field-remove"></span>
-             </div>
+      return (
+        <div className="soresu-radio-option-edit" key={field.id + "-option-" + indexOfOption}>
+          <span className="soresu-radio-option-edit-title">{title}</span>
+          <input type="text" placeholder="Vastausvaihtoehto" onChange={createOnChange("fi")} value={labelGetter(field).fi}/>
+          <input type="text" placeholder="Vastausvaihtoehto ruotsiksi" onChange={createOnChange("sv")} value={labelGetter(field).sv}/>
+          <span onClick={removeOption} className="soresu-edit soresu-field-remove"></span>
+        </div>
+      )
     }
+
+    const optionElements = _.map(field.options, renderOption)
+
+    const appendOption = e => { formEditorController.appendOption(field) }
+
+    return super.renderEditable(
+      <div className="soresu-radio-button-edit">
+        {optionElements}
+        <button type="button" className="soresu-edit" onClick={appendOption}>Lisää vastausvaihtoehto {field.options.length + 1}</button>
+      </div>)
   }
 }
