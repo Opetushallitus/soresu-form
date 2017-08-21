@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import FormUtil from './FormUtil.js'
 import BankAccountValidator from './BankAccountValidator.js'
 import MoneyValidator from './MoneyValidator'
 import TableValidator from './TableValidator'

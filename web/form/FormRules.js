@@ -1,6 +1,5 @@
 import _ from 'lodash'
 
-import JsUtil from './JsUtil.js'
 import FormUtil from './FormUtil.js'
 import FormBranchGrower from './FormBranchGrower.js'
 import InputValueStorage from './InputValueStorage.js'
