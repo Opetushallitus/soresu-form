@@ -37,7 +37,7 @@
   },
   "private": true,
   "scripts": {
-    "test": "mocha --require babel-register -R spec ./web/test/*.js",
-    "watch-test": "mocha --watch --require babel-register web/test/*Test.js"
+    "test": "mocha --require babel-register web/test/*Test.js",
+    "test-watch": "mocha --watch --require babel-register web/test/*Test.js"
   }
 }
