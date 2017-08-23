@@ -52,7 +52,7 @@ export default class KoodistoFieldEdit extends FieldEditComponent {
                name={htmlId + "-input-type"}
                value={inputTypeAlternatives[i]}
                onChange={this.fieldValueUpdater(x => x.params, "inputType")}
-               checked={inputTypeAlternatives[i] === field.params.inputType ? true: null} />
+               checked={inputTypeAlternatives[i] === field.params.inputType} />
       )
       inputTypeAlternativeButtons.push(
         <label className="soresu-input-type-selection" key={"input-type-label-" + i} htmlFor={htmlId + ".inputType." + i}>

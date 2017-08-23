@@ -268,7 +268,7 @@ export class TextFieldEdit extends FieldEditComponent {
                name={htmlId + "-size"}
                value={sizeAlternatives[i]}
                onChange={this.fieldValueUpdater(x => x.params, "size")}
-               checked={sizeAlternatives[i] === field.params.size ? true: null} />
+               checked={sizeAlternatives[i] === field.params.size} />
       )
       sizeAlternenativeButtons.push(
         <label className="soresu-size-selection" key={"size-label-" + i} htmlFor={htmlId + ".size." + i}>
