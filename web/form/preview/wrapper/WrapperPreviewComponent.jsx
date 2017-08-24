@@ -1,5 +1,6 @@
 import React from 'react'
-import ComponentFactory from '../../ComponentFactory.js'
+
+import ComponentFactory from '../../ComponentFactory.jsx'
 import ThemeWrapper from './../../component/wrapper/ThemeWrapper.jsx'
 import FieldsetPreview from './FieldsetPreview.jsx'
 import GrowingFieldsetPreview from './GrowingFieldsetPreview.jsx'

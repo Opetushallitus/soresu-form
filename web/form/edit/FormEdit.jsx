@@ -3,9 +3,14 @@ import _ from 'lodash'
 
 import styles from '../style/preview.less'
 
-import {BasicFieldEdit,BasicEditWrapper,AppendableEditWrapper,InfoElementEditWrapper} from 'soresu-form/web/form/edit/EditComponent.jsx'
-import CSSTransitionGroup from 'soresu-form/web/form/component/wrapper/CSSTransitionGroup.jsx'
-import FormEditComponent from 'soresu-form/web/form/edit/FormEditComponent.jsx'
+import {
+  BasicFieldEdit,
+  BasicEditWrapper,
+  AppendableEditWrapper,
+  InfoElementEditWrapper
+} from './EditComponent.jsx'
+import CSSTransitionGroup from '../component/wrapper/CSSTransitionGroup.jsx'
+import FormEditComponent from './FormEditComponent'
 
 import FormPreview from '../FormPreview.jsx'
 

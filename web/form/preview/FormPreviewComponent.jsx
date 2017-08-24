@@ -1,5 +1,5 @@
 import React from 'react'
-import ComponentFactory from '../ComponentFactory.js'
+import ComponentFactory from '../ComponentFactory.jsx'
 import BasicValue from './BasicValue.jsx'
 import TextAreaValue from './TextAreaValue.jsx'
 import MoneyValue from './MoneyValue.jsx'

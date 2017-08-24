@@ -1,7 +1,7 @@
 import React from 'react'
 
-import ComponentFactory from '../ComponentFactory'
-import LocalizedString from './LocalizedString'
+import ComponentFactory from '../ComponentFactory.jsx'
+import LocalizedString from './LocalizedString.jsx'
 import Translator from '../Translator'
 import DateUtil from '../../DateUtil'
 import {InfoElementPropertyMapper, AccordionElementPropertyMapper, LinkPropertyMapper} from './PropertyMapper.js'
