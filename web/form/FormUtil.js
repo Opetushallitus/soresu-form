@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import JsUtil from './JsUtil.js'
+import JsUtil from '../JsUtil'
 
 export default class FormUtil {
   static scrollTo(element, duration, afterScroll) {

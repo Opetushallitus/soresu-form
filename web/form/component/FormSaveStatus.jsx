@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DateUtil from 'soresu-form/web/form/DateUtil'
+import DateUtil from 'soresu-form/web/DateUtil'
 
 import LocalizedString from './LocalizedString.jsx'
 

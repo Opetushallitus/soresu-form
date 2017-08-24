@@ -2,17 +2,17 @@ import _ from 'lodash'
 import Immutable from 'seamless-immutable'
 import queryString from 'query-string'
 
-import HttpUtil from 'va-common/web/HttpUtil'
+import HttpUtil from '../HttpUtil'
 
-import LocalStorage from './LocalStorage.js'
-import InputValueStorage from './InputValueStorage.js'
-import FormUtil from './FormUtil.js'
+import LocalStorage from './LocalStorage'
+import InputValueStorage from './InputValueStorage'
+import FormUtil from './FormUtil'
 import FormRules from './FormRules'
 import FormBranchGrower from './FormBranchGrower'
-import FormBranchEditableFieldGrower from './FormBranchEditableFieldGrower.js'
-import FieldUpdateHandler from './FieldUpdateHandler.js'
-import JsUtil from './JsUtil.js'
-import Translator from './Translator.js'
+import FormBranchEditableFieldGrower from './FormBranchEditableFieldGrower'
+import FieldUpdateHandler from './FieldUpdateHandler'
+import JsUtil from '../JsUtil'
+import Translator from './Translator'
 
 const serverOperations = {
   initialSave: 'initialSave',

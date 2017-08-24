@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import JsUtil from '../JsUtil'
+import JsUtil from '../../JsUtil'
 import FormUtil from '../FormUtil'
 import LocalizedString from './LocalizedString.jsx'
 import Translator from '../Translator'

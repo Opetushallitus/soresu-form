@@ -1,10 +1,10 @@
 import _ from 'lodash'
 
 import FormBranchGrower from './FormBranchGrower'
-import FieldUpdateHandler from './FieldUpdateHandler.js'
-import InputValueStorage from './InputValueStorage.js'
-import JsUtil from './JsUtil.js'
-import FormUtil from './FormUtil.js'
+import FieldUpdateHandler from './FieldUpdateHandler'
+import InputValueStorage from './InputValueStorage'
+import JsUtil from '../JsUtil'
+import FormUtil from './FormUtil'
 
 export default class FormBranchEditableFieldGrower {
   static ensureFirstChildIsRequired(state, growingParent) {

@@ -4,7 +4,7 @@ import slug from 'speakingurl'
 import _ from 'lodash'
 
 import FormEditorController from './FormEditController'
-import MathUtil from '../MathUtil'
+import MathUtil from '../../MathUtil'
 import SyntaxValidator from '../SyntaxValidator'
 
 export class EditComponent extends React.Component {

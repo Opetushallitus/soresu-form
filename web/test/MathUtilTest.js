@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import MathUtil from '../form/MathUtil'
+import MathUtil from '../MathUtil'
 
 describe('Math utilities', function() {
   it('keeps precision when calculating decimal shares, rounding up', function() {

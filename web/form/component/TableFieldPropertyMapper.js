@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import {DefaultPropertyMapper} from './PropertyMapper'
-import MathUtil from '../MathUtil'
+import MathUtil from '../../MathUtil'
 
 export default class TableFieldPropertyMapper {
   static map(props) {

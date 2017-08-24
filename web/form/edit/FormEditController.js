@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
-import FormUtil from '../FormUtil.js'
-import JsUtil from '../JsUtil.js'
+import FormUtil from '../FormUtil'
+import JsUtil from '../../JsUtil'
 
 export default class FormEditorController {
 

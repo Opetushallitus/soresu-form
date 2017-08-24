@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import MathUtil from './MathUtil'
+import MathUtil from '../MathUtil'
 
 export default class TableValidator {
   static validateTable(field, values) {

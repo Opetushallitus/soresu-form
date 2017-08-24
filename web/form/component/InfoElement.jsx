@@ -1,9 +1,9 @@
 import React from 'react'
 
-import ComponentFactory from '../ComponentFactory.js'
-import LocalizedString from './LocalizedString.jsx'
-import Translator from './../Translator.js'
-import DateUtil from '../DateUtil.js'
+import ComponentFactory from '../ComponentFactory'
+import LocalizedString from './LocalizedString'
+import Translator from '../Translator'
+import DateUtil from '../../DateUtil'
 import {InfoElementPropertyMapper, AccordionElementPropertyMapper, LinkPropertyMapper} from './PropertyMapper.js'
 
 export class BasicInfoComponent extends React.Component {

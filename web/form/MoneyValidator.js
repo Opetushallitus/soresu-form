@@ -1,4 +1,4 @@
-import MathUtil from './MathUtil'
+import MathUtil from '../MathUtil'
 
 export default class MoneyValidator {
   static validateMoney(input) {

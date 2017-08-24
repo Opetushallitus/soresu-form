@@ -1,9 +1,9 @@
 import Immutable from 'seamless-immutable'
 import _ from 'lodash'
 
-import InputValueStorage from './InputValueStorage.js'
-import SyntaxValidator from './SyntaxValidator.js'
-import JsUtil from './JsUtil.js'
+import InputValueStorage from './InputValueStorage'
+import SyntaxValidator from './SyntaxValidator'
+import JsUtil from '../JsUtil'
 
 export default class FieldUpdateHandler {
   static createFieldUpdate(field, value, customFieldSyntaxValidator) {

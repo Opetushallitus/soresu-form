@@ -1,7 +1,7 @@
 import React from 'react'
 import ClassNames from 'classnames'
 
-import FormUtil from 'soresu-form/web/form/FormUtil.js'
+import FormUtil from '../FormUtil'
 import LocalizedString from 'soresu-form/web/form/component/LocalizedString.jsx'
 import PreviewComponent from './PreviewComponent.jsx'
 import AttachmentDisplay from './AttachmentDisplay.jsx'

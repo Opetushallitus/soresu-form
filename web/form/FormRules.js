@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
-import FormUtil from './FormUtil.js'
-import FormBranchGrower from './FormBranchGrower.js'
-import InputValueStorage from './InputValueStorage.js'
+import FormUtil from './FormUtil'
+import FormBranchGrower from './FormBranchGrower'
+import InputValueStorage from './InputValueStorage'
 
 export default class FormRules {
   static applyRulesToForm(formSpecification, formState, values) {

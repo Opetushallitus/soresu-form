@@ -1,9 +1,9 @@
 const _ = require('lodash')
 const verboseAssert = require('assert')
 import { assert } from 'chai'
-import JsUtil from '../form/JsUtil.js'
-import InputValueStorage  from '../form/InputValueStorage.js'
-import TestUtil from './TestUtil.js'
+import JsUtil from '../JsUtil'
+import InputValueStorage  from '../form/InputValueStorage'
+import TestUtil from './TestUtil'
 
 var answersObject = {}
 const formContent = TestUtil.testFormJson()

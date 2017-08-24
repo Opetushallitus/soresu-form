@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import _ from 'lodash'
-import JsUtil from '../form/JsUtil'
+import JsUtil from '../JsUtil'
 
 describe('Js util', function() {
   it('collects objects matching a predicate', function() {

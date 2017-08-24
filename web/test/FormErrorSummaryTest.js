@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import verboseAssert from 'assert'
 import { assert } from 'chai'
-import JsUtil from '../form/JsUtil'
+import JsUtil from '../JsUtil'
 import FormErrorSummary from '../form/component/FormErrorSummary.jsx'
 import TestUtil from './TestUtil'
 
