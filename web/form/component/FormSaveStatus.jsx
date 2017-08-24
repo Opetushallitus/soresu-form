@@ -1,7 +1,6 @@
 import React from 'react'
 
-import DateUtil from 'soresu-form/web/DateUtil'
-
+import DateUtil from '../../DateUtil'
 import LocalizedString from './LocalizedString.jsx'
 
 export default class FormSaveStatus extends React.Component {
