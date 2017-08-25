@@ -97,8 +97,16 @@ export default class FormStateTransitions {
             dispatcher.push(events.attachmentUploadCompleted, response)
           })
           .catch(function(error) {
-            if(error.status === 400 && error.data && error.data["illegal-content-type"]) {
-              FormStateTransitions.handleAttachmentSaveError("attachment-has-illegal-content-type-error", error, translations, lang, {"illegal-content-type": error.data["illegal-content-type"]})
+            if (error.response &&
+                error.response.status === 400 &&
+                error.response.data &&
+                error.response.data["illegal-content-type"]) {
+              FormStateTransitions.handleAttachmentSaveError(
+                "attachment-has-illegal-content-type-error",
+                error,
+                translations,
+                lang,
+                {"illegal-content-type": error.response.data["illegal-content-type"]})
             } else {
               FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
             }
@@ -201,13 +209,13 @@ export default class FormStateTransitions {
   }
 
   static handleAttachmentSaveError(msgKey, error, translations, lang, msgKeyValues) {
-    console.error(msgKey, ": " , error)
+    console.warn(`Handle attachment ${msgKey}`, error)
     const translator = new Translator(translations.errors)
     alert(translator.translate(msgKey, lang, undefined, msgKeyValues))
   }
 
   static handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation) {
-    console.error('Unexpected', serverOperation, 'error', error, 'in', method, 'to', url)
+    console.error(`Error in ${serverOperation}, ${method} ${url}`, error)
     if (serverOperation === serverOperations.submit) {
       dispatcher.push(events.serverError, {error: "unexpected-submit-error"})
     } else if (serverOperation === serverOperations.initialSave) {
@@ -217,22 +225,27 @@ export default class FormStateTransitions {
     }
   }
 
-  static handleServerError(dispatcher, events, status, error, method, url, response, serverOperation) {
-    console.warn('Handle', serverOperation, 'error', error, 'in', method, 'to', url, 'with status', status, 'and response', JSON.stringify(response))
-    if (status === 400) {
-      dispatcher.push(events.serverError, {error: "submit-validation-errors", validationErrors: response})
+  static handleServerError(dispatcher, events, error, method, url, serverOperation) {
+    if (error.response) {
+      const res = error.response
+
+      console.warn(`Handle ${serverOperation} error for ${method} ${url}, responding with status ${res.status}: ${JSON.stringify(res.data)}`, error)
+
+      if (res.status === 400) {
+        dispatcher.push(events.serverError, {error: "submit-validation-errors", validationErrors: res.data})
+        return
+      } else if (res.status === 405) {
+        dispatcher.push(events.serverError, {error: "save-not-allowed"})
+        return
+      } else if (res.status === 409) {
+        // TODO: Resolve updates from server.
+        // At the moment just tell that something has changes
+        dispatcher.push(events.serverError, {error: "conflict-save-error"})
+        return
+      }
     }
-    else if (status === 405) {
-      dispatcher.push(events.serverError, {error: "save-not-allowed"})
-    }
-    else if (status === 409) {
-      // TODO: Resolve updates from server.
-      // At the moment just tell that something has changes
-      dispatcher.push(events.serverError, {error: "conflict-save-error"})
-    }
-    else{
-      FormStateTransitions.handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation)
-    }
+
+    FormStateTransitions.handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation)
   }
 
   updateOld(state, serverOperation, onSuccessCallback) {
@@ -247,8 +260,14 @@ export default class FormStateTransitions {
         .then(function(response) {
           self.pushSaveCompletedEvent(state, response, onSuccessCallback)
         })
-        .catch(function(response) {
-            FormStateTransitions.handleServerError(dispatcher, events, response.status, response.statusText, "POST", url, response.data, serverOperation)
+        .catch(function(error) {
+          FormStateTransitions.handleServerError(
+            dispatcher,
+            events,
+            error,
+            "POST",
+            url,
+            serverOperation)
         })
     }
     catch(error) {
