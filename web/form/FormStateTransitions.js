@@ -79,45 +79,36 @@ export default class FormStateTransitions {
     const { files, field } = uploadEvent
     const formOperations = state.extensionApi.formOperations
     if (formOperations.isSaveDraftAllowed(state)) {
-
       const url = formOperations.urlCreator.attachmentBaseUrl(state, field)
       const dispatcher = this.dispatcher
       const events = this.events
       const translations = state.configuration.translations
       const lang = state.configuration.lang
-      try {
-        const attachment = files[0]
-        if (files.length > 1) {
-          console.log('Warning: Only uploading first of ', files)
-        }
-        state.saveStatus.attachmentUploadsInProgress[field.id] = true
-        HttpUtil.putFile(url, attachment)
-          .then(function(response) {
-            console.log("Uploaded file to server. Response=", JSON.stringify(response))
-            dispatcher.push(events.attachmentUploadCompleted, response)
-          })
-          .catch(function(error) {
-            if (error.response &&
-                error.response.status === 400 &&
-                error.response.data &&
-                error.response.data["illegal-content-type"]) {
-              FormStateTransitions.handleAttachmentSaveError(
-                "attachment-has-illegal-content-type-error",
-                error,
-                translations,
-                lang,
-                {"illegal-content-type": error.response.data["illegal-content-type"]})
-            } else {
-              FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
-            }
-          })
+      const attachment = files[0]
+      if (files.length > 1) {
+        console.log('Warning: Only uploading first of ', files)
       }
-      catch(error) {
-        FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
-      }
-      finally {
-        return state
-      }
+      state.saveStatus.attachmentUploadsInProgress[field.id] = true
+      HttpUtil.putFile(url, attachment)
+        .then(function(response) {
+          console.log("Uploaded file to server. Response=", JSON.stringify(response))
+          dispatcher.push(events.attachmentUploadCompleted, response)
+        })
+        .catch(function(error) {
+          if (error.response &&
+              error.response.status === 400 &&
+              error.response.data &&
+              error.response.data["illegal-content-type"]) {
+            FormStateTransitions.handleAttachmentSaveError(
+              "attachment-has-illegal-content-type-error",
+              error,
+              translations,
+              lang,
+              {"illegal-content-type": error.response.data["illegal-content-type"]})
+          } else {
+            FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
+          }
+        })
     }
     return state
   }
@@ -164,23 +155,15 @@ export default class FormStateTransitions {
       const events = this.events
       const translations = state.configuration.translations
       const lang = state.configuration.lang
-      try {
-        state.saveStatus.attachmentUploadsInProgress[fieldOfFile.id] = true
-        HttpUtil.delete(url)
-          .then(function(response) {
-            console.log("Deleted attachment of field " + fieldOfFile.id + " . Response=", JSON.stringify(response))
-            dispatcher.push(events.attachmentRemovalCompleted, fieldOfFile)
-          })
-          .catch(function(error) {
-            FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
-          })
-      }
-      catch(error) {
-        FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
-      }
-      finally {
-        return state
-      }
+      state.saveStatus.attachmentUploadsInProgress[fieldOfFile.id] = true
+      HttpUtil.delete(url)
+        .then(function(response) {
+          console.log("Deleted attachment: " + fieldOfFile.id)
+          dispatcher.push(events.attachmentRemovalCompleted, fieldOfFile)
+        })
+        .catch(function(error) {
+          FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
+        })
     }
     return state
   }
@@ -254,28 +237,21 @@ export default class FormStateTransitions {
     const dispatcher = this.dispatcher
     const events = this.events
     const self = this
-    try {
-      state.saveStatus.saveInProgress = true
-      HttpUtil.post(url, state.saveStatus.values)
-        .then(function(response) {
-          self.pushSaveCompletedEvent(state, response, onSuccessCallback)
-        })
-        .catch(function(error) {
-          FormStateTransitions.handleServerError(
-            dispatcher,
-            events,
-            error,
-            "POST",
-            url,
-            serverOperation)
-        })
-    }
-    catch(error) {
-      FormStateTransitions.handleUnexpectedServerError(dispatcher, events, "POST", url, error, serverOperation);
-    }
-    finally {
-      return state
-    }
+    state.saveStatus.saveInProgress = true
+    HttpUtil.post(url, state.saveStatus.values)
+      .then(function(response) {
+        self.pushSaveCompletedEvent(state, response, onSuccessCallback)
+      })
+      .catch(function(error) {
+        FormStateTransitions.handleServerError(
+          dispatcher,
+          events,
+          error,
+          "POST",
+          url,
+          serverOperation)
+      })
+    return state
   }
 
   pushSaveCompletedEvent(state, response, onSuccessCallback) {
