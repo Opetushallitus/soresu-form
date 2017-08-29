@@ -104,10 +104,21 @@ export class EditComponent extends React.Component {
     const removeFieldOnClick = e => { formEditorController.removeField(field) }
     const removeField = FormEditorController.addableFieldTypes()[field.fieldType] ?
         <span onClick={removeFieldOnClick} className="soresu-edit soresu-field-remove">Poista</span> :
-        undefined
+      undefined
+
+    const moveField = (indexDelta) => formEditorController.moveField(field, indexDelta)
+    const moveFieldsButtons = FormEditorController.addableFieldTypes()[field.fieldType] ? (
+      <div>
+        <span onClick={moveField.bind(null, -1)}
+          className="soresu-edit soresu-field-move">Ylös</span>
+        <span onClick={moveField.bind(null, 1)}
+          className="soresu-edit soresu-field-move">Alas</span>
+      </div>
+    ) : undefined
     return (
       <div key={htmlId} className={this.className()}>
         <h3>{EditComponent.fieldTypeInFI(field.fieldType)}</h3>
+        {moveFieldsButtons}
         {removeField}
         {labelEdit}
         {fieldSpecificEdit}
