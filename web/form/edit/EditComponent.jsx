@@ -99,6 +99,11 @@ export class EditComponent extends React.Component {
     formEditorController.removeField(field)
   }
 
+  handleOnMoveField(indexDelta) {
+    const {field, formEditorController} = this.props
+    formEditorController.moveField(field, indexDelta)
+  }
+
   renderEditable(fieldSpecificEdit) {
     const field = this.props.field
     const formEditorController = this.props.formEditorController
@@ -115,19 +120,9 @@ export class EditComponent extends React.Component {
         <span onClick={this.handleOnRemoveFieldClick.bind(this)} className="soresu-edit soresu-field-remove">Poista</span> :
       undefined
 
-    const moveField = (indexDelta) => formEditorController.moveField(field, indexDelta)
-    const moveFieldsButtons = FormEditorController.addableFieldTypes()[field.fieldType] ? (
-      <div>
-        <span onClick={moveField.bind(null, -1)}
-          className="soresu-edit soresu-field-move">Ylös</span>
-        <span onClick={moveField.bind(null, 1)}
-          className="soresu-edit soresu-field-move">Alas</span>
-      </div>
-    ) : undefined
     return (
       <div key={htmlId} className={this.className()}>
         <h3>{EditComponent.fieldTypeInFI(field.fieldType)}</h3>
-        {moveFieldsButtons}
         {removeField}
         {labelEdit}
         {fieldSpecificEdit}
