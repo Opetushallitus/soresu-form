@@ -53,20 +53,21 @@ export default class FormEditorController {
     })
   }
 
-  moveField(field, indexDelta) {
+  moveFieldAfter(field, targetField) {
     this.doEdit(() => {
-      const fieldMatcher = f => { return f.id === field.id }
       const parent = FormUtil.findFieldWithDirectChild(this.formDraftJson.content, field.id)
       const fields = parent ? parent.children : this.formDraftJson.content
-      const index = _.findIndex(fields, fieldMatcher) + indexDelta
+      const newIndex = fields.findIndex(f => f.id === targetField.id)
 
-      if (index < 0 || index > (fields.length - 1)) {
+      if (newIndex < 0 || newIndex > (fields.length - 1)) {
         return
       }
 
-      const removed = _.remove(fields, fieldMatcher)
-      const updatedFields = _.slice(fields, 0, index).concat(
-        removed, _.slice(fields, index))
+      const oldIndex = fields.findIndex(f => f.id === field.id)
+      const item = fields[oldIndex]
+      const fieldsWithoutItem = fields.slice(0, oldIndex).concat(fields.slice(oldIndex + 1))
+      const updatedFields = fieldsWithoutItem.slice(0, newIndex).concat(
+        item, fieldsWithoutItem.slice(newIndex))
 
       if (parent) {
         parent.children = updatedFields
