@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc'
 
 import styles from '../style/preview.less'
 
@@ -13,6 +14,20 @@ import CSSTransitionGroup from '../component/wrapper/CSSTransitionGroup.jsx'
 import FormEditComponent from './FormEditComponent'
 
 import FormPreview from '../FormPreview.jsx'
+
+const SortableItem = SortableElement((props) =>
+  <div>{props.value}</div>
+)
+
+const SortableList = SortableContainer((props) =>
+  <CSSTransitionGroup transitionName="soresu-dynamic-children-transition">
+    {props.items.map((value, index) => (
+      <SortableItem key={`item-${index}`} index={index} value={props.renderItem(value)} />
+    ))}
+  </CSSTransitionGroup>
+)
+
+const handleShouldCancelStart = (e) => e.target.className.indexOf("soresu-field-move") === -1
 
 export default class FormEdit extends React.Component {
 
@@ -52,6 +67,14 @@ export default class FormEdit extends React.Component {
     return <BasicFieldEdit formEditorController={formEditorController} htmlId={fieldProperties.htmlId} key={fieldProperties.htmlId} field={field}/>
   }
 
+  handleOnSortEnd(data, e) {
+    const {formEditorController} = this.props
+    const fields = this.props.state.form.content
+    if (data.oldIndex != data.newIndex) {
+      formEditorController.moveFieldAfter(fields[data.oldIndex], fields[data.newIndex])
+    }
+  }
+
   render() {
     const controller = this.props.controller
     const formEditorController = this.props.formEditorController
@@ -66,11 +89,12 @@ export default class FormEdit extends React.Component {
     const readOnlyNotificationText = formEditorController.readOnlyNotificationText ? formEditorController.readOnlyNotificationText : "Ei muokkausoikeutta"
     const readOnlyNotification = formEditorController.allowEditing ? null : <div className="soresu-read-only-notification">{readOnlyNotificationText}</div>
 
-    return  <div className="soresu-form-edit soresu-edit">
-      {readOnlyNotification}
-      <CSSTransitionGroup transitionName="soresu-dynamic-children-transition">
-        {fields.map(renderField)}
-      </CSSTransitionGroup>
-    </div>
+    return (
+      <div className="soresu-form-edit soresu-edit">
+        {readOnlyNotification}
+        <SortableList items={fields} renderItem={renderField} lockAxis={"y"}
+          onSortEnd={this.handleOnSortEnd.bind(this)} shouldCancelStart={handleShouldCancelStart} />
+      </div>
+    )
   }
 }
