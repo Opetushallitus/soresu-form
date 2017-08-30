@@ -93,12 +93,11 @@ export class EditComponent extends React.Component {
     const formEditorController = this.props.formEditorController
     const htmlId = this.props.htmlId
 
-    const addableElements = _.keys(FormEditorController.addableFieldTypes())
-    const addElementButtons = []
-    for (var i = 0; i < addableElements.length; i++) {
-      addElementButtons.push(<a href="#" key={i} className="soresu-edit" onClick={createAddOnClick(addableElements[i])}>{EditComponent.fieldTypeInFI(addableElements[i])}</a>)
-    }
-
+    const addElementButtons = Object.keys(FormEditorController.addableFieldTypes()).map((key, i) => (
+      <a href="#" key={i} className="soresu-edit" onClick={createAddOnClick(key)}>
+        {EditComponent.fieldTypeInFI(key)}
+      </a>
+    ))
 
     var labelEdit = this.renderTranslationTable(htmlId + "-label", this.labelName(), x => x.label)
     const removeFieldOnClick = e => { formEditorController.removeField(field) }
