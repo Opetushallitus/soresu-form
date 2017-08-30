@@ -99,11 +99,6 @@ export class EditComponent extends React.Component {
     formEditorController.removeField(field)
   }
 
-  handleOnMoveField(indexDelta) {
-    const {field, formEditorController} = this.props
-    formEditorController.moveField(field, indexDelta)
-  }
-
   renderEditable(fieldSpecificEdit) {
     const field = this.props.field
     const formEditorController = this.props.formEditorController
