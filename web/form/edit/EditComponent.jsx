@@ -111,14 +111,17 @@ export class EditComponent extends React.Component {
     ))
 
     var labelEdit = this.renderTranslationTable(htmlId + "-label", this.labelName(), x => x.label)
-    const removeField = FormEditorController.addableFieldTypes()[field.fieldType] ?
-        <span onClick={this.handleOnRemoveFieldClick.bind(this)} className="soresu-edit soresu-field-remove">Poista</span> :
-      undefined
+    const editFields = FormEditorController.addableFieldTypes()[field.fieldType] ? (
+      <div>
+        <span onClick={this.handleOnRemoveFieldClick.bind(this)}
+          className="soresu-edit soresu-field-remove soresu-field-edit-icon">Poista</span>
+        <span className="soresu-edit soresu-field-move soresu-field-edit-icon">Siirrä</span>
+      </div>) : null
 
     return (
       <div key={htmlId} className={this.className()}>
         <h3>{EditComponent.fieldTypeInFI(field.fieldType)}</h3>
-        {removeField}
+        {editFields}
         {labelEdit}
         {fieldSpecificEdit}
         <div className="soresu-field-add">
@@ -327,7 +330,7 @@ export class MultipleChoiceEdit extends FieldEditComponent {
           <span className="soresu-radio-option-edit-title">{title}</span>
           <input type="text" placeholder="Vastausvaihtoehto" onChange={createOnChange("fi")} value={labelGetter(field).fi}/>
           <input type="text" placeholder="Vastausvaihtoehto ruotsiksi" onChange={createOnChange("sv")} value={labelGetter(field).sv}/>
-          <span onClick={removeOption} className="soresu-edit soresu-field-remove"></span>
+          <span onClick={removeOption} className="soresu-edit soresu-field-remove soresu-field-edit-icon"></span>
         </div>
       )
     }
