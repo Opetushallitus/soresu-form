@@ -93,6 +93,7 @@ export default class FormStateTransitions {
         .then(function(response) {
           console.log("Uploaded file to server. Response=", JSON.stringify(response))
           dispatcher.push(events.attachmentUploadCompleted, response)
+          return null
         })
         .catch(function(error) {
           if (error.response &&
@@ -160,6 +161,7 @@ export default class FormStateTransitions {
         .then(function(response) {
           console.log("Deleted attachment: " + fieldOfFile.id)
           dispatcher.push(events.attachmentRemovalCompleted, fieldOfFile)
+          return null
         })
         .catch(function(error) {
           FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
