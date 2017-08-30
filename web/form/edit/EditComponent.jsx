@@ -88,13 +88,20 @@ export class EditComponent extends React.Component {
     )
   }
 
+  handleOnAddClick(fieldType, e) {
+    const {field, formEditorController} = this.props
+    e.preventDefault()
+    formEditorController.addChildFieldAfter(field, fieldType)
+  }
+
+
   renderEditable(fieldSpecificEdit) {
     const field = this.props.field
     const formEditorController = this.props.formEditorController
     const htmlId = this.props.htmlId
 
     const addElementButtons = Object.keys(FormEditorController.addableFieldTypes()).map((key, i) => (
-      <a href="#" key={i} className="soresu-edit" onClick={createAddOnClick(key)}>
+      <a href="#" key={i} className="soresu-edit" onClick={this.handleOnAddClick.bind(this, key)}>
         {EditComponent.fieldTypeInFI(key)}
       </a>
     ))
@@ -126,13 +133,6 @@ export class EditComponent extends React.Component {
         </div>
       </div>
     )
-
-    function createAddOnClick(fieldType) {
-      return e => {
-        e.preventDefault()
-        formEditorController.addChildFieldAfter(field, fieldType)
-      }
-    }
   }
 
   labelName() {
