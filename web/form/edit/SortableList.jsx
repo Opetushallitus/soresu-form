@@ -11,7 +11,8 @@ const SortableItem = SortableElement((props) =>
 const SortableListContainer = SortableContainer((props) =>
   <CSSTransitionGroup transitionName={props.transitionName}>
     {props.items.map((value, index) => (
-      <SortableItem key={`item-${index}`} index={index} value={props.renderItem(value)} />
+      <SortableItem key={`item-${index}`} index={index}
+        value={props.renderItem ? props.renderItem(value) : value} />
     ))}
   </CSSTransitionGroup>
 )
