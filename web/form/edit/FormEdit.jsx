@@ -81,7 +81,7 @@ export default class FormEdit extends React.Component {
       <div className="soresu-form-edit soresu-edit">
         {readOnlyNotification}
         <SortableList items={fields} renderItem={renderField} lockAxis={"y"}
-          onSortEnd={this.handleOnSortEnd.bind(this)} />
+          onSortEnd={this.handleOnSortEnd.bind(this)} transitionName="soresu-dynamic-children-transition" />
       </div>
     )
   }
