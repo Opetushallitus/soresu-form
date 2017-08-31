@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import {SortableContainer, SortableElement} from 'react-sortable-hoc'
 
 import styles from '../style/preview.less'
 
@@ -14,20 +13,7 @@ import CSSTransitionGroup from '../component/wrapper/CSSTransitionGroup.jsx'
 import FormEditComponent from './FormEditComponent'
 
 import FormPreview from '../FormPreview.jsx'
-
-const SortableItem = SortableElement((props) =>
-  <div>{props.value}</div>
-)
-
-const SortableList = SortableContainer((props) =>
-  <CSSTransitionGroup transitionName="soresu-dynamic-children-transition">
-    {props.items.map((value, index) => (
-      <SortableItem key={`item-${index}`} index={index} value={props.renderItem(value)} />
-    ))}
-  </CSSTransitionGroup>
-)
-
-const handleShouldCancelStart = (e) => e.target.className.indexOf("soresu-field-move") === -1
+import SortableList from './SortableList.jsx'
 
 export default class FormEdit extends React.Component {
 
@@ -93,7 +79,7 @@ export default class FormEdit extends React.Component {
       <div className="soresu-form-edit soresu-edit">
         {readOnlyNotification}
         <SortableList items={fields} renderItem={renderField} lockAxis={"y"}
-          onSortEnd={this.handleOnSortEnd.bind(this)} shouldCancelStart={handleShouldCancelStart} />
+          onSortEnd={this.handleOnSortEnd.bind(this)} />
       </div>
     )
   }
