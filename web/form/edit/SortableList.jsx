@@ -19,7 +19,8 @@ const SortableListContainer = SortableContainer((props) =>
 
 export default class SortableList extends React.Component {
   render() {
-    return <SortableListContainer {...this.props} shouldCancelStart={handleShouldCancelStart} />
+    return <SortableListContainer {...this.props}
+      shouldCancelStart={this.props.shouldCancelStart || handleShouldCancelStart} />
   }
 }
 
