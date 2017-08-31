@@ -46,8 +46,10 @@ export default class FormEdit extends React.Component {
         return <BasicEditWrapper formEditorController={formEditorController} wrappedElement={previewWrapperElement} htmlId={htmlId} key={htmlId} field={field}/>
       }
       else {
-        const editableWrapperElement = FormPreview.createWrapperComponent(FormEdit.renderField, controller, formEditorController, state, infoElementValues, field, fieldProperties, renderingParameters)
-        return <AppendableEditWrapper formEditorController={formEditorController} wrappedElement={editableWrapperElement} htmlId={htmlId} key={htmlId} field={field}/>
+        const editableWrapperElement = FormPreview.createWrapperComponent(
+          FormEdit.renderField, controller, formEditorController, state, infoElementValues, field, fieldProperties, renderingParameters)
+        return <AppendableEditWrapper formEditorController={formEditorController} wrappedElement={editableWrapperElement}
+          htmlId={htmlId} key={htmlId} field={field}/>
       }
     }
     return <BasicFieldEdit formEditorController={formEditorController} htmlId={fieldProperties.htmlId} key={fieldProperties.htmlId} field={field}/>
