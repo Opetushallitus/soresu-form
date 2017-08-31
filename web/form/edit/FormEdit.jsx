@@ -13,6 +13,7 @@ import CSSTransitionGroup from '../component/wrapper/CSSTransitionGroup.jsx'
 import FormEditComponent from './FormEditComponent'
 
 import FormPreview from '../FormPreview.jsx'
+import SortableList from './SortableList.jsx'
 
 export default class FormEdit extends React.Component {
 
@@ -45,11 +46,21 @@ export default class FormEdit extends React.Component {
         return <BasicEditWrapper formEditorController={formEditorController} wrappedElement={previewWrapperElement} htmlId={htmlId} key={htmlId} field={field}/>
       }
       else {
-        const editableWrapperElement = FormPreview.createWrapperComponent(FormEdit.renderField, controller, formEditorController, state, infoElementValues, field, fieldProperties, renderingParameters)
-        return <AppendableEditWrapper formEditorController={formEditorController} wrappedElement={editableWrapperElement} htmlId={htmlId} key={htmlId} field={field}/>
+        const editableWrapperElement = FormPreview.createWrapperComponent(
+          FormEdit.renderField, controller, formEditorController, state, infoElementValues, field, fieldProperties, renderingParameters)
+        return <AppendableEditWrapper formEditorController={formEditorController} wrappedElement={editableWrapperElement}
+          htmlId={htmlId} key={htmlId} field={field}/>
       }
     }
     return <BasicFieldEdit formEditorController={formEditorController} htmlId={fieldProperties.htmlId} key={fieldProperties.htmlId} field={field}/>
+  }
+
+  handleOnSortEnd(data, e) {
+    const {formEditorController} = this.props
+    const fields = this.props.state.form.content
+    if (data.oldIndex != data.newIndex) {
+      formEditorController.moveFieldAfter(fields[data.oldIndex], fields[data.newIndex])
+    }
   }
 
   render() {
@@ -66,11 +77,12 @@ export default class FormEdit extends React.Component {
     const readOnlyNotificationText = formEditorController.readOnlyNotificationText ? formEditorController.readOnlyNotificationText : "Ei muokkausoikeutta"
     const readOnlyNotification = formEditorController.allowEditing ? null : <div className="soresu-read-only-notification">{readOnlyNotificationText}</div>
 
-    return  <div className="soresu-form-edit soresu-edit">
-      {readOnlyNotification}
-      <CSSTransitionGroup transitionName="soresu-dynamic-children-transition">
-        {fields.map(renderField)}
-      </CSSTransitionGroup>
-    </div>
+    return (
+      <div className="soresu-form-edit soresu-edit">
+        {readOnlyNotification}
+        <SortableList items={fields} renderItem={renderField} lockAxis={"y"}
+          onSortEnd={this.handleOnSortEnd.bind(this)} transitionName="soresu-dynamic-children-transition" />
+      </div>
+    )
   }
 }
