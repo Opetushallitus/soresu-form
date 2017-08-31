@@ -120,14 +120,14 @@ export class EditComponent extends React.Component {
 
     var labelEdit = this.renderTranslationTable(htmlId + "-label", this.labelName(), x => x.label)
     const editFields = FormEditorController.addableFieldTypes()[field.fieldType] ? (
-      <span className="soresu-field-edit-tools">
+      <div className="soresu-field-edit-tools">
        <span onClick={this.handleOnMoveFieldUpClick.bind(this)}
           className="soresu-field-move-up soresu-field-edit-button" />
         <span onClick={this.handleOnMoveFieldDownClick.bind(this)}
           className="soresu-field-move-down soresu-field-edit-button" />
         <span onClick={this.handleOnRemoveFieldClick.bind(this)}
-          className="soresu-edit soresu-field-remove soresu-field-edit-button">Poista</span>
-      </span>) : null
+          className="soresu-field-remove soresu-field-edit-button">Poista</span>
+      </div>) : null
 
     return (
       <div key={htmlId} className={this.className()}>
