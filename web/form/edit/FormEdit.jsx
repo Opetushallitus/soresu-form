@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc'
+import {SortableContainer, SortableElement} from 'react-sortable-hoc'
 
 import styles from '../style/preview.less'
 
