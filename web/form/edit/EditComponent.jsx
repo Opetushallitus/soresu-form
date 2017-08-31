@@ -99,6 +99,14 @@ export class EditComponent extends React.Component {
     formEditorController.removeField(field)
   }
 
+  handleOnMoveFieldUpClick(e) {
+    this.props.formEditorController.moveField(this.props.field, -1)
+  }
+
+  handleOnMoveFieldDownClick(e) {
+    this.props.formEditorController.moveField(this.props.field, 1)
+  }
+
   renderEditable(fieldSpecificEdit) {
     const field = this.props.field
     const formEditorController = this.props.formEditorController
@@ -112,10 +120,14 @@ export class EditComponent extends React.Component {
 
     var labelEdit = this.renderTranslationTable(htmlId + "-label", this.labelName(), x => x.label)
     const editFields = FormEditorController.addableFieldTypes()[field.fieldType] ? (
-      <div>
+      <span className="soresu-field-edit-tools">
+       <span onClick={this.handleOnMoveFieldUpClick.bind(this)}
+          className="soresu-field-move-up soresu-field-edit-button" />
+        <span onClick={this.handleOnMoveFieldDownClick.bind(this)}
+          className="soresu-field-move-down soresu-field-edit-button" />
         <span onClick={this.handleOnRemoveFieldClick.bind(this)}
-          className="soresu-edit soresu-field-remove soresu-field-edit-icon">Poista</span>
-      </div>) : null
+          className="soresu-edit soresu-field-remove soresu-field-edit-button">Poista</span>
+      </span>) : null
 
     return (
       <div key={htmlId} className={this.className()}>
