@@ -4,7 +4,7 @@
   :license {:name "EUPL licence"
             :url "http://opensource.org/licenses/EUPL-1.1"}
   :repositories {"Laughing Panda" "http://maven.laughingpanda.org/maven2"}
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
 
                  ;; HTTP server
                  [javax.servlet/servlet-api "2.5"]
