@@ -120,7 +120,8 @@ export default class FormEditorController {
           children: [
             this.createNewField("growingFieldsetChild",
               this.generateUniqueId("growingFieldsetChild", 0))
-          ]
+          ],
+          params: { "showOnlyFirstLabels": true }
         }
       case "textField":
       case "koodistoField":
