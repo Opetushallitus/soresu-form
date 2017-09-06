@@ -16,7 +16,7 @@ function getFieldClassProps(fieldClass) {
       return {}
       break
     default:
-      throw new Error("Don't know how to create field of class '" + fieldClass + "' for type '" + fieldType + "'")
+      throw new Error(`Don't know how to create field of class '${fieldClass}'`)
   }
 }
 
@@ -60,7 +60,7 @@ function getFieldTypeProps(fieldType) {
       }
       break
     default:
-      throw new Error("Don't know how to create field of type '" + fieldType + "'")
+      throw new Error(`Don't know how to create field of type '${fieldType}'`)
   }
 }
 
