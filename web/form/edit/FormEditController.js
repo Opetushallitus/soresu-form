@@ -139,13 +139,13 @@ export default class FormEditorController {
   }
 
   createNewField(fieldType, id) {
-  const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
-  const newField = Object.assign({
-    "params": {},
-    "fieldClass": fieldClass,
-    "fieldType": fieldType,
-    "id": id
-  }, getFieldClassProps(fieldClass), getFieldTypeProps(fieldType))
+    const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
+    const newField = Object.assign({
+      "params": {},
+      "fieldClass": fieldClass,
+      "fieldType": fieldType,
+      "id": id
+    }, getFieldClassProps(fieldClass), getFieldTypeProps(fieldType))
 
     return newField
   }
