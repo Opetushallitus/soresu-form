@@ -147,8 +147,17 @@ export default class FormEditorController {
     "id": id
   }, getFieldClassProps(fieldClass), getFieldTypeProps(fieldType))
 
-  return newField
- }
+    return newField
+  }
+
+  generateUniqueId(fieldType, index) {
+    const proposed = fieldType + "-" +index
+    if (_.isEmpty(JsUtil.flatFilter(this.formDraftJson.content, n => { return n.id === proposed}))) {
+      return proposed
+    }
+    return this.generateUniqueId(fieldType, index + 1)
+  }
+
 
   addChildFieldAfter(fieldToAddAfter, newFieldType) {
     this.doEdit(() => {
@@ -158,15 +167,7 @@ export default class FormEditorController {
       const fieldToAddAfterOnForm = FormUtil.findField(formDraftJson.content, fieldToAddAfter.id)
       const indexOfNewChild = childArray.indexOf(fieldToAddAfterOnForm) + 1
 
-      function generateUniqueId(index) {
-        const proposed = newFieldType + "-" +index
-        if (_.isEmpty(JsUtil.flatFilter(formDraftJson.content, n => { return n.id === proposed}))) {
-          return proposed
-        }
-        return generateUniqueId(index + 1)
-      }
-
-      const newId = generateUniqueId(0)
+      const newId = this.generateUniqueId(newFieldType, 0)
       const newChild = this.createNewField(newFieldType, newId)
 
       const parent = parentField ? FormUtil.findField(formDraftJson.content, parentField.id) : formDraftJson.content
