@@ -153,7 +153,7 @@ export default class FormEditorController {
   generateUniqueId(fieldType, index) {
     const proposed = `${fieldType}-${index}`
     if (_.isEmpty(JsUtil.flatFilter(
-        this.formDraftJson.content, n => n.id === proposed))) {
+      this.formDraftJson.content, n => n.id === proposed))) {
       return proposed
     }
     return this.generateUniqueId(fieldType, index + 1)
