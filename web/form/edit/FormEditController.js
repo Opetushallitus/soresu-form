@@ -3,6 +3,23 @@ import _ from 'lodash'
 import FormUtil from '../FormUtil'
 import JsUtil from '../../JsUtil'
 
+function getFieldClassProps(fieldClass) {
+  switch (fieldClass) {
+    case "formField":
+      return {
+        label: { "fi": "", "sv": "" },
+        helpText: { "fi": "", "sv": "" },
+        required: true
+      }
+      break
+    case "infoElement":
+      return {}
+      break
+    default:
+      throw new Error("Don't know how to create field of class '" + fieldClass + "' for type '" + fieldType + "'")
+  }
+}
+
 export default class FormEditorController {
 
   static addableFieldTypes() {
@@ -107,24 +124,12 @@ export default class FormEditorController {
 
     function createNewField(fieldType, id) {
       const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
-      const newField = {
+      const newField = Object.assign({
         "params": {},
         "fieldClass": fieldClass,
         "fieldType": fieldType,
         "id": id
-      }
-
-      switch (fieldClass) {
-        case "formField":
-          newField.label = { "fi": "", "sv": "" }
-          newField.helpText = { "fi": "", "sv": "" }
-          newField.required = true
-          break
-        case "infoElement":
-          break
-        default:
-          throw new Error("Don't know how to create field of class '" + fieldClass + "' for type '" + fieldType + "'")
-      }
+      }, getFieldClassProps(fieldClass))
 
       switch (fieldType) {
         case "moneyField":
