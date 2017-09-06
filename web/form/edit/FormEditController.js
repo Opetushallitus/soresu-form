@@ -173,9 +173,9 @@ export default class FormEditorController {
 
       const parent = parentField ? FormUtil.findField(formDraftJson.content, parentField.id) : formDraftJson.content
       if (_.isArray(parent)) {
-        parent.splice(indexOfNewChild, 0, newChild);
+        parent.splice(indexOfNewChild, 0, newChild)
       } else {
-        parent.children.splice(indexOfNewChild, 0, newChild);
+        parent.children.splice(indexOfNewChild, 0, newChild)
       }
       return newChild
     })
