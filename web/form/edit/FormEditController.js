@@ -13,6 +13,8 @@ function getFieldClassProps(fieldClass) {
       }
     case "infoElement":
       return {}
+    case "wrapperElement":
+      return { children: [] }
     default:
       throw new Error(`Don't know how to create field of class '${fieldClass}'`)
   }
@@ -23,6 +25,10 @@ function getFieldTypeProps(fieldType) {
     case "moneyField":
     case "emailField":
     case "namedAttachment":
+    case "theme":
+    case "fieldset":
+    case "growingFieldset":
+    case "growingFieldsetChild":
       return {}
     case "textField":
     case "koodistoField":
@@ -71,7 +77,12 @@ export default class FormEditorController {
       "koodistoField": "formField",
       "p": "infoElement",
       "h3": "infoElement",
-      "link": "infoElement"
+      "link": "infoElement",
+      "theme": "wrapperElement",
+      "fieldset": "wrapperElement",
+      "growingFieldset": "wrapperElement",
+      "growingFieldsetChild": "wrapperElement"
+
     }
   }
 
