@@ -20,6 +20,50 @@ function getFieldClassProps(fieldClass) {
   }
 }
 
+function getFieldTypeProps(fieldType) {
+  switch (fieldType) {
+    case "moneyField":
+    case "emailField":
+    case "namedAttachment":
+      return {}
+      break
+    case "textField":
+    case "koodistoField":
+    case "textArea":
+      return {
+        params: {
+          maxlength: 100,
+          size: "medium"
+        }
+      }
+      break
+    case "radioButton":
+    case "dropdown":
+    case "checkboxButton":
+      return {
+        options: [
+          FormEditorController.createEmptyOption(),
+          FormEditorController.createEmptyOption()
+        ]
+      }
+      break
+    case "link":
+      return {
+        params: {
+          href: {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
+        }
+      }
+    case "p":
+    case "h3":
+      return {
+        text: {"fi": "", "sv": ""}
+      }
+      break
+    default:
+      throw new Error("Don't know how to create field of type '" + fieldType + "'")
+  }
+}
+
 export default class FormEditorController {
 
   static addableFieldTypes() {
@@ -129,39 +173,8 @@ export default class FormEditorController {
         "fieldClass": fieldClass,
         "fieldType": fieldType,
         "id": id
-      }, getFieldClassProps(fieldClass))
-
-      switch (fieldType) {
-        case "moneyField":
-        case "emailField":
-        case "namedAttachment":
-          break
-        case "textField":
-        case "koodistoField":
-          newField.params.maxlength = 100
-          newField.params.size = "medium"
-          break
-        case "textArea":
-          newField.params.maxlength = 1000
-          newField.params.size = "medium"
-          break
-        case "radioButton":
-        case "dropdown":
-        case "checkboxButton":
-          newField.options = [
-            FormEditorController.createEmptyOption(),
-            FormEditorController.createEmptyOption()
-          ]
-          break
-        case "link":
-          newField.params.href = {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
-        case "p":
-        case "h3":
-          newField.text = {"fi": "", "sv": ""}
-          break
-        default:
-          throw new Error("Don't know how to create field of type '" + fieldType + "'")
-      }
+      }, getFieldClassProps(fieldClass),
+        getFieldTypeProps(fieldType))
 
       return newField
     }
