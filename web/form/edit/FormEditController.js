@@ -94,7 +94,7 @@ export default class FormEditorController {
       case "infoElement":
         return {}
       case "wrapperElement":
-      return { children: [] }
+        return { children: [] }
       default:
         throw new Error(`Don't know how to create field of class '${fieldClass}'`)
     }
@@ -158,12 +158,13 @@ export default class FormEditorController {
 
   createNewField(fieldType, id) {
     const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
-    const newField = Object.assign({
-      "params": {},
-      "fieldClass": fieldClass,
-      "fieldType": fieldType,
-      "id": id
-    },
+    const newField = Object.assign(
+      {
+        "params": {},
+        "fieldClass": fieldClass,
+        "fieldType": fieldType,
+        "id": id
+      },
       this.getFieldClassProps(fieldClass),
       this.getFieldTypeProps(fieldType, id)
     )
