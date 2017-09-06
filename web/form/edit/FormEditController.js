@@ -11,10 +11,8 @@ function getFieldClassProps(fieldClass) {
         helpText: { "fi": "", "sv": "" },
         required: true
       }
-      break
     case "infoElement":
       return {}
-      break
     default:
       throw new Error(`Don't know how to create field of class '${fieldClass}'`)
   }
@@ -26,7 +24,6 @@ function getFieldTypeProps(fieldType) {
     case "emailField":
     case "namedAttachment":
       return {}
-      break
     case "textField":
     case "koodistoField":
     case "textArea":
@@ -36,7 +33,6 @@ function getFieldTypeProps(fieldType) {
           size: "medium"
         }
       }
-      break
     case "radioButton":
     case "dropdown":
     case "checkboxButton":
@@ -46,7 +42,6 @@ function getFieldTypeProps(fieldType) {
           FormEditorController.createEmptyOption()
         ]
       }
-      break
     case "link":
       return {
         params: {
@@ -58,7 +53,6 @@ function getFieldTypeProps(fieldType) {
       return {
         text: {"fi": "", "sv": ""}
       }
-      break
     default:
       throw new Error(`Don't know how to create field of type '${fieldType}'`)
   }
