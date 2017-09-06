@@ -3,25 +3,27 @@ import _ from "lodash"
 import FormUtil from "../FormUtil"
 import JsUtil from "../../JsUtil"
 
+const fieldTypes = {
+  "textField": "formField",
+  "textArea": "formField",
+  "radioButton": "formField",
+  "checkboxButton": "formField",
+  "dropdown": "formField",
+  "namedAttachment": "formField",
+  "koodistoField": "formField",
+  "p": "infoElement",
+  "h3": "infoElement",
+  "link": "infoElement",
+  "theme": "wrapperElement",
+  "fieldset": "wrapperElement",
+  "growingFieldset": "wrapperElement",
+  "growingFieldsetChild": "wrapperElement"
+}
+
 export default class FormEditorController {
 
   static addableFieldTypes() {
-    return {
-      "textField": "formField",
-      "textArea": "formField",
-      "radioButton": "formField",
-      "checkboxButton": "formField",
-      "dropdown": "formField",
-      "namedAttachment": "formField",
-      "koodistoField": "formField",
-      "p": "infoElement",
-      "h3": "infoElement",
-      "link": "infoElement",
-      "theme": "wrapperElement",
-      "fieldset": "wrapperElement",
-      "growingFieldset": "wrapperElement",
-      "growingFieldsetChild": "wrapperElement"
-    }
+    return fieldTypes
   }
 
   constructor(props) {
