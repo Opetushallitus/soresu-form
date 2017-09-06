@@ -111,8 +111,7 @@ export default class FormEditorController {
       case "growingFieldsetChild":
         return {
           children: [
-            this.createNewField("textField",
-              this.generateUniqueId(`${id}-textField`, 0))
+            this.createNewField("textField", `${id}.textField`)
           ]
         }
       case "growingFieldset":
