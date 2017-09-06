@@ -3,8 +3,6 @@ import _ from "lodash"
 import FormUtil from "../FormUtil"
 import JsUtil from "../../JsUtil"
 
-
-
 export default class FormEditorController {
 
   static addableFieldTypes() {
@@ -100,7 +98,7 @@ export default class FormEditorController {
     }
   }
 
-  getFieldTypeProps(fieldType) {
+  getFieldTypeProps(fieldType, id) {
     switch (fieldType) {
       case "moneyField":
       case "emailField":
@@ -112,14 +110,14 @@ export default class FormEditorController {
         return {
           children: [
             this.createNewField("textField",
-              this.generateUniqueId("textField", 0))
+              this.generateUniqueId(`${id}-textField`, 0))
           ]
         }
       case "growingFieldset":
         return {
           children: [
             this.createNewField("growingFieldsetChild",
-              this.generateUniqueId("growingFieldsetChild", 0))
+              this.generateUniqueId(`${id}-growingFieldsetChild`, 0))
           ],
           params: { "showOnlyFirstLabels": true }
         }
@@ -164,7 +162,10 @@ export default class FormEditorController {
       "fieldClass": fieldClass,
       "fieldType": fieldType,
       "id": id
-    }, this.getFieldClassProps(fieldClass), this.getFieldTypeProps(fieldType))
+    },
+      this.getFieldClassProps(fieldClass),
+      this.getFieldTypeProps(fieldType, id)
+    )
 
     return newField
   }
