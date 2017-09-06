@@ -1,7 +1,7 @@
-import _ from 'lodash'
+import _ from "lodash"
 
-import FormUtil from '../FormUtil'
-import JsUtil from '../../JsUtil'
+import FormUtil from "../FormUtil"
+import JsUtil from "../../JsUtil"
 
 function getFieldClassProps(fieldClass) {
   switch (fieldClass) {
