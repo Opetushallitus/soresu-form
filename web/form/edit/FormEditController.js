@@ -138,6 +138,18 @@ export default class FormEditorController {
     })
   }
 
+  createNewField(fieldType, id) {
+  const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
+  const newField = Object.assign({
+    "params": {},
+    "fieldClass": fieldClass,
+    "fieldType": fieldType,
+    "id": id
+  }, getFieldClassProps(fieldClass), getFieldTypeProps(fieldType))
+
+  return newField
+ }
+
   addChildFieldAfter(fieldToAddAfter, newFieldType) {
     this.doEdit(() => {
       const formDraftJson = this.formDraftJson
@@ -155,7 +167,7 @@ export default class FormEditorController {
       }
 
       const newId = generateUniqueId(0)
-      const newChild = createNewField(newFieldType, newId)
+      const newChild = this.createNewField(newFieldType, newId)
 
       const parent = parentField ? FormUtil.findField(formDraftJson.content, parentField.id) : formDraftJson.content
       if (_.isArray(parent)) {
@@ -165,19 +177,6 @@ export default class FormEditorController {
       }
       return newChild
     })
-
-    function createNewField(fieldType, id) {
-      const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
-      const newField = Object.assign({
-        "params": {},
-        "fieldClass": fieldClass,
-        "fieldType": fieldType,
-        "id": id
-      }, getFieldClassProps(fieldClass),
-        getFieldTypeProps(fieldType))
-
-      return newField
-    }
   }
 
   static createEmptyOption() {
