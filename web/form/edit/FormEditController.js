@@ -3,66 +3,7 @@ import _ from "lodash"
 import FormUtil from "../FormUtil"
 import JsUtil from "../../JsUtil"
 
-function getFieldClassProps(fieldClass) {
-  switch (fieldClass) {
-    case "formField":
-      return {
-        label: { "fi": "", "sv": "" },
-        helpText: { "fi": "", "sv": "" },
-        required: true
-      }
-    case "infoElement":
-      return {}
-    case "wrapperElement":
-      return { children: [] }
-    default:
-      throw new Error(`Don't know how to create field of class '${fieldClass}'`)
-  }
-}
 
-function getFieldTypeProps(fieldType) {
-  switch (fieldType) {
-    case "moneyField":
-    case "emailField":
-    case "namedAttachment":
-    case "theme":
-    case "fieldset":
-    case "growingFieldset":
-    case "growingFieldsetChild":
-      return {}
-    case "textField":
-    case "koodistoField":
-    case "textArea":
-      return {
-        params: {
-          maxlength: 100,
-          size: "medium"
-        }
-      }
-    case "radioButton":
-    case "dropdown":
-    case "checkboxButton":
-      return {
-        options: [
-          FormEditorController.createEmptyOption(),
-          FormEditorController.createEmptyOption()
-        ]
-      }
-    case "link":
-      return {
-        params: {
-          href: {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
-        }
-      }
-    case "p":
-    case "h3":
-      return {
-        text: {"fi": "", "sv": ""}
-      }
-    default:
-      throw new Error(`Don't know how to create field of type '${fieldType}'`)
-  }
-}
 
 export default class FormEditorController {
 
@@ -143,6 +84,67 @@ export default class FormEditorController {
     })
   }
 
+  getFieldClassProps(fieldClass) {
+    switch (fieldClass) {
+      case "formField":
+        return {
+          label: { "fi": "", "sv": "" },
+          helpText: { "fi": "", "sv": "" },
+          required: true
+        }
+      case "infoElement":
+        return {}
+      case "wrapperElement":
+      return { children: [] }
+      default:
+        throw new Error(`Don't know how to create field of class '${fieldClass}'`)
+    }
+  }
+
+  getFieldTypeProps(fieldType) {
+    switch (fieldType) {
+      case "moneyField":
+      case "emailField":
+      case "namedAttachment":
+      case "theme":
+      case "fieldset":
+      case "growingFieldset":
+      case "growingFieldsetChild":
+        return {}
+      case "textField":
+      case "koodistoField":
+      case "textArea":
+        return {
+          params: {
+            maxlength: 100,
+            size: "medium"
+          }
+        }
+      case "radioButton":
+      case "dropdown":
+      case "checkboxButton":
+        return {
+          options: [
+            FormEditorController.createEmptyOption(),
+            FormEditorController.createEmptyOption()
+          ]
+        }
+      case "link":
+        return {
+          params: {
+            href: {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
+          }
+        }
+      case "p":
+      case "h3":
+        return {
+          text: {"fi": "", "sv": ""}
+        }
+      default:
+        throw new Error(`Don't know how to create field of type '${fieldType}'`)
+    }
+  }
+
   createNewField(fieldType, id) {
     const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
     const newField = Object.assign({
@@ -150,7 +152,7 @@ export default class FormEditorController {
       "fieldClass": fieldClass,
       "fieldType": fieldType,
       "id": id
-    }, getFieldClassProps(fieldClass), getFieldTypeProps(fieldType))
+    }, this.getFieldClassProps(fieldClass), this.getFieldTypeProps(fieldType))
 
     return newField
   }
