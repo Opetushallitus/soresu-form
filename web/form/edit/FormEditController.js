@@ -23,7 +23,6 @@ export default class FormEditorController {
       "fieldset": "wrapperElement",
       "growingFieldset": "wrapperElement",
       "growingFieldsetChild": "wrapperElement"
-
     }
   }
 
@@ -108,9 +107,21 @@ export default class FormEditorController {
       case "namedAttachment":
       case "theme":
       case "fieldset":
-      case "growingFieldset":
-      case "growingFieldsetChild":
         return {}
+      case "growingFieldsetChild":
+        return {
+          children: [
+            this.createNewField("textField",
+              this.generateUniqueId("textField", 0))
+          ]
+        }
+      case "growingFieldset":
+        return {
+          children: [
+            this.createNewField("growingFieldsetChild",
+              this.generateUniqueId("growingFieldsetChild", 0))
+          ]
+        }
       case "textField":
       case "koodistoField":
       case "textArea":
