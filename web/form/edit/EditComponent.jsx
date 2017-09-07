@@ -7,6 +7,10 @@ import FormEditorController from './FormEditController'
 import MathUtil from '../../MathUtil'
 import SyntaxValidator from '../SyntaxValidator'
 
+const hiddenFields = [
+  "theme", "growingFieldsetChild", "fieldset"
+]
+
 export class EditComponent extends React.Component {
 
   static fieldTypeInFI(fieldType){
@@ -112,7 +116,9 @@ export class EditComponent extends React.Component {
     const formEditorController = this.props.formEditorController
     const htmlId = this.props.htmlId
 
-    const addElementButtons = Object.keys(FormEditorController.addableFieldTypes()).map((key, i) => (
+    const addElementButtons = Object.keys(
+      FormEditorController.addableFieldTypes()).filter(
+        t => hiddenFields.indexOf(t) === -1).map((key, i) => (
       <a href="#" key={i} className="soresu-edit" onClick={this.handleOnAddClick.bind(this, key)}>
         {EditComponent.fieldTypeInFI(key)}
       </a>
