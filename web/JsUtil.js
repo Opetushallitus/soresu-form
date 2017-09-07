@@ -1,5 +1,24 @@
 import _ from 'lodash'
 
+const fastTraverseArray = (ary, func) => {
+  for (let i = 0; i < ary.length; i += 1) {
+    const elem = ary[i]
+    if (!!elem && _.isObject(elem)) {
+      JsUtil.fastTraverse(elem, func)
+    }
+  }
+}
+
+const fastTraverseObject = (obj, func) => {
+  const keys = Object.keys(obj)
+  for (let i = 0; i < keys.length; i += 1) {
+    const elem = obj[keys[i]]
+    if (!!elem && _.isObject(elem)) {
+      JsUtil.fastTraverse(elem, func)
+    }
+  }
+}
+
 export default class JsUtil {
   static flatFilter(objectOrArray, nodePredicate) {
     return JsUtil.traverseMatching(objectOrArray, nodePredicate, _.identity)
@@ -67,34 +86,11 @@ export default class JsUtil {
     const shouldContinue = func(x)
 
     if (shouldContinue) {
-      if (isObject(x)) {
-        traverseObject(x)
-      } else if (isArray(x)) {
-        traverseArray(x)
+      if (_.isArray(x)) {
+        fastTraverseArray(x, func)
+      } else if (_.isObject(x)) {
+        fastTraverseObject(x, func)
       }
-    }
-
-    function traverseObject(o) {
-      for (var i in o) {
-        const element = o[i]
-        if (element !== null && (isObject(element) || isArray(element))) {
-          JsUtil.fastTraverse(element, func)
-        }
-      }
-    }
-
-    function traverseArray(arr) {
-      for (var i = 0; i < arr.length; i++) {
-        JsUtil.fastTraverse(arr[i])
-      }
-    }
-
-    function isObject(element) {
-      return typeof(element) === "object"
-    }
-
-    function isArray(element) {
-      return typeof(element) === "array"
     }
   }
 

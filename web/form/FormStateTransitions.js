@@ -79,37 +79,37 @@ export default class FormStateTransitions {
     const { files, field } = uploadEvent
     const formOperations = state.extensionApi.formOperations
     if (formOperations.isSaveDraftAllowed(state)) {
-
       const url = formOperations.urlCreator.attachmentBaseUrl(state, field)
       const dispatcher = this.dispatcher
       const events = this.events
       const translations = state.configuration.translations
       const lang = state.configuration.lang
-      try {
-        const attachment = files[0]
-        if (files.length > 1) {
-          console.log('Warning: Only uploading first of ', files)
-        }
-        state.saveStatus.attachmentUploadsInProgress[field.id] = true
-        HttpUtil.putFile(url, attachment)
-          .then(function(response) {
-            console.log("Uploaded file to server. Response=", JSON.stringify(response))
-            dispatcher.push(events.attachmentUploadCompleted, response)
-          })
-          .catch(function(error) {
-            if(error.status === 400 && error.data && error.data["illegal-content-type"]) {
-              FormStateTransitions.handleAttachmentSaveError("attachment-has-illegal-content-type-error", error, translations, lang, {"illegal-content-type": error.data["illegal-content-type"]})
-            } else {
-              FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
-            }
-          })
+      const attachment = files[0]
+      if (files.length > 1) {
+        console.log('Warning: Only uploading first of ', files)
       }
-      catch(error) {
-        FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
-      }
-      finally {
-        return state
-      }
+      state.saveStatus.attachmentUploadsInProgress[field.id] = true
+      HttpUtil.putFile(url, attachment)
+        .then(function(response) {
+          console.log("Uploaded file to server. Response=", JSON.stringify(response))
+          dispatcher.push(events.attachmentUploadCompleted, response)
+          return null
+        })
+        .catch(function(error) {
+          if (error.response &&
+              error.response.status === 400 &&
+              error.response.data &&
+              error.response.data["illegal-content-type"]) {
+            FormStateTransitions.handleAttachmentSaveError(
+              "attachment-has-illegal-content-type-error",
+              error,
+              translations,
+              lang,
+              {"illegal-content-type": error.response.data["illegal-content-type"]})
+          } else {
+            FormStateTransitions.handleAttachmentSaveError("attachment-save-error", error, translations, lang)
+          }
+        })
     }
     return state
   }
@@ -156,23 +156,16 @@ export default class FormStateTransitions {
       const events = this.events
       const translations = state.configuration.translations
       const lang = state.configuration.lang
-      try {
-        state.saveStatus.attachmentUploadsInProgress[fieldOfFile.id] = true
-        HttpUtil.delete(url)
-          .then(function(response) {
-            console.log("Deleted attachment of field " + fieldOfFile.id + " . Response=", JSON.stringify(response))
-            dispatcher.push(events.attachmentRemovalCompleted, fieldOfFile)
-          })
-          .catch(function(error) {
-            FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
-          })
-      }
-      catch(error) {
-        FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
-      }
-      finally {
-        return state
-      }
+      state.saveStatus.attachmentUploadsInProgress[fieldOfFile.id] = true
+      HttpUtil.delete(url)
+        .then(function(response) {
+          console.log("Deleted attachment: " + fieldOfFile.id)
+          dispatcher.push(events.attachmentRemovalCompleted, fieldOfFile)
+          return null
+        })
+        .catch(function(error) {
+          FormStateTransitions.handleAttachmentSaveError("attachment-remove-error", error, translations, lang)
+        })
     }
     return state
   }
@@ -201,13 +194,13 @@ export default class FormStateTransitions {
   }
 
   static handleAttachmentSaveError(msgKey, error, translations, lang, msgKeyValues) {
-    console.error(msgKey, ": " , error)
+    console.warn(`Handle attachment ${msgKey}`, error)
     const translator = new Translator(translations.errors)
     alert(translator.translate(msgKey, lang, undefined, msgKeyValues))
   }
 
   static handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation) {
-    console.error('Unexpected', serverOperation, 'error', error, 'in', method, 'to', url)
+    console.error(`Error in ${serverOperation}, ${method} ${url}`, error)
     if (serverOperation === serverOperations.submit) {
       dispatcher.push(events.serverError, {error: "unexpected-submit-error"})
     } else if (serverOperation === serverOperations.initialSave) {
@@ -217,22 +210,27 @@ export default class FormStateTransitions {
     }
   }
 
-  static handleServerError(dispatcher, events, status, error, method, url, response, serverOperation) {
-    console.warn('Handle', serverOperation, 'error', error, 'in', method, 'to', url, 'with status', status, 'and response', JSON.stringify(response))
-    if (status === 400) {
-      dispatcher.push(events.serverError, {error: "submit-validation-errors", validationErrors: response})
+  static handleServerError(dispatcher, events, error, method, url, serverOperation) {
+    if (error.response) {
+      const res = error.response
+
+      console.warn(`Handle ${serverOperation} error for ${method} ${url}, responding with status ${res.status}: ${JSON.stringify(res.data)}`, error)
+
+      if (res.status === 400) {
+        dispatcher.push(events.serverError, {error: "submit-validation-errors", validationErrors: res.data})
+        return
+      } else if (res.status === 405) {
+        dispatcher.push(events.serverError, {error: "save-not-allowed"})
+        return
+      } else if (res.status === 409) {
+        // TODO: Resolve updates from server.
+        // At the moment just tell that something has changes
+        dispatcher.push(events.serverError, {error: "conflict-save-error"})
+        return
+      }
     }
-    else if (status === 405) {
-      dispatcher.push(events.serverError, {error: "save-not-allowed"})
-    }
-    else if (status === 409) {
-      // TODO: Resolve updates from server.
-      // At the moment just tell that something has changes
-      dispatcher.push(events.serverError, {error: "conflict-save-error"})
-    }
-    else{
-      FormStateTransitions.handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation)
-    }
+
+    FormStateTransitions.handleUnexpectedServerError(dispatcher, events, method, url, error, serverOperation)
   }
 
   updateOld(state, serverOperation, onSuccessCallback) {
@@ -241,22 +239,21 @@ export default class FormStateTransitions {
     const dispatcher = this.dispatcher
     const events = this.events
     const self = this
-    try {
-      state.saveStatus.saveInProgress = true
-      HttpUtil.post(url, state.saveStatus.values)
-        .then(function(response) {
-          self.pushSaveCompletedEvent(state, response, onSuccessCallback)
-        })
-        .catch(function(response) {
-            FormStateTransitions.handleServerError(dispatcher, events, response.status, response.statusText, "POST", url, response.data, serverOperation)
-        })
-    }
-    catch(error) {
-      FormStateTransitions.handleUnexpectedServerError(dispatcher, events, "POST", url, error, serverOperation);
-    }
-    finally {
-      return state
-    }
+    state.saveStatus.saveInProgress = true
+    HttpUtil.post(url, state.saveStatus.values)
+      .then(function(response) {
+        self.pushSaveCompletedEvent(state, response, onSuccessCallback)
+      })
+      .catch(function(error) {
+        FormStateTransitions.handleServerError(
+          dispatcher,
+          events,
+          error,
+          "POST",
+          url,
+          serverOperation)
+      })
+    return state
   }
 
   pushSaveCompletedEvent(state, response, onSuccessCallback) {
