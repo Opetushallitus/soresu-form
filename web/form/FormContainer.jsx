@@ -2,6 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import InputValueStorage from './InputValueStorage'
 import FieldUpdateHandler from './FieldUpdateHandler'
+import FormController from './FormController.js'
+import FormUtil from './FormUtil.js'
 import axios from 'axios'
 
 import FormPreview from './FormPreview.jsx'
@@ -10,15 +12,24 @@ export default class FormContainer extends React.Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
+    this.changeFieldValue = this.changeFieldValue.bind(this)
+  }
+
+  changeFieldValue(data, fieldName, dataField){
+    this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, fieldName), data[dataField])
   }
 
   handleClick() {
       const businessIdField = this.props.state.saveStatus.values.value.filter(value => value.key == "business-id")
       axios.get("http://localhost:8080/api/organisations/?organisationId=" + businessIdField[0].value).then(({ data })=> {
-        /*Esimerkiksi vain yritän tässä tuota datan nimikenttää päivittää ja tää siis vielä käyttää sitä vanhaa routea (ja toi urlikin tolleen tyhmästi vielä, koska default-api on täällä /api/avustushaku/jotain, niin testauksen vuoksi vain noin)*/
-        console.log(data)
-        const newName = data["name"]
-        InputValueStorage.writeValue(this.props.state.configuration.form, this.props.state.saveStatus.values, FieldUpdateHandler.createFieldUpdate({id: "organisation", fieldClass: "formField", fieldType: "textField", value: newName}))
+
+      this.changeFieldValue(data, "organization", "name" )
+      this.changeFieldValue(data, "organization-postal-address", "address" )
+      this.changeFieldValue(data, "organization-email", "email" )
+      /*this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, "organization"), data["name"])
+      this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, "organization-postal-address"), data["address"])
+      this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, "organization-email"), data["email"])*/
+
      })
     }
 
@@ -36,7 +47,7 @@ export default class FormContainer extends React.Component {
 
     return (
       <section id={containerId}>
-        <a href="#" onClick={this.handleClick}>Hae</a>
+        <a href="#" onClick={this.handleClick}>HAE Y-TUNNUKSELLA</a>
         {headerElements}
         {formElement}
       </section>

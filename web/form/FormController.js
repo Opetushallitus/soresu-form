@@ -65,6 +65,10 @@ export default class FormController {
     return state.saveStatus.changes || state.saveStatus.saveInProgress
   }
 
+  updateValue(field, newValue) {
+    dispatcher.push(events.updateField, FieldUpdateHandler.createFieldUpdate(field, newValue, this.customFieldSyntaxValidator))
+  }
+  
   componentOnChangeListener(field, newValue) {
     dispatcher.push(events.updateField, FieldUpdateHandler.createFieldUpdate(field, newValue, this.customFieldSyntaxValidator))
   }
