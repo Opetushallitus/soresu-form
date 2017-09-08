@@ -736,3 +736,24 @@ button[disabled].soresu-text-button {
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
   width: @section-width;
 }
+
+a.idbutton :focus {
+  box-shadow: 0 0 5px rgba(97, 186, 233, 1);
+  outline: 1px solid @light-blue;
+}
+
+a.idbutton {
+color: #fff;
+background-color: @light-green;
+border-width: 0;
+margin: 4px 0 4px 0;
+padding: 4px 24px;
+font-size: 16px;
+cursor: pointer;
+box-shadow: 0 0 5px rgba(97, 186, 233, 1);
+outline: 1px solid @light-blue
+}
+
+a.idbutton:hover {
+ background-color: @dark-green;
+}

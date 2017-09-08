@@ -7,6 +7,7 @@ import FormComponent from './component/FormComponent.jsx'
 import InfoElement from './component/InfoElement.jsx'
 import WrapperComponent from './component/wrapper/WrapperComponent.jsx'
 import InputValueStorage from './InputValueStorage.js'
+import BusinessIdSearch from './component/BusinessIdSearch.jsx'
 
 export default class Form extends React.Component {
   render() {
@@ -40,8 +41,15 @@ export default class Form extends React.Component {
                                                                renderingParameters: renderingParameters,
                                                                allAttachments: state.saveStatus.attachments,
                                                                attachmentUploadsInProgress: state.saveStatus.attachmentUploadsInProgress})
+        const extendedBusinessIdProperties = _.extend(fieldProperties, { disabled: fieldDisabled,
+                                                               renderingParameters: renderingParameters,
+                                                               allAttachments: state.saveStatus.attachments,
+                                                               attachmentUploadsInProgress: state.saveStatus.attachmentUploadsInProgress,
+                                                               state: state.saveStatus.value})
 
-        if (field.fieldClass == "formField" || field.fieldClass == "button") {
+        if(field.fieldClass == "formField" && field.fieldType == "finnishBusinessIdField"){
+          return createBusinessFormComponent(field, extendedProperties)
+        } else if (field.fieldClass == "formField" || field.fieldClass == "button") {
           return createFormComponent(field, extendedProperties)
         } else if (field.fieldClass == "wrapperElement") {
           return createWrapperElement(field, extendedProperties, renderingParameters)
@@ -69,6 +77,22 @@ export default class Form extends React.Component {
                             onChange={controller.componentOnChangeListener}
                             attachment={extendedProperties.allAttachments[field.id]}
                             attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field)} />
+    }
+
+    function createBusinessFormComponent(field, extendedProperties) {
+      const existingInputValue = InputValueStorage.readValue(fields, values, field.id)
+      const value = _.isUndefined(existingInputValue) ? "" : existingInputValue
+      const fieldErrors = _.get(validationErrors, field.id, [])
+      return <FormComponent {...extendedProperties}
+                            validationErrors={fieldErrors}
+                            value={value}
+                            onChange={controller.componentOnChangeListener}
+                            attachment={extendedProperties.allAttachments[field.id]}
+                            attachmentDownloadUrl={controller.createAttachmentDownloadUrl(state, field)} />
+    }
+
+    function createBusinessIdSearchComponent(){
+      return <BusinessIdSearch  state={this.props.state} controller={this.props.controller}/>
     }
 
     function createWrapperElement(field, fieldProperties, renderingParameters) {

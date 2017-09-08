@@ -69,6 +69,8 @@ export default class FormComponent extends React.Component {
   render() {
     const controller = this.props.controller
     const fieldType = this.props.fieldType
+    const state = this.props.state
+
 
     if (fieldType in controller.getCustomComponentTypeMapping()) {
       return controller.createCustomComponent(this.props)

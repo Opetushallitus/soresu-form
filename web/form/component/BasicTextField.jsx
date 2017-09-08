@@ -1,5 +1,6 @@
 import React from 'react'
 import BasicSizedComponent from './BasicSizedComponent.jsx'
+import BusinessIdSearch from './BusinessIdSearch.jsx'
 
 export default class BasicTextField extends BasicSizedComponent {
   constructor(props) {
@@ -9,6 +10,7 @@ export default class BasicTextField extends BasicSizedComponent {
 
   baseClassName() {
     return "soresu-text-field"
+    console.log(this.props.state)
   }
 
   render() {
@@ -29,6 +31,7 @@ export default class BasicTextField extends BasicSizedComponent {
         onBlur={props.onBlur}
         onChange={props.onChange}
         />
+      {(this.props.htmlId == "business-id") && <BusinessIdSearch state={this.props.state} controller={this.props.controller}/>}
     </div>)
   }
 }

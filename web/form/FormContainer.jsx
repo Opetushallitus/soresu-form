@@ -5,33 +5,15 @@ import FieldUpdateHandler from './FieldUpdateHandler'
 import FormController from './FormController.js'
 import FormUtil from './FormUtil.js'
 import axios from 'axios'
+import BusinessIdSearch from './component/BusinessIdSearch.jsx'
 
 import FormPreview from './FormPreview.jsx'
 
 export default class FormContainer extends React.Component {
   constructor(props) {
-    super(props)
-    this.handleClick = this.handleClick.bind(this)
-    this.changeFieldValue = this.changeFieldValue.bind(this)
+  super(props)
   }
 
-  changeFieldValue(data, fieldName, dataField){
-    this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, fieldName), data[dataField])
-  }
-
-  handleClick() {
-      const businessIdField = this.props.state.saveStatus.values.value.filter(value => value.key == "business-id")
-      axios.get("http://localhost:8080/api/organisations/?organisationId=" + businessIdField[0].value).then(({ data })=> {
-
-      this.changeFieldValue(data, "organization", "name" )
-      this.changeFieldValue(data, "organization-postal-address", "address" )
-      this.changeFieldValue(data, "organization-email", "email" )
-      /*this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, "organization"), data["name"])
-      this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, "organization-postal-address"), data["address"])
-      this.props.controller.componentOnChangeListener(FormUtil.findField(this.props.state, "organization-email"), data["email"])*/
-
-     })
-    }
 
   render() {
     const state = this.props.state
@@ -47,9 +29,9 @@ export default class FormContainer extends React.Component {
 
     return (
       <section id={containerId}>
-        <a href="#" onClick={this.handleClick}>HAE Y-TUNNUKSELLA</a>
         {headerElements}
         {formElement}
+      <BusinessIdSearch state={this.props.state} controller={this.props.controller}/>
       </section>
     )
   }
