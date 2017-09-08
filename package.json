@@ -33,6 +33,12 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.1",
+    "eslint": "^4.5.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.0",
     "mocha-junit-reporter": "^1.5.0",
     "react": "^15.6.1"
@@ -43,6 +49,7 @@
   "private": true,
   "scripts": {
     "test": "mocha --require babel-register web/test/*Test.js",
-    "test-watch": "mocha --watch --require babel-register web/test/*Test.js"
+    "test-watch": "mocha --watch --require babel-register web/test/*Test.js",
+    "lint": "node_modules/eslint/bin/eslint.js web/**/*"
   }
 }

@@ -1,23 +1,29 @@
-import _ from 'lodash'
+import _ from "lodash"
 
-import FormUtil from '../FormUtil'
-import JsUtil from '../../JsUtil'
+import FormUtil from "../FormUtil"
+import JsUtil from "../../JsUtil"
+
+const fieldTypes = {
+  "textField": "formField",
+  "textArea": "formField",
+  "radioButton": "formField",
+  "checkboxButton": "formField",
+  "dropdown": "formField",
+  "namedAttachment": "formField",
+  "koodistoField": "formField",
+  "p": "infoElement",
+  "h3": "infoElement",
+  "link": "infoElement",
+  "theme": "wrapperElement",
+  "fieldset": "wrapperElement",
+  "growingFieldset": "wrapperElement",
+  "growingFieldsetChild": "wrapperElement"
+}
 
 export default class FormEditorController {
 
   static addableFieldTypes() {
-    return {
-      "textField": "formField",
-      "textArea": "formField",
-      "radioButton": "formField",
-      "checkboxButton": "formField",
-      "dropdown": "formField",
-      "namedAttachment": "formField",
-      "koodistoField": "formField",
-      "p": "infoElement",
-      "h3": "infoElement",
-      "link": "infoElement"
-    }
+    return fieldTypes
   }
 
   constructor(props) {
@@ -53,6 +59,129 @@ export default class FormEditorController {
     })
   }
 
+  moveField(field, indexDelta) {
+    this.doEdit(() => {
+      const parent = FormUtil.findFieldWithDirectChild(this.formDraftJson.content, field.id)
+      const fields = parent ? parent.children : this.formDraftJson.content
+      const oldIndex = fields.findIndex(f => f.id === field.id)
+      const newIndex = oldIndex + indexDelta
+
+      if (newIndex < 0 || newIndex > (fields.length - 1)) {
+        return
+      }
+
+      const item = fields[oldIndex]
+      const fieldsWithoutItem = fields.slice(0, oldIndex).concat(fields.slice(oldIndex + 1))
+      const updatedFields = fieldsWithoutItem.slice(0, newIndex).concat(
+        item, fieldsWithoutItem.slice(newIndex))
+
+      if (parent) {
+        parent.children = updatedFields
+      } else {
+        this.formDraftJson.content = updatedFields
+      }
+    })
+  }
+
+  getFieldClassProps(fieldClass) {
+    switch (fieldClass) {
+      case "formField":
+        return {
+          label: { "fi": "", "sv": "" },
+          helpText: { "fi": "", "sv": "" },
+          required: true
+        }
+      case "infoElement":
+        return {}
+      case "wrapperElement":
+        return { children: [] }
+      default:
+        throw new Error(`Don't know how to create field of class '${fieldClass}'`)
+    }
+  }
+
+  getFieldTypeProps(fieldType, id) {
+    switch (fieldType) {
+      case "moneyField":
+      case "emailField":
+      case "namedAttachment":
+      case "theme":
+      case "fieldset":
+        return {}
+      case "growingFieldsetChild":
+        return {
+          children: [
+            this.createNewField("textField", `${id}.textField`)
+          ]
+        }
+      case "growingFieldset":
+        return {
+          children: [
+            this.createNewField("growingFieldsetChild",
+              this.generateUniqueId(`${id}-growingFieldsetChild`, 0))
+          ],
+          params: { "showOnlyFirstLabels": true }
+        }
+      case "textField":
+      case "koodistoField":
+      case "textArea":
+        return {
+          params: {
+            maxlength: 100,
+            size: "medium"
+          }
+        }
+      case "radioButton":
+      case "dropdown":
+      case "checkboxButton":
+        return {
+          options: [
+            FormEditorController.createEmptyOption(),
+            FormEditorController.createEmptyOption()
+          ]
+        }
+      case "link":
+        return {
+          params: {
+            href: {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
+          }
+        }
+      case "p":
+      case "h3":
+        return {
+          text: {"fi": "", "sv": ""}
+        }
+      default:
+        throw new Error(`Don't know how to create field of type '${fieldType}'`)
+    }
+  }
+
+  createNewField(fieldType, id) {
+    const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
+    const newField = Object.assign(
+      {
+        "params": {},
+        "fieldClass": fieldClass,
+        "fieldType": fieldType,
+        "id": id
+      },
+      this.getFieldClassProps(fieldClass),
+      this.getFieldTypeProps(fieldType, id)
+    )
+
+    return newField
+  }
+
+  generateUniqueId(fieldType, index) {
+    const proposed = `${fieldType}-${index}`
+    if (_.isEmpty(JsUtil.flatFilter(
+      this.formDraftJson.content, n => n.id === proposed))) {
+      return proposed
+    }
+    return this.generateUniqueId(fieldType, index + 1)
+  }
+
+
   addChildFieldAfter(fieldToAddAfter, newFieldType) {
     this.doEdit(() => {
       const formDraftJson = this.formDraftJson
@@ -61,81 +190,17 @@ export default class FormEditorController {
       const fieldToAddAfterOnForm = FormUtil.findField(formDraftJson.content, fieldToAddAfter.id)
       const indexOfNewChild = childArray.indexOf(fieldToAddAfterOnForm) + 1
 
-      function generateUniqueId(index) {
-        const proposed = newFieldType + "-" +index
-        if (_.isEmpty(JsUtil.flatFilter(formDraftJson.content, n => { return n.id === proposed}))) {
-          return proposed
-        }
-        return generateUniqueId(index + 1)
-      }
-
-      const newId = generateUniqueId(0)
-      const newChild = createNewField(newFieldType, newId)
+      const newId = this.generateUniqueId(newFieldType, 0)
+      const newChild = this.createNewField(newFieldType, newId)
 
       const parent = parentField ? FormUtil.findField(formDraftJson.content, parentField.id) : formDraftJson.content
       if (_.isArray(parent)) {
-        parent.splice(indexOfNewChild, 0, newChild);
+        parent.splice(indexOfNewChild, 0, newChild)
       } else {
-        parent.children.splice(indexOfNewChild, 0, newChild);
+        parent.children.splice(indexOfNewChild, 0, newChild)
       }
       return newChild
     })
-
-    function createNewField(fieldType, id) {
-      const fieldClass = FormEditorController.addableFieldTypes()[fieldType]
-      const newField = {
-        "params": {},
-        "fieldClass": fieldClass,
-        "fieldType": fieldType,
-        "id": id
-      }
-
-      switch (fieldClass) {
-        case "formField":
-          newField.label = { "fi": "", "sv": "" }
-          newField.helpText = { "fi": "", "sv": "" }
-          newField.required = true
-          break
-        case "infoElement":
-          break
-        default:
-          throw new Error("Don't know how to create field of class '" + fieldClass + "' for type '" + fieldType + "'")
-      }
-
-      switch (fieldType) {
-        case "moneyField":
-        case "emailField":
-        case "namedAttachment":
-          break
-        case "textField":
-        case "koodistoField":
-          newField.params.maxlength = 100
-          newField.params.size = "medium"
-          break
-        case "textArea":
-          newField.params.maxlength = 1000
-          newField.params.size = "medium"
-          break
-        case "radioButton":
-        case "dropdown":
-        case "checkboxButton":
-          newField.options = [
-            FormEditorController.createEmptyOption(),
-            FormEditorController.createEmptyOption()
-          ]
-          break
-        case "link":
-          newField.params.href = {"fi": "http://www.oph.fi/", "sv": "http://www.oph.fi/"}
-        case "p":
-        case "h3":
-          newField.text = {"fi": "", "sv": ""}
-          break
-        default:
-          throw new Error("Don't know how to create field of type '" + fieldType + "'")
-      }
-
-      return newField
-    }
   }
 
   static createEmptyOption() {

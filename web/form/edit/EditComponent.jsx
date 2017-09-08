@@ -7,6 +7,10 @@ import FormEditorController from './FormEditController'
 import MathUtil from '../../MathUtil'
 import SyntaxValidator from '../SyntaxValidator'
 
+const hiddenFields = [
+  "theme", "growingFieldsetChild", "fieldset"
+]
+
 export class EditComponent extends React.Component {
 
   static fieldTypeInFI(fieldType){
@@ -88,27 +92,53 @@ export class EditComponent extends React.Component {
     )
   }
 
+  handleOnAddClick(fieldType, e) {
+    const {field, formEditorController} = this.props
+    e.preventDefault()
+    formEditorController.addChildFieldAfter(field, fieldType)
+  }
+
+  handleOnRemoveFieldClick(e) {
+    const {field, formEditorController} = this.props
+    formEditorController.removeField(field)
+  }
+
+  handleOnMoveFieldUpClick(e) {
+    this.props.formEditorController.moveField(this.props.field, -1)
+  }
+
+  handleOnMoveFieldDownClick(e) {
+    this.props.formEditorController.moveField(this.props.field, 1)
+  }
+
   renderEditable(fieldSpecificEdit) {
     const field = this.props.field
     const formEditorController = this.props.formEditorController
     const htmlId = this.props.htmlId
 
-    const addableElements = _.keys(FormEditorController.addableFieldTypes())
-    const addElementButtons = []
-    for (var i = 0; i < addableElements.length; i++) {
-      addElementButtons.push(<a href="#" key={i} className="soresu-edit" onClick={createAddOnClick(addableElements[i])}>{EditComponent.fieldTypeInFI(addableElements[i])}</a>)
-    }
-
+    const addElementButtons = Object.keys(
+      FormEditorController.addableFieldTypes()).filter(
+        t => hiddenFields.indexOf(t) === -1).map((key, i) => (
+      <a href="#" key={i} className="soresu-edit" onClick={this.handleOnAddClick.bind(this, key)}>
+        {EditComponent.fieldTypeInFI(key)}
+      </a>
+    ))
 
     var labelEdit = this.renderTranslationTable(htmlId + "-label", this.labelName(), x => x.label)
-    const removeFieldOnClick = e => { formEditorController.removeField(field) }
-    const removeField = FormEditorController.addableFieldTypes()[field.fieldType] ?
-        <span onClick={removeFieldOnClick} className="soresu-edit soresu-field-remove">Poista</span> :
-        undefined
+    const editFields = FormEditorController.addableFieldTypes()[field.fieldType] ? (
+      <div className="soresu-field-edit-tools">
+       <span onClick={this.handleOnMoveFieldUpClick.bind(this)}
+          className="soresu-field-move-up soresu-field-edit-button" />
+        <span onClick={this.handleOnMoveFieldDownClick.bind(this)}
+          className="soresu-field-move-down soresu-field-edit-button" />
+        <span onClick={this.handleOnRemoveFieldClick.bind(this)}
+          className="soresu-field-remove soresu-field-edit-button">Poista</span>
+      </div>) : null
+
     return (
       <div key={htmlId} className={this.className()}>
         <h3>{EditComponent.fieldTypeInFI(field.fieldType)}</h3>
-        {removeField}
+        {editFields}
         {labelEdit}
         {fieldSpecificEdit}
         <div className="soresu-field-add">
@@ -116,13 +146,6 @@ export class EditComponent extends React.Component {
         </div>
       </div>
     )
-
-    function createAddOnClick(fieldType) {
-      return e => {
-        e.preventDefault()
-        formEditorController.addChildFieldAfter(field, fieldType)
-      }
-    }
   }
 
   labelName() {
@@ -324,7 +347,7 @@ export class MultipleChoiceEdit extends FieldEditComponent {
           <span className="soresu-radio-option-edit-title">{title}</span>
           <input type="text" placeholder="Vastausvaihtoehto" onChange={createOnChange("fi")} value={labelGetter(field).fi}/>
           <input type="text" placeholder="Vastausvaihtoehto ruotsiksi" onChange={createOnChange("sv")} value={labelGetter(field).sv}/>
-          <span onClick={removeOption} className="soresu-edit soresu-field-remove"></span>
+          <span onClick={removeOption} className="soresu-edit soresu-field-remove soresu-field-edit-icon"></span>
         </div>
       )
     }
