@@ -11,20 +11,21 @@
     "web"
   ],
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.21.3",
     "baconjs": "^0.7.59",
     "big.js": "^3.1.3",
     "bluebird": "^3.5.0",
     "classnames": "^2.1.3",
     "console-polyfill": "^0.2.1",
-    "lodash": "^3.9.3",
+    "lodash": "^4.17.21",
     "moment-timezone": "0.4.0",
     "query-string": "2.2.0",
     "react-dropzone": "^4.0.1",
     "react-transition-group": "^2.2.0",
     "react-widgets": "^3.4.8",
     "seamless-immutable": "^2.4.2",
-    "speakingurl": "7.0.0"
+    "speakingurl": "7.0.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -44,6 +45,9 @@
   "scripts": {
     "test": "mocha --require babel-register web/test/*Test.js",
     "test-watch": "mocha --watch --require babel-register web/test/*Test.js",
-    "lint": "eslint web/**/*"
-  }
+    "lint": "eslint web/**/*",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
+  "snyk": true
 }
